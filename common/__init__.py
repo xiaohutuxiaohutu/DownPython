@@ -4,6 +4,10 @@ import os
 import random
 from urllib.request import Request
 from urllib.request import urlopen
+import imghdr
+import time
+import io
+import re
 
 if (os.name == 'nt'):
     print(u'windows 系统')
@@ -60,6 +64,19 @@ def get_ip():
 # 获取header
 def get_header():
     return header;
-# ip_list = get_ip_list(proxyipurl)
-# proxy_ip = get_random_ip(ip_list)
-# print(proxy_ip)
+
+
+def fileSize():
+    i = Image.open(StringIO(imageUrl.content))
+    print(i.size)
+    return i.size
+
+
+# 判断文件或文件夹是否存在
+def fileExist(fileName):
+    return os.path.exists(fileName)
+
+
+# 判断文件是否存在
+def isFile(fileName):
+    return os.path.isfile(fileName)

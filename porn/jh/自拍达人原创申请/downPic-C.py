@@ -15,7 +15,7 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 file = open("C:/workspace/GitHub/DownPython/porn/jh/自拍达人原创申请/2019-08-13_0.txt")
 preUrl = 'https://f.wonderfulday30.live/'
 # 文件下载保存路径
-osPrePath = 'C:/Users/23948/Pictures/Camera Roll/jh/自拍达人原创申请/'
+osPrePath = 'C:/Users/23948/Pictures/Camera Roll/jh1/自拍达人原创申请/'
 if not (os.path.exists(osPrePath)):
     os.makedirs(osPrePath)
 # 获取总行
@@ -25,7 +25,6 @@ for num, value in enumerate(file, 1):
     print(line)
     # 获取代理服务器
     proxyip = common.get_ip()
-    # print('proxyip:'+str(proxyip))
 
     html = requests.get(line, headers=header, proxies=proxyip)
     html.encoding = 'utf-8'
@@ -75,7 +74,6 @@ for num, value in enumerate(file, 1):
         for i in range(0, len(imgUrls1)):
             fileUrl1 = imgUrls1[i].get('file')
             fileUrl1 = fileUrl1.replace('http://pic.w26.rocks/', preUrl)
-            # fileUrl1='http://pic.w26.rocks/attachments/1906212318f9e42462ac7298ea.jpg'
             image_name1 = fileUrl1.split("/")[-1]
             # 判断文件或文件夹是否存在
             if not os.path.exists(image_name1):
