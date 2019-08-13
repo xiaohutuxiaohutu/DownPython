@@ -15,7 +15,7 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 file = open("C:/workspace/GitHub/DownPython/porn/jh/自拍达人原创申请/2019-08-13_0.txt")
 preUrl = 'https://f.wonderfulday30.live/'
 # 文件下载保存路径
-osPrePath = 'C:/Users/23948/Pictures/Camera Roll/jh1/自拍达人原创申请/'
+osPrePath = 'C:/Users/23948/Pictures/Camera Roll/jh/自拍达人原创申请/'
 if not (os.path.exists(osPrePath)):
     os.makedirs(osPrePath)
 # 获取总行
