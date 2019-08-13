@@ -2,23 +2,23 @@ import requests
 from bs4 import BeautifulSoup
 import os
 import sys
+import imghdr
+import time
 import datetime
-
-sys.path.append(r"C:\workspace\GitHub\DownPython")
 import common
 
+sys.path.append(r"C:\workspace\GitHub\DownPython\common")
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
+ISOTIMEFORMAT = '%Y-%m-%d %X'
 
-# 用get方法打开url并发送headers
-temp = 0
+path = 'C:/workspace/GitHub/DownPython/porn/jh/我爱我/wirteToTxt.py/'
 preUrl = 'https://f.wonderfulday30.live/'
-path = 'C:/workspace/GitHub/DownPython/porn/jh/自拍达人原创申请/'
-if not (os.path.exists(path)):
-    os.makedirs(path)
-for i in range(1, 3):
+
+temp = 0
+for i in range(1, 2):
     print('第' + str(i) + '页')
-    url = "https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
+    url = "http://92.e1fun.com/forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=" + str(i)
     print(url)
     proxyip = common.get_ip()
     html = requests.get(url, headers=header, proxies=proxyip)
@@ -31,10 +31,13 @@ for i in range(1, 3):
 
     for j in range(0, len(itemUrl)):
         fileUrl = itemUrl[j].get('href')
+        # print('fileUrl:'+fileUrl)
         fileUrl = preUrl + fileUrl
         temp += 1
+        # print(temp)
+        # print("fileUrl:"+fileUrl)
         os.chdir(path)
-        f = open('jh-' + datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
+        f = open(datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
         f.write(fileUrl + '\n')
         f.close()
 print("打印完成")
