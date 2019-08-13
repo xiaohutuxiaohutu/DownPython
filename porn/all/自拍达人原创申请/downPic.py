@@ -4,17 +4,16 @@ import os
 import sys
 import re
 import datetime
-
-sys.path.append(r"C:\workspace\GitHub\DownPython")
 import common
 
-proxyipurl = 'http://www.xicidaili.com/'
+sys.path.append(r"C:\workspace\GitHub\DownPython")
+
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 file = open("C:/workspace/GitHub/DownPython/porn/all/自拍达人原创申请/2019-08-13_0.txt")
-ip_list = common.get_ip_list(proxyipurl)
+
 preUrl = 'https://f.wonderfulday30.live/'
 osPrePath = 'C:/Users/23948/Pictures/Camera Roll/all/'
 # 获取总行数
@@ -23,7 +22,7 @@ for num, value in enumerate(file, 1):
     line = value.strip('\n')
     print(line)
     # 获取代理服务器
-    proxyip = common.get_random_ip(ip_list)
+    proxyip = common.get_ip()
     # print('proxyip:' + str(proxyip))
 
     html = requests.get(line, headers=header, proxies=proxyip)
@@ -44,10 +43,10 @@ for num, value in enumerate(file, 1):
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div div[class='postattachlist'] dl dd p img[file]")
     imgUrls4 = itemSoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tbody tr td a[href]")
-    print('图片数量：' + str(len(imgUrls)))
-    print('图片数量1：' + str(len(imgUrls1)))
-    print('图片数量2：' + str(len(imgUrls2)))
-    print('图片数量4：' + str(len(imgUrls4)))
+    print('图片数量：' + str(len(imgUrls)) + '；')
+    print('图片数量1：' + str(len(imgUrls1)) + '；')
+    print('图片数量2：' + str(len(imgUrls2)) + '；')
+    print('图片数量4：' + str(len(imgUrls4)) + '；')
     if len(imgUrls) == 0 and len(imgUrls1) == 0 and len(imgUrls2) == 0:
         if not (os.path.exists(osPrePath)):
             os.makedirs(osPrePath)

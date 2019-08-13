@@ -10,8 +10,6 @@ import common
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 
-proxyipurl = 'http://www.xicidaili.com/'
-ip_list = common.get_ip_list(proxyipurl)
 # 用get方法打开url并发送headers
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
@@ -20,7 +18,7 @@ for i in range(1, 3):
     print('第' + str(i) + '页')
     url = "https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
     print(url)
-    proxyip = common.get_random_ip(ip_list)
+    proxyip = common.get_ip()
     html = requests.get(url, headers=header, proxies=proxyip)
 
     html.encoding = 'utf-8'
@@ -34,7 +32,7 @@ for i in range(1, 3):
         fileUrl = preUrl + fileUrl
         temp += 1
         os.chdir(path)
-        f = open(datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
+        f = open('jh-'+datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
         f.write(fileUrl + '\n')
         f.close()
 print("打印完成")

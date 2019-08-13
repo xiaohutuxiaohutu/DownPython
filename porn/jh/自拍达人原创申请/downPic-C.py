@@ -4,27 +4,24 @@ import os
 import sys
 import re
 import datetime
-sys.path.append(r"C:\workspace\GitHub\DownPython")
 import common
 
-proxyipurl = 'http://www.xicidaili.com/'
+sys.path.append(r"C:\workspace\GitHub\DownPython\common")
+
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
-
-
-file = open("C:/workspace/GitHub/DownPython/porn/jh/2019-08-13_0.txt")
-ip_list = common.get_ip_list(proxyipurl)
+file = open("C:/workspace/GitHub/DownPython/porn/jh/自拍达人原创申请/2019-08-13_0.txt")
 preUrl = 'https://f.wonderfulday30.live/'
-osPrePath = 'C:/Users/23948/Pictures/Camera Roll/jh/'
+osPrePath = 'C:/Users/23948/Pictures/Camera Roll/jh1/'
 # 获取总行
 for num, value in enumerate(file, 1):
     print('第' + str(num) + '行：')
     line = value.strip('\n')
     print(line)
     # 获取代理服务器
-    proxyip = common.get_random_ip(ip_list)
+    proxyip = common.get_ip()
     # print('proxyip:'+str(proxyip))
 
     html = requests.get(line, headers=header, proxies=proxyip)
