@@ -3,9 +3,12 @@ from bs4 import BeautifulSoup
 import os
 import sys
 import datetime
-
-sys.path.append(r"C:\workspace\GitHub\DownPython")
 import common
+
+curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
+rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
+# sys.path.append(r"C:\workspace\GitHub\DownPython")
+sys.path.append(rootDir)
 
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
@@ -13,8 +16,9 @@ header = {
 # 用get方法打开url并发送headers
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
-path = 'C:/workspace/GitHub/DownPython/porn/all/自拍达人原创申请/'
-for i in range(1, 10):
+
+print(curDir)
+for i in range(10, 20):
     print('第' + str(i) + '页')
     url = "http://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=" + str(i)
     print(url)
@@ -30,9 +34,7 @@ for i in range(1, 10):
         # print('fileUrl:'+fileUrl)
         fileUrl = preUrl + fileUrl
         temp += 1
-        # print(temp)
-        # print("fileUrl:"+fileUrl)
-        os.chdir(path)
+        os.chdir(curDir)
         f = open(datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
         f.write(fileUrl + '\n')
         f.close()

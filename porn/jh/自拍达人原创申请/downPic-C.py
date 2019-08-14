@@ -6,8 +6,10 @@ import re
 import datetime
 import common
 
-sys.path.append(r"C:\workspace\GitHub\DownPython\common")
-
+curDir = os.path.abspath(os.curdir)
+rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
+# sys.path.append(r"C:\workspace\GitHub\DownPython")
+sys.path.append(rootDir)
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
@@ -15,9 +17,7 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 file = open("C:/workspace/GitHub/DownPython/porn/jh/自拍达人原创申请/2019-08-13_0.txt")
 preUrl = 'https://f.wonderfulday30.live/'
 # 文件下载保存路径
-osPrePath = 'C:/Users/23948/Pictures/Camera Roll/jh/自拍达人原创申请/'
-if not (os.path.exists(osPrePath)):
-    os.makedirs(osPrePath)
+downFilePath = 'C:/Users/23948/Pictures/Camera Roll/jh/自拍达人原创申请/'
 # 获取总行
 for num, value in enumerate(file, 1):
     print('第' + str(num) + '行：')
@@ -46,14 +46,12 @@ for num, value in enumerate(file, 1):
         '图片数量：' + str(len(imgUrls)) + '；图片数量1：' + str(len(imgUrls1)) + '；图片数量2：' + str(len(imgUrls2)) + '；图片数量4：' + str(
             len(imgUrls4)))
     if len(imgUrls) == 0 and len(imgUrls1) == 0 and len(imgUrls2) == 0 and len(imgUrls4) == 0:
-        if not (os.path.exists(osPrePath)):
-            os.makedirs(osPrePath)
-        os.chdir(osPrePath)
+        os.chdir(curDir)
         f = open(datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.txt', 'a+')
         f.write('第' + str(num) + '行：' + line + ',' + newTitle + '\n')
         f.close()
     else:
-        path = osPrePath + datetime.datetime.now().strftime('%Y-%m-%d') + '/' + str(newTitle.strip()) + '/'
+        path = downFilePath + datetime.datetime.now().strftime('%Y-%m-%d') + '/' + str(newTitle.strip()) + '/'
         if not (os.path.exists(path)):
             os.makedirs(path)
             os.chdir(path)
