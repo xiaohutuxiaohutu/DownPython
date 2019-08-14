@@ -17,7 +17,7 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 # print(curDir)
 # file = open("C:/workspace/GitHub/DownPython/porn/all/自拍达人原创申请/2019-08-13_0.txt")
-file = open(curDir + "/2019-08-13_0.txt")
+file = open(curDir + "/2019-08-14_0.txt")
 
 preUrl = 'https://f.wonderfulday30.live/'
 downFilePath = 'C:/Users/23948/Pictures/Camera Roll/all/'

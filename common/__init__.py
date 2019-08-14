@@ -14,35 +14,43 @@ if (os.name == 'nt'):
 else:
     print(u'linux')
 
-proxyipurl = 'http://www.xicidaili.com/'
-
+# ipUrl = 'http://www.xicidaili.com/'
+ipUrl = 'https://www.kuaidaili.com/free/intr/'
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 
 # 获取代理IP
-def get_ip_list(proxyipurl):
-    request = Request(proxyipurl, headers=header)
+def get_ip_list(ipUrl):
+    request = Request(ipUrl, headers=header)
     response = urlopen(request)
     obj = BeautifulSoup(response, 'lxml')
-    ip_text = obj.findAll('tr', {'class': 'odd'})
+    # ip_text = obj.findAll('tr', {'class': 'odd'})
+    ip_text = obj.findAll('tr')
     ip_list = []
-    for i in range(len(ip_text)):
-        ip_tag = ip_text[i].findAll('td')
-        ip_port = ip_tag[1].get_text() + ':' + ip_tag[2].get_text()
-        ip_list.append(ip_port)
-    # print("共收集到了{}个代理IP".format(len(ip_list)))
-    # print(ip_list)
+    # print(len(ip_list))
+    # print(len(ip_text))
+    # print(ip_text)
+    if (len(ip_text) > 0):
+        for i in range(len(ip_text)):
+            # print(ip_text[i])
+            ip_tag = ip_text[i].findAll('td')
+
+            if (len(ip_tag) > 0):
+                # print(ip_tag)
+                ip_port = ip_tag[0].get_text() + ':' + ip_tag[1].get_text()
+                ip_list.append(ip_port)
     # 检测IP是否可用
-    for ip in ip_list:
-        try:
-            proxy_host = 'https://' + ip
-            proxy_temp = {"https:": proxy_host}
-            res = urllib.urlopen(url, proxies=proxy_temp).read()
-        except Exception as e:
-            ip_list.remove(ip)
-            continue
+    if (len(ip_list) > 0):
+        for ip in ip_list:
+            try:
+                proxy_host = 'https://' + ip
+                proxy_temp = {"https:": proxy_host}
+                res = urllib.urlopen(url, proxies=proxy_temp).read()
+            except Exception as e:
+                ip_list.remove(ip)
+                continue
     return ip_list
 
 
@@ -54,16 +62,23 @@ def get_random_ip(ip_list):
     return proxy_ip
 
 
+ipList = []
+
+
 def get_ip():
-    ip_list = get_ip_list(proxyipurl)
-    randomIp = get_random_ip(ip_list)
+    global ipList
+    print(len(ipList))
+    if (len(ipList) == 0):
+        print('ipList==0')
+        ipList = get_ip_list(ipUrl)
+    randomIp = get_random_ip(ipList)
     # print('randomip:'+randomIp)
     return randomIp
 
 
 # 获取header
 def get_header():
-    return header;
+    return header
 
 
 def fileSize():
