@@ -1,11 +1,13 @@
 import os
 import sys
+import common
 
 curDir = os.getcwd()
 rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
 sys.path.append(rootDir)
-import common
-
+print(os.path.expanduser('~'))
+# print(os.path.expandvars('$HOME'))
+# print(os.environ['HOME'])
 print(common.get_ip())
 
 # curPath = os.path.abspath(os.path.dirname(__file__))

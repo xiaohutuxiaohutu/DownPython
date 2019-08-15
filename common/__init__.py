@@ -29,16 +29,10 @@ def get_ip_list(ipUrl):
     # ip_text = obj.findAll('tr', {'class': 'odd'})
     ip_text = obj.findAll('tr')
     ip_list = []
-    # print(len(ip_list))
-    # print(len(ip_text))
-    # print(ip_text)
     if (len(ip_text) > 0):
         for i in range(len(ip_text)):
-            # print(ip_text[i])
             ip_tag = ip_text[i].findAll('td')
-
             if (len(ip_tag) > 0):
-                # print(ip_tag)
                 ip_port = ip_tag[0].get_text() + ':' + ip_tag[1].get_text()
                 ip_list.append(ip_port)
     # 检测IP是否可用
@@ -67,12 +61,9 @@ ipList = []
 
 def get_ip():
     global ipList
-    print(len(ipList))
     if (len(ipList) == 0):
-        print('ipList==0')
         ipList = get_ip_list(ipUrl)
     randomIp = get_random_ip(ipList)
-    # print('randomip:'+randomIp)
     return randomIp
 
 

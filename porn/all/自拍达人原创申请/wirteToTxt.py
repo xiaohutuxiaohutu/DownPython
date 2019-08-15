@@ -17,13 +17,13 @@ header = {
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 
-print(curDir)
-for i in range(10, 20):
+# print(curDir)
+for i in range(49, 50):
     print('第' + str(i) + '页')
     url = "http://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=" + str(i)
     print(url)
-    proxyip = common.get_ip()
-    html = requests.get(url, headers=header, proxies=proxyip)
+    proxyIp = common.get_ip()
+    html = requests.get(url, headers=header, proxies=proxyIp)
     html.encoding = 'utf-8'
     soup = BeautifulSoup(html.text, 'lxml')
     itemUrl = soup.select(
