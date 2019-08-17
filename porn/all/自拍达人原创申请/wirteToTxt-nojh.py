@@ -21,7 +21,8 @@ listTagName = ['img']
 re.compile("stickthread")
 for i in range(1, 10):
     print('第' + str(i) + '页')
-    url = "http://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=" + str(i)
+    url='https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page='+str(i)
+    # url = "http://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=" + str(i)
     print(url)
     proxyIp = common.get_ip()
     html = requests.get(url, headers=header, proxies=proxyIp)
