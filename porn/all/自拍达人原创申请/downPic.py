@@ -1,9 +1,13 @@
-import requests
-from bs4 import BeautifulSoup
-import os
-import sys
-import re
 import datetime
+import os
+import re
+import sys
+from io import StringIO
+
+import requests
+from PIL import Image
+from bs4 import BeautifulSoup
+
 import common
 
 curDir = os.path.abspath(os.curdir)
@@ -17,7 +21,7 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 # print(curDir)
 # file = open("C:/workspace/GitHub/DownPython/porn/all/自拍达人原创申请/2019-08-13_0.txt")
-file = open(curDir + "/2019-08-17_12-54_0.txt")
+file = open(curDir + "/2019-08-17_21-37_0.txt")
 
 preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录
@@ -39,7 +43,7 @@ for num, value in enumerate(file, 1):
     newTitle = title[0:ind]
 
     print(str(newTitle.strip()))
-    # print(title)
+    print(title)
     imgUrls = itemSoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
     imgUrls2 = itemSoup.select(
@@ -68,12 +72,19 @@ for num, value in enumerate(file, 1):
             fileUrl = imgUrls[i].get('file')
             fileUrl = fileUrl.replace('http://pic.w26.rocks/', preUrl)
             image_name = fileUrl.split("/")[-1]
-            # i = Image.open(StringIO(imageUrl.content))
-            # print(i.size)
+            # fileS = urllib2.urlopen(path)
+
+            # res = urllib2.urlopen(fileUrl, proxies=proxyip).read()
+            # tmpIm = cStringIO.StringIO(fileS.read())
+            # img = Image.open(StringIO(res))
+            # print(img.format)  # JPEG
+            # print(img.size)
             # 判断文件或文件夹是否存在
             if not os.path.exists(image_name):
                 print('下载第' + str(i + 1) + '个:' + fileUrl)
                 imageUrl = requests.get(fileUrl, headers=header)
+                # i = Image.open(StringIO(imageUrl.read()))
+                # print(i.size)
                 f = open(image_name, 'wb')
                 f.write(imageUrl.content)
                 f.close()
@@ -83,10 +94,13 @@ for num, value in enumerate(file, 1):
             fileUrl1 = imgUrls1[i].get('file')
             fileUrl1 = fileUrl1.replace('http://pic.w26.rocks/', preUrl)
             image_name1 = fileUrl1.split("/")[-1]
+
             # 判断文件或文件夹是否存在
             if not os.path.exists(image_name1):
                 print('下载第' + str(i + 1) + '个:' + fileUrl1)
                 imageUrl1 = requests.get(fileUrl1, headers=header)
+                # i = Image.open(StringIO(imageUrl1.content))
+                # print(i.size)
                 f = open(image_name1, 'wb')
                 f.write(imageUrl1.content)
                 f.close()
@@ -100,6 +114,8 @@ for num, value in enumerate(file, 1):
             if not os.path.exists(image_name2):
                 print('下载第' + str(i + 1) + '个:' + fileUrl2)
                 imageUrl2 = requests.get(fileUrl2, headers=header)
+                # i = Image.open(StringIO(imageUrl2.content))
+                # print(i.size)
                 f = open(image_name2, 'wb')
                 f.write(imageUrl2.content)
                 f.close()

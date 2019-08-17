@@ -19,9 +19,9 @@ temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 listTagName = ['img']
 re.compile("stickthread")
-for i in range(1, 10):
+for i in range(1, 2):
     print('第' + str(i) + '页')
-    url='https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page='+str(i)
+    url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
     # url = "http://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=" + str(i)
     print(url)
     proxyIp = common.get_ip()
@@ -52,7 +52,8 @@ for i in range(1, 10):
                         href_ = preUrl + contents4['href']
                         contents__string = contents4.string
                         os.chdir(curDir)
-                        f = open(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(temp // 500) + '.txt', 'a+')
+                        f = open(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(temp // 500) + '.txt',
+                                 'a+')
                         f.write(str(href_) + '\n')
                         print(contents__string.strip())
 

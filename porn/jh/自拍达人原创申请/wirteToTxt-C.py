@@ -16,7 +16,7 @@ header = {
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 
-for i in range(1, 3):
+for i in range(1, 2):
     print('第' + str(i) + '页')
     url = "https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
     print(url)
@@ -34,7 +34,8 @@ for i in range(1, 3):
         fileUrl = preUrl + fileUrl
         temp += 1
         os.chdir(curDir)
-        f = open('jh-' + datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
-        f.write(fileUrl + '\n')
-        f.close()
+        # f = open('jh-' + datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
+        with open('jh-' + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(temp // 500) + '.txt', 'a+') as f:
+            f.write(fileUrl + '\n')
+        # f.close()
 print("打印完成")
