@@ -17,12 +17,12 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 # print(curDir)
 # file = open("C:/workspace/GitHub/DownPython/porn/all/自拍达人原创申请/2019-08-13_0.txt")
-file = open(curDir + "/2019-08-15_0.txt")
+file = open(curDir + "/2019-08-17_12-54_0.txt")
 
 preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录
 # downFilePath = 'C:/Users/23948/Pictures/Camera Roll/all/'
-downFilePath = userPath + '/Pictures/Camera Roll/all/'
+downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren/'
 # 获取总行数
 for num, value in enumerate(file, 1):
     print('第' + str(num) + '行：')
@@ -62,7 +62,7 @@ for num, value in enumerate(file, 1):
             newTitle.strip()) + '/'
         if not (os.path.exists(path)):
             os.makedirs(path)
-            os.chdir(path)
+            # os.chdir(path)
         os.chdir(path)
         for i in range(0, len(imgUrls)):
             fileUrl = imgUrls[i].get('file')

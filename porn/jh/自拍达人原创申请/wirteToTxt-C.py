@@ -20,8 +20,8 @@ for i in range(1, 3):
     print('第' + str(i) + '页')
     url = "https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
     print(url)
-    proxyip = common.get_ip()
-    html = requests.get(url, headers=header, proxies=proxyip)
+    proxyIp = common.get_ip()
+    html = requests.get(url, headers=header, proxies=proxyIp)
 
     html.encoding = 'utf-8'
 

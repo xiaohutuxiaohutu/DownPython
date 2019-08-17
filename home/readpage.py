@@ -5,6 +5,9 @@ if (os.name == 'nt'):
     print(u'windows 系统')
 else:
     print(u'linux')
+
+curDir = os.path.abspath(os.curdir)
+print(curDir)
 f = open("C:/Users/xiaohutu/Downloads/page.html", 'r', encoding='utf8')
 # coding=utf-8
 htmlFile = f.read()

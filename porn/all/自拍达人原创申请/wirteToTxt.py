@@ -16,7 +16,7 @@ header = {
 # 用get方法打开url并发送headers
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
-
+listTagName = ['img']
 # print(curDir)
 for i in range(49, 50):
     print('第' + str(i) + '页')

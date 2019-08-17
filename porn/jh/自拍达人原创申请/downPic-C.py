@@ -14,19 +14,22 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
-file = open("C:/workspace/GitHub/DownPython/porn/jh/自拍达人原创申请/jh-2019-08-17_0.txt")
+file = open(curDir + "/jh-2019-08-17_0.txt")
 preUrl = 'https://f.wonderfulday30.live/'
+
+userPath = os.path.expanduser('~')  # 获取用户目录
+downFilePath = userPath + '/Pictures/Camera Roll/jh/自拍达人原创申请/'
 # 文件下载保存路径
-downFilePath = 'C:/Users/23948/Pictures/Camera Roll/jh/自拍达人原创申请/'
-# 获取总行
+# downFilePath = 'C:/Users/23948/Pictures/Camera Roll/jh/自拍达人原创申请/'
+
 for num, value in enumerate(file, 1):
     print('第' + str(num) + '行：')
     line = value.strip('\n')
     print(line)
     # 获取代理服务器
-    proxyip = common.get_ip()
+    proxyIp = common.get_ip()
 
-    html = requests.get(line, headers=header, proxies=proxyip)
+    html = requests.get(line, headers=header, proxies=proxyIp)
     html.encoding = 'utf-8'
     itemSoup = BeautifulSoup(html.text, 'lxml')
     title = itemSoup.title.string
