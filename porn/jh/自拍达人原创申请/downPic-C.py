@@ -14,7 +14,7 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
-file = open("C:/workspace/GitHub/DownPython/porn/jh/自拍达人原创申请/2019-08-13_0.txt")
+file = open("C:/workspace/GitHub/DownPython/porn/jh/自拍达人原创申请/jh-2019-08-17_0.txt")
 preUrl = 'https://f.wonderfulday30.live/'
 # 文件下载保存路径
 downFilePath = 'C:/Users/23948/Pictures/Camera Roll/jh/自拍达人原创申请/'
