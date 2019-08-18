@@ -25,14 +25,11 @@ for num, value in enumerate(file, 1):
     line = value.strip('\n')
     print(line)
     # 获取代理服务器
-    proxyip = common.get_ip()
-    html = requests.get(line, headers=header, proxies=proxyip)
+    proxyIp = common.get_ip()
+    html = requests.get(line, headers=header, proxies=proxyIp)
     html.encoding = 'utf-8'
     itemSoup = BeautifulSoup(html.text, 'lxml')
-    title = itemSoup.title.string
-    title = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', title)
-    ind = title.index('-')
-    newTitle = title[0:ind]
+    newTitle = common.replaceAndSub(itemSoup.title.string)
     print(str(newTitle.strip()))
     imgUrls = itemSoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
@@ -54,10 +51,10 @@ for num, value in enumerate(file, 1):
         f.write('第' + str(num) + '行：' + line + ',' + newTitle + '\n')
         f.close()
     else:
-        path = downFilePath + datetime.datetime.now().strftime('%Y-%m-%d') + '/' + str(newTitle.strip()) + '/'
+        # path = downFilePath + datetime.datetime.now().strftime('%Y-%m-%d') + '/' + str(newTitle.strip()) + '/'
+        path = downFilePath + str(newTitle.strip()) + '/'
         if not (os.path.exists(path)):
             os.makedirs(path)
-            os.chdir(path)
         os.chdir(path)
         for i in range(0, len(imgUrls)):
             fileUrl = imgUrls[i].get('file')
@@ -71,56 +68,7 @@ for num, value in enumerate(file, 1):
                 f.write(imageUrl.content)
                 f.close()
             else:
-                print(image_name + "-1已存在")
-            # 判断文件是否存在
-            '''
-            if not os.path.isfile(image_name):
-                f=open(image_name,'wb')
-                f.write(imageUrl.content)
-                f.close()
-            '''
-        for i in range(0, len(imgUrls1)):
-            fileUrl1 = imgUrls1[i].get('file')
-            fileUrl1 = fileUrl1.replace('http://pic.w26.rocks/', preUrl)
-            # fileUrl1='http://pic.w26.rocks/attachments/1906212318f9e42462ac7298ea.jpg'
-            image_name1 = fileUrl1.split("/")[-1]
-            # 判断文件或文件夹是否存在
-            if not os.path.exists(image_name1):
-                print('下载第' + str(i + 1) + '个:' + fileUrl1)
-                imageUrl1 = requests.get(fileUrl1, headers=header)
-                f = open(image_name1, 'wb')
-                f.write(imageUrl1.content)
-                f.close()
-            else:
-                print(image_name1 + "-1已存在")
-        for i in range(0, len(imgUrls2)):
-            fileUrl2 = imgUrls2[i].get('file')
-            fileUrl = fileUrl2.replace('http://pic.w26.rocks/', preUrl)
-            image_name2 = fileUrl2.split("/")[-1]
-            # 判断文件或文件夹是否存在
-            if not os.path.exists(image_name2):
-                print('下载第' + str(i + 1) + '个:' + fileUrl2)
-                imageUrl2 = requests.get(fileUrl2, headers=header)
-                f = open(image_name2, 'wb')
-                f.write(imageUrl2.content)
-                f.close()
-            else:
-                print(image_name2 + "-2已存在")
-        for i in range(0, len(imgUrls4)):
-            print('------------')
-            fileUrl2 = imgUrls4[i].get('file')
-            fileUrl = fileUrl2.replace('http://pic.w26.rocks/', preUrl)
-            image_name2 = fileUrl2.split("/")[-1]
-            # 判断文件或文件夹是否存在
-            if not os.path.exists(image_name2):
-                print('下载第' + str(i + 1) + '个:' + fileUrl2)
-                imageUrl2 = requests.get(fileUrl2, headers=header)
-                f = open(image_name2, 'wb')
-                f.write(imageUrl2.content)
-                f.close()
-            else:
-                print(image_name2 + "-4已存在")
-                # time.sleep(5)
+                print(image_name + "-已存在")
     print("-----down over----------------")
 file.close
 print("all over")

@@ -7,3 +7,6 @@ viewthread.php?tid=348053&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilt
 viewthread.php?tid=348042&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilter%3D2592000
 viewthread.php?tid=348034&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilter%3D2592000
 viewthread.php?tid=348031&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilter%3D2592000
+viewthread.php?tid=348117&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilter%3D2592000
+viewthread.php?tid=348109&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilter%3D2592000
+

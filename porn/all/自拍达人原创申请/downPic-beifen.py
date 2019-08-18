@@ -29,17 +29,12 @@ for num, value in enumerate(file, 1):
     line = value.strip('\n')
     print(line)
     # 获取代理服务器
-    proxyip = common.get_ip()
-    html = requests.get(line, headers=header, proxies=proxyip)
+    proxyIp = common.get_ip()
+    html = requests.get(line, headers=header, proxies=proxyIp)
     html.encoding = 'utf-8'
     itemSoup = BeautifulSoup(html.text, 'lxml')
-    title = itemSoup.title.string
-    title = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', title)
-    ind = title.index('-')
-    newTitle = title[0:ind]
-
+    newTitle = common.replaceAndSub(itemSoup.title.string)
     print(str(newTitle.strip()))
-    # print(title)
     imgUrls = itemSoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
     imgUrls2 = itemSoup.select(
@@ -57,8 +52,8 @@ for num, value in enumerate(file, 1):
         with open(datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.txt', 'a+') as f:
             f.write('第' + str(num) + '行：' + line + ',' + newTitle + '\n')
     else:
-        path = downFilePath + datetime.datetime.now().strftime('%Y-%m-%d') + '/' + str(
-            newTitle.strip()) + '/'
+        # path = downFilePath + datetime.datetime.now().strftime('%Y-%m-%d') + '/' + str(newTitle.strip()) + '/'
+        path = downFilePath + str(newTitle.strip()) + '/'
         if not (os.path.exists(path)):
             os.makedirs(path)
         os.chdir(path)

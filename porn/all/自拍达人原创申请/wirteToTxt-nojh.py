@@ -1,14 +1,10 @@
-import requests
-from bs4 import BeautifulSoup
 import os
-import sys
-import datetime
-import common
 import re
+import sys
+import common
 
 curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
 rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
-# sys.path.append(r"C:\workspace\GitHub\DownPython")
 sys.path.append(rootDir)
 
 header = {
@@ -18,52 +14,41 @@ header = {
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 listTagName = ['img']
+# 保存已下载的连接
 doneDownPath = curDir + '/down-done.txt'
-if not (os.path.exists(doneDownPath)):
-    os.makedirs(doneDownPath)
+common.create_file(doneDownPath)
 with open(doneDownPath) as fileObj:
     readLines = fileObj.readlines()
 
 for i in range(1, 2):
     print('第' + str(i) + '页')
     url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
-    # url = "http://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=" + str(i)
     print(url)
-    proxyIp = common.get_ip()
-    html = requests.get(url, headers=header, proxies=proxyIp)
-    html.encoding = 'utf-8'
-    soup = BeautifulSoup(html.text, 'lxml')
+    soup = common.get_beauty_soup(url)
     resultTags = soup.find_all(id=re.compile('normalthread'))
-    for i in range(0, len(resultTags)):
-        tag = resultTags[i]
+    for ii in range(0, len(resultTags)):
+        tag = resultTags[ii]
         for child in tag.children:
-            if (len(child) > 1):
+            if len(child) > 1:
                 contents1 = child.contents[5]
                 contents2 = contents1.contents
-                if (len(contents2) >= 0):
+                if len(contents2) >= 0:
                     flag = True
                     for item in range(0, len(contents2)):
-                        item_ = contents2[item]
-                        if (item_.name in listTagName):
-                            src_ = item_['src']
-                            rfind = src_.find('digest_1.gif') >= 0
-                            if (rfind):
+                        tag_name = contents2[item]
+                        if tag_name.name in listTagName:
+                            tag_name_src = tag_name['src']
+                            rfind = tag_name_src.find('digest_1.gif') >= 0
+                            if rfind:
                                 flag = False
                                 break
                     contents3 = contents2[3].contents
-                    if (len(contents3) > 0 and flag):
+                    if len(contents3) > 0 and flag:
                         contents4 = contents3[0]
-                        contents_href_ = contents4['href'] + '\n'
-                        href_ = preUrl + contents4['href']
+                        contents_href = contents4['href']
+                        file_url = preUrl + contents4['href']
                         contents__string = contents4.string
                         os.chdir(curDir)
-
-                        if (contents_href_ not in readLines):
-                            f = open(
-                                datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(temp // 500) + '.txt',
-                                'a+')
-                            f.write(str(href_) + '\n')
-                            # 将已下载的保存
-                            with open(doneDownPath, 'a+') as doneFile:
-                                doneFile.write(str(contents_href_))
+                        if (contents_href + '\n') not in readLines:
+                            common.save_url_down(doneDownPath, file_url, contents_href, temp)
 print("打印完成")
