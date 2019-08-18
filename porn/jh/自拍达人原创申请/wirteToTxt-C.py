@@ -15,27 +15,31 @@ header = {
 
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
-
+doneDownPath = curDir + '/doneDown.text'
+with open(doneDownPath) as fileObj:
+    readLines = fileObj.readlines()
 for i in range(1, 2):
     print('第' + str(i) + '页')
     url = "https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
     print(url)
     proxyIp = common.get_ip()
     html = requests.get(url, headers=header, proxies=proxyIp)
-
     html.encoding = 'utf-8'
-
     soup = BeautifulSoup(html.text, 'lxml')
     itemUrl = soup.select(
         "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
 
     for j in range(0, len(itemUrl)):
-        fileUrl = itemUrl[j].get('href')
-        fileUrl = preUrl + fileUrl
+        sortHref = itemUrl[j].get('href')
+        fileUrl = preUrl + sortHref
         temp += 1
         os.chdir(curDir)
-        # f = open('jh-' + datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
-        with open('jh-' + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(temp // 500) + '.txt', 'a+') as f:
-            f.write(fileUrl + '\n')
+        if (sortHref + '\n' not in readLines):
+            # f = open('jh-' + datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+')
+            with open('jh-' + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(temp // 500) + '.txt',
+                      'a+') as f:
+                f.write(fileUrl + '\n')
+            with open(doneDownPath, 'a+') as f:
+                f.write(sortHref+'\n')
         # f.close()
 print("打印完成")

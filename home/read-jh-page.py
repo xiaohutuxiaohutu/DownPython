@@ -15,7 +15,6 @@ f = open(curDir + "/page.html", 'r', encoding='utf8')
 htmlFile = f.read()
 itemSoup = BeautifulSoup(htmlFile, 'lxml')
 resultAll = itemSoup.find_all(id=re.compile('normalthread'))
-# print(len(resultAll))
 os.chdir(curDir)
 # f = open('jh-home-select.txt', 'a+')
 listTagName = ['img']

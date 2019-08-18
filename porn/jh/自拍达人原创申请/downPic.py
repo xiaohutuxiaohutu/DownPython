@@ -14,7 +14,7 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
-file = open(curDir+"/2019-08-13_0.txt")
+file = open(curDir + "/2019-08-13_0.txt")
 preUrl = 'https://f.wonderfulday30.live/'
 
 userPath = os.path.expanduser('~')  # 获取用户目录
@@ -42,10 +42,11 @@ for num, value in enumerate(file, 1):
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div div[class='postattachlist'] dl dd p img[file]")
     imgUrls4 = itemSoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tbody tr td a[href]")
-    print(
-        '图片数量：' + str(len(imgUrls)) + '；图片数量1：' + str(len(imgUrls1)) + '；图片数量2：' + str(len(imgUrls2)) + '；图片数量4：' + str(
-            len(imgUrls4)))
-    if len(imgUrls) == 0 and len(imgUrls1) == 0 and len(imgUrls2) == 0 and len(imgUrls4) == 0:
+    imgUrls.extend(imgUrls1)
+    imgUrls.extend(imgUrls2)
+    imgUrls.extend(imgUrls4)
+    print('图片数量：' + str(len(imgUrls)))
+    if len(imgUrls) == 0:
         if not (os.path.exists(downFilePath)):
             os.makedirs(downFilePath)
         os.chdir(downFilePath)

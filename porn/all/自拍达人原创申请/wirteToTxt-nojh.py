@@ -18,7 +18,12 @@ header = {
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 listTagName = ['img']
-re.compile("stickthread")
+doneDownPath = curDir + '/down-done.txt'
+if not (os.path.exists(doneDownPath)):
+    os.makedirs(doneDownPath)
+with open(doneDownPath) as fileObj:
+    readLines = fileObj.readlines()
+
 for i in range(1, 2):
     print('第' + str(i) + '页')
     url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
@@ -45,19 +50,20 @@ for i in range(1, 2):
                             if (rfind):
                                 flag = False
                                 break
-                    # print(flag)
                     contents3 = contents2[3].contents
                     if (len(contents3) > 0 and flag):
                         contents4 = contents3[0]
+                        contents_href_ = contents4['href'] + '\n'
                         href_ = preUrl + contents4['href']
                         contents__string = contents4.string
                         os.chdir(curDir)
-                        f = open(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(temp // 500) + '.txt',
-                                 'a+')
-                        f.write(str(href_) + '\n')
-                        print(contents__string.strip())
 
-                        # f = open(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_name.txt', 'a+', encoding="utf-8")
-                        # f.write(contents__string.strip() + '\n')
-                        # f.close()
+                        if (contents_href_ not in readLines):
+                            f = open(
+                                datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(temp // 500) + '.txt',
+                                'a+')
+                            f.write(str(href_) + '\n')
+                            # 将已下载的保存
+                            with open(doneDownPath, 'a+') as doneFile:
+                                doneFile.write(str(contents_href_))
 print("打印完成")

@@ -22,6 +22,12 @@ header = {
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 
+# 替换特殊字符
+def replaceSpecelChar(oldStr):
+    newstr = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', oldStr)
+    return newstr
+
+
 # 获取代理IP
 def get_ip_list(ipUrl):
     request = Request(ipUrl, headers=header)
@@ -64,8 +70,8 @@ def get_ip():
     global ipList
     if (len(ipList) == 0):
         ipList = get_ip_list(ipUrl)
-    randomIp = get_random_ip(ipList)
-    return randomIp
+    randomip = get_random_ip(ipList)
+    return randomip
 
 
 # 获取header
