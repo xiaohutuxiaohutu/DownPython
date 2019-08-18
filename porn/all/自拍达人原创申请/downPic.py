@@ -31,9 +31,10 @@ for num, value in enumerate(file_obj, 1):
         common.create_file(path)
         os.chdir(path)
         for i in range(0, len(imgUrls)):
-            fileUrl = imgUrls[i].get('file')
-            fileUrl = fileUrl.replace('http://pic.w26.rocks/', preUrl)
+            file_url = imgUrls[i].get('file')
+            fileUrl = file_url.replace('http://pic.w26.rocks/', preUrl)
             # image_name = fileUrl.split("/")[-1]
+            print('下载第' + str(i + 1) + '个:' + file_url)
             common.down_img(fileUrl)
 
     print("-----down over----------------")

@@ -154,9 +154,9 @@ def down_img(file_url):
         with open(image_name, 'wb') as f:
             f.write(image)
             # f.write(get_request.content)
-        print('----------- over -------------------------')
-    # else:
-    #     print(image_name + "已存在")
+        # print('----------- over -------------------------')
+    else:
+        print(image_name + "已存在")
 
 
 # down_img('http://pic.w26.rocks/attachments//1908131059de4602941152bcd6.jpg')
