@@ -20,7 +20,7 @@ common.create_file(doneDownPath)
 with open(doneDownPath) as fileObj:
     readLines = fileObj.readlines()
 
-for i in range(1, 2):
+for i in range(1, 3):
     print('第' + str(i) + '页')
     url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
     print(url)

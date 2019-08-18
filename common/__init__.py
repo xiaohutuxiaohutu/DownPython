@@ -1,69 +1,79 @@
-# from . import common
-from bs4 import BeautifulSoup
+import datetime
+import io
 import os
 import random
-from urllib.request import Request
-import datetime
-from urllib.request import urlopen
-import imghdr
-import time
-import io
 import re
-import requests
+from urllib.request import Request
+from urllib.request import urlopen
 
-if (os.name == 'nt'):
+import requests
+from bs4 import BeautifulSoup
+
+if os.name == 'nt':
     print(u'windows 系统')
 else:
     print(u'linux')
 
 # ipUrl = 'http://www.xicidaili.com/'
 ipUrl = 'https://www.kuaidaili.com/free/intr/'
+
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
+
+
+# 替换特殊字符
+def replace_special_char(old_str):
+    # newstr = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', old_str)
+    new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+', '', old_str)
+    return new_str
+
+
+# 替换并截取名字-porn使用
+def replace_sub(old_str):
+    title = replace_special_char(old_str)
+    ind = title.index('-')
+    return title[0:ind]
+
 
 # 代理地址集合-全局变量
 ipList = []
 
 
-# 替换特殊字符
-def replaceSpecelChar(oldStr):
-    newstr = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', oldStr)
-    return newstr
-
-
-# 替换并截取名字-porn使用
-def replaceAndSub(oldStr):
-    title = replaceSpecelChar(oldStr)
-    ind = title.index('-')
-    return title[0:ind]
-
-
 # 获取代理IP
-def get_ip_list(ipUrl):
-    request = Request(ipUrl, headers=header)
+def get_ip_list(proxy_url):
+    ip_list = []
+    # print(proxy_url)
+    request = Request(proxy_url, headers=header)
     response = urlopen(request)
     obj = BeautifulSoup(response, 'lxml')
     # ip_text = obj.findAll('tr', {'class': 'odd'})
     ip_text = obj.findAll('tr')
-    ip_list = []
-    if (len(ip_text) > 0):
+
+    if len(ip_text) > 0:
         for i in range(len(ip_text)):
             ip_tag = ip_text[i].findAll('td')
-            if (len(ip_tag) > 0):
+            if len(ip_tag) > 0:
                 ip_port = ip_tag[0].get_text() + ':' + ip_tag[1].get_text()
                 ip_list.append(ip_port)
     # 检测IP是否可用
-    if (len(ip_list) > 0):
+    # print(ip_list)
+    if len(ip_list) > 0:
         for ip in ip_list:
             try:
                 proxy_host = 'https://' + ip
                 proxy_temp = {"https:": proxy_host}
-                res = urllib.urlopen(url, proxies=proxy_temp).read()
+                # res = urllib.urlopen(proxy_host, proxies=proxy_temp).read()
+                request = Request(proxy_temp, headers=header)
+                response = urlopen(request).read()
             except Exception as e:
                 ip_list.remove(ip)
                 continue
+    # print(ip_list)
     return ip_list
+
+
+# get_ip_list(ipUrl)
 
 
 # 从IPlist中获取随机地址
@@ -77,35 +87,51 @@ def get_random_ip(ip_list):
 # 从代理地址列表中获取一个随机IP
 def get_ip():
     global ipList
-    if (len(ipList) == 0):
+    if len(ipList) == 0:
         print("请求代理地址列表：" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M'))
         ipList = get_ip_list(ipUrl)
-    randomip = get_random_ip(ipList)
-    return randomip
+    random_ip = get_random_ip(ipList)
+    return random_ip
 
 
-def fileSize():
-    i = Image.open(StringIO(imageUrl.content))
-    print(i.size)
-    return i.size
+test_image_url = [
+    'http://pic.w26.rocks/attachments//1908131105d9a99e769a3ff3d4.jpg',
+    'http://pic.w26.rocks/attachments//1908131059de4602941152bcd6.jpg'
+]
+
+
+def image_size(image_url):
+    image = requests.get(image_url).content
+    image_b = io.BytesIO(image).read()
+    size = len(image_b) / 1000
+    print(size)
+    return size
+
+
+def file_size(url):
+    request = Request(url, headers=header)
+    response = urlopen(request).read()
+    size = len(response) / 1000
+    print(size)
+    return size
 
 
 # 判断文件或文件夹是否存在
-def fileExist(fileName):
-    return os.path.exists(fileName)
+def file_exist(file_path):
+    return os.path.exists(file_path)
 
 
 # 判断文件是否存在，不存在则创建
-def create_file(filePath):
-    if not (os.path.exists(filePath)):
-        os.makedirs(filePath)
+def create_file(file_path):
+    if not (os.path.exists(file_path)):
+        os.makedirs(file_path)
 
 
 # 保存未下载文件连接
-def save_undownload_url(curDir, line, newTitle, num):
-    os.chdir(curDir)
+def save_not_down_url(cur_dir, line, new_title, num):
+    os.chdir(cur_dir)
     with open(datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.text', 'a+', encoding='utf - 8') as f:
-        f.write('第' + str(num) + '行：' + line + ',' + newTitle + '\n')
+        f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
 
 
 # 保存下载连接到txt文档
@@ -118,20 +144,27 @@ def save_url_down(done_down_path, file_url, short_href, num):
 
 
 # 保存图片
-def down_img(file_url, image_name):
+def down_img(file_url):
+    image_name = file_url.split("/")[-1]
     if not os.path.exists(image_name):
         get_request = requests.get(file_url, headers=header)
-        # f = open(image_name, 'wb')
+        image = get_request.content
+        image_b = io.BytesIO(image).read()
+        print('图片大小：' + str(len(image_b) / 1000) + ' kb')
         with open(image_name, 'wb') as f:
-            f.write(get_request.content)
-        # f.close()
-    else:
-        print(image_name + "已存在")
+            f.write(image)
+            # f.write(get_request.content)
+        print('----------- over -------------------------')
+    # else:
+    #     print(image_name + "已存在")
+
+
+# down_img('http://pic.w26.rocks/attachments//1908131059de4602941152bcd6.jpg')
 
 
 # 判断文件是否存在
-def is_file(fileName):
-    return os.path.isfile(fileName)
+def is_file(file_name):
+    return os.path.isfile(file_name)
 
 
 def get_beauty_soup(url):
@@ -141,15 +174,10 @@ def get_beauty_soup(url):
     return BeautifulSoup(html.text, 'lxml')
 
 
-def getJHImgUrlList(line):
-    # 获取代理服务器
-    # print(line)
+# 获取JH图片链接集合
+def get_jh_img_url_list(line):
     soup = get_beauty_soup(line)
-    # proxy_ip = get_ip()
-    # html = requests.get(line, headers=header, proxies=proxy_ip)
-    # html.encoding = 'utf-8'
-    # itemSoup = BeautifulSoup(html.text, 'lxml')
-    new_title = replaceAndSub(soup.title.string)
+    new_title = replace_sub(soup.title.string)
     img_url_list = soup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
     img_url_list_2 = soup.select(
@@ -161,32 +189,36 @@ def getJHImgUrlList(line):
     img_url_list.extend(img_url_list_2)
     img_url_list.extend(img_url_list_3)
     img_url_list.extend(img_url_list_1)
-    print('图片数量：' + str(len(img_url_list)))
+    # print('图片数量：' + str(len(img_url_list)))
+    # print('----------- 去重 ------------------')
+    # 不保证顺序去重
+    img_url_list = list(set(img_url_list))
+    # 按照原来顺序去重
+    # new_li = list(set(img_url_list))
+    # new_li.sort(key=img_url_list.index)
+    # print(len(new_li))
     print(new_title)
+    print('去重后图片数量：' + str(len(img_url_list)))
     return [img_url_list, new_title]
 
 
-# 获取图片连接
-def getAllexcludeJH(line):
+# # 获取除了JH图片外链接集合
+def get_exclude_jh_image_url_list(line):
     soup = get_beauty_soup(line)
-    # # 获取代理服务器
-    # proxy_ip = get_ip()
-    # html = requests.get(line, headers=header, proxies=proxy_ip)
-    # html.encoding = 'utf-8'
-    # itemSoup = BeautifulSoup(html.text, 'lxml')
-    newTitle = replaceAndSub(soup.title.string)
-
-    imgUrls = soup.select(
+    new_title = replace_sub(soup.title.string)
+    img_url_list = soup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
-    imgUrls2 = soup.select(
+    img_url_list_1 = soup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tr td img[file]")
-    imgUrls1 = soup.select(
+    img_url_list_2 = soup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div div[class='postattachlist'] dl dd p img[file]")
-    imgUrls4 = soup.select(
+    img_url_list_3 = soup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tbody tr td a[href]")
-    imgUrls.extend(imgUrls1)
-    imgUrls.extend(imgUrls2)
-    imgUrls.extend(imgUrls4)
-    print(str(newTitle.strip()))
-    print('图片数量：' + str(len(imgUrls)))
-    return [imgUrls, newTitle]
+    img_url_list.extend(img_url_list_1)
+    img_url_list.extend(img_url_list_2)
+    img_url_list.extend(img_url_list_3)
+    # print(str(new_title.strip()))
+    # 不保证顺序去重
+    img_url_list = list(set(img_url_list))
+    print('去重后图片数量：' + str(len(img_url_list)))
+    return [img_url_list, new_title]
