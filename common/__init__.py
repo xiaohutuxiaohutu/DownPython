@@ -128,8 +128,8 @@ def create_file(file_path):
 
 
 # 保存未下载文件连接
-def save_not_down_url(cur_dir, line, new_title, num):
-    os.chdir(cur_dir)
+def save_not_down_url(line, new_title, num):
+    # os.chdir(cur_dir)
     with open(datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.text', 'a+', encoding='utf - 8') as f:
         f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
 
@@ -147,16 +147,15 @@ def save_url_down(done_down_path, file_url, short_href, num):
 def down_img(file_url):
     image_name = file_url.split("/")[-1]
     if not os.path.exists(image_name):
-        get_request = requests.get(file_url, headers=header)
+        proxy_ip = get_ip()
+        get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
         image = get_request.content
         image_b = io.BytesIO(image).read()
         print('图片大小：' + str(len(image_b) / 1000) + ' kb')
         with open(image_name, 'wb') as f:
             f.write(image)
-            # f.write(get_request.content)
-        # print('----------- over -------------------------')
-    else:
-        print(image_name + "已存在")
+    # else:
+    #     print(image_name + "已存在")
 
 
 # down_img('http://pic.w26.rocks/attachments//1908131059de4602941152bcd6.jpg')
@@ -172,6 +171,15 @@ def get_beauty_soup(url):
     html = requests.get(url, headers=header, proxies=proxy_ip)
     html.encoding = 'utf-8'
     return BeautifulSoup(html.text, 'lxml')
+
+
+# 排序
+def list_distinct(old_list):
+    new_list = list(set(old_list))
+    # 按照原来顺序去重
+    new_list.sort(key=old_list.index)
+    print(len(new_list))
+    return new_list
 
 
 # 获取JH图片链接集合
@@ -191,15 +199,9 @@ def get_jh_img_url_list(line):
     img_url_list.extend(img_url_list_1)
     # print('图片数量：' + str(len(img_url_list)))
     # print('----------- 去重 ------------------')
-    # 不保证顺序去重
-    img_url_list = list(set(img_url_list))
-    # 按照原来顺序去重
-    # new_li = list(set(img_url_list))
-    # new_li.sort(key=img_url_list.index)
-    # print(len(new_li))
-    print(new_title)
-    print('去重后图片数量：' + str(len(img_url_list)))
-    return [img_url_list, new_title]
+    new_list = list_distinct(img_url_list)
+    print('去重后图片数量：' + str(len(new_list)))
+    return [new_list, new_title]
 
 
 # # 获取除了JH图片外链接集合
@@ -218,7 +220,6 @@ def get_exclude_jh_image_url_list(line):
     img_url_list.extend(img_url_list_2)
     img_url_list.extend(img_url_list_3)
     # print(str(new_title.strip()))
-    # 不保证顺序去重
-    img_url_list = list(set(img_url_list))
-    print('去重后图片数量：' + str(len(img_url_list)))
-    return [img_url_list, new_title]
+    new_list = list_distinct(img_url_list)
+    print('去重后图片数量：' + str(len(new_list)))
+    return [new_list, new_title]

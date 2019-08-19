@@ -20,7 +20,7 @@ common.create_file(doneDownPath)
 with open(doneDownPath) as fileObj:
     readLines = fileObj.readlines()
 
-for i in range(1, 3):
+for i in range(1, 4):
     print('第' + str(i) + '页')
     url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
     print(url)
@@ -47,7 +47,7 @@ for i in range(1, 3):
                         contents4 = contents3[0]
                         contents_href = contents4['href']
                         file_url = preUrl + contents4['href']
-                        contents__string = contents4.string
+                        # contents__string = contents4.string
                         os.chdir(curDir)
                         if (contents_href + '\n') not in readLines:
                             common.save_url_down(doneDownPath, file_url, contents_href, temp)
