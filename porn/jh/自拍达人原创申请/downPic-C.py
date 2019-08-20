@@ -16,7 +16,7 @@ preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录
 # 文件下载保存路径
 downFilePath = userPath + '/Pictures/Camera Roll/jh/自拍达人原创申请/'
-with open(curDir + "/2019-08-19_09-21_0.txt", 'r') as fileObject:
+with open(curDir + "/2019-08-20_13-51_0.txt", 'r') as fileObject:
     # readlines = fileObject.readlines() # 读取整个文档
     # print(len(readlines))
     for num, value in enumerate(fileObject, 1):

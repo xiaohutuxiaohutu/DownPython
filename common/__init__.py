@@ -178,7 +178,7 @@ def list_distinct(old_list):
     new_list = list(set(old_list))
     # 按照原来顺序去重
     new_list.sort(key=old_list.index)
-    print(len(new_list))
+    # print(len(new_list))
     return new_list
 
 
