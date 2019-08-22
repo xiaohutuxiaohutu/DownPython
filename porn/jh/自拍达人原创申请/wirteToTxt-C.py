@@ -22,10 +22,13 @@ for i in range(1, 4):
 
     for j in range(0, len(itemUrl)):
         sort_href = itemUrl[j].get('href')
-        fileUrl = preUrl + sort_href
+        file_url = preUrl + sort_href
         split = sort_href.split("&")
         temp += 1
         os.chdir(curDir)
         if (split[0] + '\n') not in readLines:
-            common.save_url_down(doneDownPath, fileUrl, split, temp)
+            print('下载第' + str(i + 1) + '个:' + file_url)
+            common.save_url_down(doneDownPath, file_url, split[0], temp)
+        else:
+            print('第' + str(i + 1) + '个已存在:' + file_url)
 print("打印完成")

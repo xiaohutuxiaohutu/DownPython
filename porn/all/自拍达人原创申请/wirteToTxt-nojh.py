@@ -51,5 +51,5 @@ for i in range(1, 4):
                         # contents__string = contents4.string
                         os.chdir(curDir)
                         if (split[0] + '\n') not in readLines:
-                            common.save_url_down(doneDownPath, file_down_url, split, temp)
+                            common.save_url_down(doneDownPath, file_down_url, split[0], temp)
 print("打印完成")
