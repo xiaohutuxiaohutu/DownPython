@@ -1,6 +1,5 @@
 import os
 import sys
-
 import common
 
 curDir = os.path.abspath(os.curdir)
@@ -12,9 +11,12 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 userPath = os.path.expanduser('~')  # 获取用户目录
-downFilePath = userPath + '/Pictures/zhihu1/'
-
-with open(curDir + "/2019-08-22_17-45_0.txt", 'r') as fileObject:
+question_id = 313825759
+zhihu_url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
+soup = common.get_beauty_soup(zhihu_url)
+downFilePath = userPath + '/Pictures/'+soup.title.string+'/'
+common.create_file(downFilePath)
+with open(curDir + "/2019-08-22_17-45_2.txt", 'r') as fileObject:
     for num, value in enumerate(fileObject, 1):
         print('第' + str(num) + '行：')
         img_url = value.strip('\n')

@@ -25,6 +25,8 @@ def get_image_url(qid, headers):
         postdata = {'method': 'next', 'params': '{"url_token":' +
                                                 str(qid) + ',"pagesize": "0",' + '"offset":' + str(size) + "}"}
         page = session.post(tmp_url, headers=headers, data=postdata)
+
+        print(page)
         ret = eval(page.text)
         answers = ret['msg']
         # print("答案数 : %d " % (len(answers)))
@@ -57,6 +59,9 @@ if __name__ == '__main__':
     # question_id = 336969810
     question_id = 313825759
     zhihu_url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
+    print(zhihu_url)
+    soup = common.get_beauty_soup(zhihu_url)
+    print(soup.title.string)
     img_list = get_image_url(question_id, headers)  # 获取图片的地址列表
     print(len(img_list))
     os.chdir(curDir)
@@ -69,7 +74,6 @@ if __name__ == '__main__':
             readLines = f.readlines()
         os.chdir(curDir)
         if (img_name + '\n') not in readLines:
-            # print('下载第' + str(i + 1) + '个:' + img_url)
             common.save_url_down(doneDownPath, img_url, img_name, temp)
         else:
             print('第' + str(i + 1) + '个已存在:' + img_url)

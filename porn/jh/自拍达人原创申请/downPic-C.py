@@ -16,14 +16,15 @@ preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录
 # 文件下载保存路径
 downFilePath = userPath + '/Pictures/Camera Roll/jh/自拍达人原创申请/'
-with open(curDir + "/2019-08-22_09-14_0.txt", 'r') as fileObject:
+with open(curDir + "/2019-08-22_18-57_0.txt", 'r') as fileObject:
     # readlines = fileObject.readlines() # 读取整个文档
     # print(len(readlines))
     for num, value in enumerate(fileObject, 1):
         print('第' + str(num) + '行：')
         line = value.strip('\n')
         # 获取当前连接下的 所有的图片的连接
-        url_list = common.get_jh_img_url_list(line)
+        # url_list = common.get_jh_img_url_list(line)
+        url_list = common.get_img_url_list(line)
         imgUrls = url_list[0]
         newTitle = url_list[1]
         if len(imgUrls) == 0:

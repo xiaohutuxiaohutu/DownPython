@@ -14,13 +14,13 @@ preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录、
 downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren/'
 # 打开文件
-file_obj = open(curDir + "/2019-08-22_11-31_0.txt")
+file_obj = open(curDir + "/2019-08-22_18-58_0.txt")
 for num, value in enumerate(file_obj, 1):
     print('第' + str(num) + '行：')
     line = value.strip('\n')
     print(line)
     # 获取除了JH外的所有图片连接
-    url_list = common.get_exclude_jh_image_url_list(line)
+    url_list = common.get_img_url_list(line)
     imgUrls = url_list[0]
     newTitle = url_list[1]
     if len(imgUrls) == 0:

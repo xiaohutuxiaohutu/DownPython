@@ -222,6 +222,12 @@ def list_distinct(old_list):
     return new_list
 
 
+def get_title(url):
+    soup = get_beauty_soup(url)
+    new_title = replace_sub(soup.title.string)
+    return new_title
+
+
 # 获取JH图片链接集合
 def get_jh_img_url_list(line):
     soup = get_beauty_soup(line)
@@ -260,6 +266,27 @@ def get_exclude_jh_image_url_list(line):
     img_url_list.extend(img_url_list_2)
     img_url_list.extend(img_url_list_3)
     # print(str(new_title.strip()))
+    new_list = list_distinct(img_url_list)
+    print('去重后图片数量：' + str(len(new_list)))
+    return [new_list, new_title]
+
+
+def get_img_url_list(url):
+    soup = get_beauty_soup(url)
+    new_title = replace_sub(soup.title.string)
+    img_url_list = soup.select(
+        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
+    img_url_list_2 = soup.select(
+        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tr td img[file]")
+    img_url_list_3 = soup.select(
+        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div div[class='postattachlist'] dl dd p img[file]")
+    img_url_list_1 = soup.select(
+        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tbody tr td a[href]")
+    img_url_list.extend(img_url_list_2)
+    img_url_list.extend(img_url_list_3)
+    img_url_list.extend(img_url_list_1)
+    # print('图片数量：' + str(len(img_url_list)))
+    # print('----------- 去重 ------------------')
     new_list = list_distinct(img_url_list)
     print('去重后图片数量：' + str(len(new_list)))
     return [new_list, new_title]
