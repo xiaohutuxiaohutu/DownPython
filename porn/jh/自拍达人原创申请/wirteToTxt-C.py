@@ -21,10 +21,11 @@ for i in range(1, 3):
         "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
 
     for j in range(0, len(itemUrl)):
-        sortHref = itemUrl[j].get('href')
-        fileUrl = preUrl + sortHref
+        sort_href = itemUrl[j].get('href')
+        fileUrl = preUrl + sort_href
+        split = sort_href.split("&")
         temp += 1
         os.chdir(curDir)
-        if (sortHref + '\n') not in readLines:
-            common.save_url_down(doneDownPath, fileUrl, sortHref, temp)
+        if (split[0] + '\n') not in readLines:
+            common.save_url_down(doneDownPath, fileUrl, split, temp)
 print("打印完成")

@@ -135,12 +135,13 @@ def save_not_down_url(line, new_title, num):
 
 
 # 保存下载连接到txt文档
-def save_url_down(done_down_path, file_url, short_href, num):
+def save_url_down(done_down_path, file_down_url, pic_href, num):
     with open(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(num // 500) + '.txt', 'a+') as f:
-        f.write(file_url + '\n')
+        f.write(file_down_url + '\n')
     # 保存已下载的连接，防止重复下载
+    # print(split)
     with open(done_down_path, 'a+') as f:
-        f.write(short_href + '\n')
+        f.write(pic_href + '\n')
 
 
 # 保存图片

@@ -45,10 +45,11 @@ for i in range(1, 4):
                     contents3 = contents2[3].contents
                     if len(contents3) > 0 and flag:
                         contents4 = contents3[0]
-                        contents_href = contents4['href']
-                        file_url = preUrl + contents4['href']
+                        pic_href = contents4['href']
+                        file_down_url = preUrl + pic_href
+                        split = pic_href.split("&")
                         # contents__string = contents4.string
                         os.chdir(curDir)
-                        if (contents_href + '\n') not in readLines:
-                            common.save_url_down(doneDownPath, file_url, contents_href, temp)
+                        if (split[0] + '\n') not in readLines:
+                            common.save_url_down(doneDownPath, file_down_url, split, temp)
 print("打印完成")
