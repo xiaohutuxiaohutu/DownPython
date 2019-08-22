@@ -194,7 +194,7 @@ def mkdir(path):
         return True
     else:
         # print("图片存放于:", os.getcwd() + os.sep + path)
-        print("图片存放于:",path)
+        print("图片存放于:", path)
         return False
 
 
