@@ -19,7 +19,7 @@ doneDownPath = curDir + '/down-done.txt'
 common.create_file(doneDownPath)
 with open(doneDownPath) as fileObj:
     readLines = fileObj.readlines()
-
+print(len(readLines))
 for i in range(1, 4):
     print('第' + str(i) + '页')
     url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
