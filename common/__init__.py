@@ -5,9 +5,14 @@ import random
 import re
 from urllib.request import Request
 from urllib.request import urlopen
-
+import urllib.request
 import requests
 from bs4 import BeautifulSoup
+
+# from urlparse import urlsplit
+from os.path import basename
+
+import urllib.parse
 
 if os.name == 'nt':
     print(u'windows 系统')
@@ -157,6 +162,40 @@ def down_img(file_url):
             f.write(image)
     # else:
     #     print(image_name + "已存在")
+
+
+def down_img_2(img_url, down_path, index):
+    response = requests.get(img_url)  # , stream=True
+    if response.status_code == 200:
+        image = urllib.request.urlopen(img_url).read()
+        # response = requests.get(image_url, stream=True) #
+        # image = response.content
+        try:
+            # file_name = dir_name + os.sep + basename(urlsplit(image_url)[2])
+            file_name = basename(urllib.parse.urlsplit(img_url)[2])
+
+            with open(down_path + os.sep + '%d.jpg' % index, "wb") as picture:
+                picture.write(image)
+                print("下载 {} 完成!".format(picture))
+        except IOError:
+            print("IO Error\n")
+            # continue
+        finally:
+            picture.close
+    else:
+        print()
+        # continue
+
+
+def mkdir(path):
+    if not os.path.exists(path):
+        print('新建文件夹:', path)
+        os.makedirs(path)
+        return True
+    else:
+        # print("图片存放于:", os.getcwd() + os.sep + path)
+        print("图片存放于:",path)
+        return False
 
 
 # down_img('http://pic.w26.rocks/attachments//1908131059de4602941152bcd6.jpg')
