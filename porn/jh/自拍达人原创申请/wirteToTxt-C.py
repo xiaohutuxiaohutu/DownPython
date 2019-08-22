@@ -9,7 +9,6 @@ sys.path.append(rootDir)
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 doneDownPath = curDir + '/doneDown.text'
-common.create_file(doneDownPath)
 with open(doneDownPath) as fileObj:
     readLines = fileObj.readlines()
 for i in range(1, 4):
