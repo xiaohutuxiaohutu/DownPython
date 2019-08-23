@@ -19,11 +19,11 @@ downFilePath = userPath + '/Pictures/' + soup.title.string + '/'
 common.create_file(downFilePath)
 
 # 获取当前目录下所有的待下载txt
-name_list = common.get_file_name_list(curDir, 'txt')
+file_name_list = common.get_file_name_list(curDir, 'txt')
 # print(name_list)
-for name in name_list:
-    print(name)
-    with open(name, 'r') as fileObject:
+for num, file_name in enumerate(file_name_list, 1):
+    print('下载第' + str(num) + '个文件：' + file_name)
+    with open(file_name, 'r') as fileObject:
         for num, value in enumerate(fileObject, 1):
             # print('第' + str(num) + '行：')
             img_url = value.strip('\n')
@@ -34,9 +34,9 @@ for name in name_list:
                 common.down_img(img_url)
             else:
                 print('第' + str(num + 1) + '个已存在:' + img_url)
-        print(name + "-----down over----------------")
-    print(name)
-    os.remove(name)
+        print(file_name + "-----down over----------------")
+    print('删除文件：' + file_name)
+    os.remove(file_name)
 print("-----***************down all over********************----------------")
 
 '''''
