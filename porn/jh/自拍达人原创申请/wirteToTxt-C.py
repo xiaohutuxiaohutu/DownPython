@@ -26,8 +26,8 @@ for i in range(1, 4):
         temp += 1
         os.chdir(curDir)
         if (split[0] + '\n') not in readLines:
-            print('下载第' + str(i + 1) + '个:' + file_url)
+            print('下载第' + str(j + 1) + '个:' + file_url)
             common.save_url_down(doneDownPath, file_url, split[0], temp)
         else:
-            print('第' + str(i + 1) + '个已存在:' + file_url)
+            print('第' + str(j + 1) + '个已存在:' + file_url)
 print("打印完成")

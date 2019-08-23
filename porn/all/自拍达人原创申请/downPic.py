@@ -14,7 +14,7 @@ preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录、
 downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren/'
 # 打开文件
-file_obj = open(curDir + "/2019-08-22_18-58_0.txt")
+file_obj = open(curDir + "/2019-08-23_10-02_0.txt")
 for num, value in enumerate(file_obj, 1):
     print('第' + str(num) + '行：')
     line = value.strip('\n')
