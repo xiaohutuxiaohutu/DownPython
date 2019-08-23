@@ -13,8 +13,8 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 userPath = os.path.expanduser('~')  # 获取用户目录
 
 question_id = 285321190
-zhihu_url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
-soup = common.get_beauty_soup(zhihu_url)
+url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
+soup = common.get_beauty_soup(url)
 downFilePath = userPath + '/Pictures/' + soup.title.string + '/'
 common.create_file(downFilePath)
 
@@ -34,7 +34,7 @@ for name in name_list:
                 common.down_img(img_url)
             else:
                 print('第' + str(num + 1) + '个已存在:' + img_url)
-        print(name+"-----down over----------------")
+        print(name + "-----down over----------------")
     print(name)
     os.remove(name)
 print("-----***************down all over********************----------------")

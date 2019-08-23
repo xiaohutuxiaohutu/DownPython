@@ -25,11 +25,9 @@ def get_image_url(qid, headers):
         postdata = {'method': 'next', 'params': '{"url_token":' +
                                                 str(qid) + ',"pagesize": "0",' + '"offset":' + str(size) + "}"}
         page = session.post(tmp_url, headers=headers, data=postdata)
-
-        # print(page)
         ret = eval(page.text)
         answers = ret['msg']
-        # print("答案数 : %d " % (len(answers)))
+        print("答案数 : %d " % (len(answers)))
         size += 10
         if not answers:
             print("图片URL获取完毕, 页数: ", (size - 10) / 10)
@@ -51,20 +49,17 @@ def get_image_url(qid, headers):
                     # if item.endswith('r.jpg'):
                     # print(item)
                     image_urls.append(item)
-        # print('size: %d, num : %d' % (size, len(image_urls)))
+        print('size: %d, num : %d' % (size, len(image_urls)))
 
 
 if __name__ == '__main__':
-    # question_id = 30061914 32762402
-    # question_id = 336969810
-    question_id = 285321190
-    zhihu_url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
-    print(zhihu_url)
-    soup = common.get_beauty_soup(zhihu_url)
-    print(soup.title.string)
+    os.chdir(curDir)
+    question_id = 310786985
+    with open('question_id.text', 'a+') as qid_file:
+        qid_file.write(str(question_id) + '\n')
+    # url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
     img_list = get_image_url(question_id, headers)  # 获取图片的地址列表
     print(len(img_list))
-    os.chdir(curDir)
     temp = 0
     for i in range(0, len(img_list)):
         img_url = img_list[i]
