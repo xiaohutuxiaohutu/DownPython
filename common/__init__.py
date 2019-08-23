@@ -126,7 +126,7 @@ def file_exist(file_path):
     return os.path.exists(file_path)
 
 
-# 判断文件是否存在，不存在则创建
+# 判断文件夹是否存在，不存在则创建
 def create_file(file_path):
     if not (os.path.exists(file_path)):
         os.makedirs(file_path)
@@ -299,6 +299,18 @@ def get_file_name_list(file_dir, file_type):
     file_name_list = []
     for root, dirs, files in os.walk(file_dir):
         for file in files:
-            if os.path.splitext(file)[1] == ('.'+file_type):
+            if os.path.splitext(file)[1] == ('.' + file_type):
                 file_name_list.append(os.path.join(root, file))
     return file_name_list
+
+
+def test_method():
+    print(os.sep)
+    file_path = 'C:/workspace/GitHub/DownPython/porn/all/自拍达人原创申请/2019-08-23_未下载.text'
+    splitext = os.path.splitext(file_path)  # 获取文件类型
+    print(file_path.index('/'))
+    print(file_path.split('/'))
+    print(splitext)
+
+
+test_method()

@@ -63,7 +63,8 @@ if __name__ == '__main__':
     temp = 0
     for i in range(0, len(img_list)):
         img_url = img_list[i]
-        img_name = img_url.split("/")[-1]
+        # img_name = img_url.split("/")[-1]
+        img_name = os.path.basename(img_url)
         temp += 1
         with open(doneDownPath) as f:
             readLines = f.readlines()
