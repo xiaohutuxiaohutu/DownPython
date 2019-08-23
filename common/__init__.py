@@ -273,7 +273,10 @@ def get_exclude_jh_image_url_list(line):
 
 def get_img_url_list(url):
     soup = get_beauty_soup(url)
-    new_title = replace_sub(soup.title.string)
+    # print(soup)
+    title = soup.title.string
+
+    new_title = replace_sub(title)
     img_url_list = soup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
     img_url_list_2 = soup.select(
@@ -290,3 +293,12 @@ def get_img_url_list(url):
     new_list = list_distinct(img_url_list)
     print('去重后图片数量：' + str(len(new_list)))
     return [new_list, new_title]
+
+
+def get_file_name_list(file_dir, file_type):
+    file_name_list = []
+    for root, dirs, files in os.walk(file_dir):
+        for file in files:
+            if os.path.splitext(file)[1] == ('.'+file_type):
+                file_name_list.append(os.path.join(root, file))
+    return file_name_list

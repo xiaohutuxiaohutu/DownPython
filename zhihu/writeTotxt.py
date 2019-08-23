@@ -26,7 +26,7 @@ def get_image_url(qid, headers):
                                                 str(qid) + ',"pagesize": "0",' + '"offset":' + str(size) + "}"}
         page = session.post(tmp_url, headers=headers, data=postdata)
 
-        print(page)
+        # print(page)
         ret = eval(page.text)
         answers = ret['msg']
         # print("答案数 : %d " % (len(answers)))
@@ -57,7 +57,7 @@ def get_image_url(qid, headers):
 if __name__ == '__main__':
     # question_id = 30061914 32762402
     # question_id = 336969810
-    question_id = 313825759
+    question_id = 285321190
     zhihu_url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
     print(zhihu_url)
     soup = common.get_beauty_soup(zhihu_url)

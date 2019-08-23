@@ -15,7 +15,7 @@ temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 listTagName = ['img']
 # 保存已下载的连接
-doneDownPath = curDir + '/down-done.txt'
+doneDownPath = curDir + '/down-done.text'
 common.create_file(doneDownPath)
 with open(doneDownPath) as fileObj:
     readLines = fileObj.readlines()
