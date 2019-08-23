@@ -12,7 +12,7 @@ header = {
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 userPath = os.path.expanduser('~')  # 获取用户目录
 
-question_id = 285321190
+question_id = 50876927
 url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
 soup = common.get_beauty_soup(url)
 downFilePath = userPath + '/Pictures/' + soup.title.string + '/'

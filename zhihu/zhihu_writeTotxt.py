@@ -54,7 +54,7 @@ def get_image_url(qid, headers):
 
 if __name__ == '__main__':
     os.chdir(curDir)
-    question_id = 310786985
+    question_id = 50876927
     with open('question_id.text', 'a+') as qid_file:
         qid_file.write(str(question_id) + '\n')
     # url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
