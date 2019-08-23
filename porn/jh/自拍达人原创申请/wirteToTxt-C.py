@@ -10,7 +10,8 @@ temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 doneDownPath = curDir + '/doneDown.text'
 with open(doneDownPath) as fileObj:
-    readLines = fileObj.readlines()
+    # readLines = fileObj.readlines()
+    readLines = fileObj.read().splitlines()
 for i in range(1, 4):
     print('第' + str(i) + '页')
     url = "https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
@@ -23,11 +24,12 @@ for i in range(1, 4):
         sort_href = itemUrl[j].get('href')
         file_url = preUrl + sort_href
         split = sort_href.split("&")
+        item_name = split[0]
         temp += 1
         os.chdir(curDir)
-        if (split[0] + '\n') not in readLines:
+        if item_name not in readLines:
             print('下载第' + str(j + 1) + '个:' + file_url)
-            common.save_url_down(doneDownPath, file_url, split[0], temp)
+            common.save_url_down(doneDownPath, file_url, item_name, temp)
         else:
             print('第' + str(j + 1) + '个已存在:' + file_url)
 print("打印完成")
