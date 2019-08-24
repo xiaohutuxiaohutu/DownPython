@@ -65,15 +65,15 @@ if __name__ == '__main__':
     img_list = get_image_url(question_id, headers)  # 获取图片的地址列表
     print(len(img_list))
     temp = 0
-    # with open(doneDownPath) as file_obj:
-    #     readLines = file_obj.read().splitlines()
+    with open(doneDownPath) as file_obj:
+        readLines = file_obj.read().splitlines()
     for i in range(0, len(img_list)):
         img_url = img_list[i]
         # img_name = img_url.split("/")[-1]
         img_name = os.path.basename(img_url)
         temp += 1
         os.chdir(curDir)
-        # if img_name not in readLines:
-        common.save_url_down(doneDownPath, img_url, img_name, temp)
-        # else:
-        #     print('第' + str(i + 1) + '个已存在:' + img_url)
+        if img_name not in readLines:
+            common.save_url_down(doneDownPath, img_url, img_name, temp)
+        else:
+            print('第' + str(i + 1) + '个已存在:' + img_url)
