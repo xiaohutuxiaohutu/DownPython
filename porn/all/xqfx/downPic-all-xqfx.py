@@ -12,7 +12,7 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录、
-downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren/'
+downFilePath = userPath + '/Pictures/Camera Roll/all/xingqufenxiang/'
 
 file_name_list = common.get_file_name_list(curDir, 'txt')
 for index, file_name in enumerate(file_name_list, 1):
