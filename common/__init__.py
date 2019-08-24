@@ -271,6 +271,14 @@ def get_exclude_jh_image_url_list(line):
     return [new_list, new_title]
 
 
+def get_img_child_url(url):
+    soup = get_beauty_soup(url)
+    # 获取当前页面的分页连接
+    child_page_url = soup.select(
+        "body div[id='wrap']  div[class='forumcontrol s_clear'] table tr td div[class='pages'] a[href]")
+    return child_page_url
+
+
 def get_img_url_list(url):
     soup = get_beauty_soup(url)
     # print(soup)

@@ -22,28 +22,38 @@ for index, file_name in enumerate(file_name_list, 1):
     with open(file_name) as file_obj:
         for num, value in enumerate(file_obj, 1):
             print('第' + str(num) + '行：')
-            line = value.strip('\n')
-            print(line)
+            item_url = value.strip('\n')
+            print(item_url)
             # 获取除了JH外的所有图片连接
-            url_list = common.get_img_url_list(line)
-            imgUrls = url_list[0]
-            newTitle = url_list[1]
-            if len(imgUrls) == 0:
-                os.chdir(curDir)
-                common.save_not_down_url(line, newTitle, num)
-            else:
-                path = downFilePath + str(newTitle.strip()) + '/'
-                common.create_file(path)
-                os.chdir(path)
-                for i in range(0, len(imgUrls)):
-                    file_url = imgUrls[i].get('file')
-                    fileUrl = file_url.replace('http://pic.w26.rocks/', preUrl)
-                    image_name = fileUrl.split("/")[-1]
-                    if not os.path.exists(image_name):
-                        print('下载第' + str(i + 1) + '个:' + file_url)
-                        common.down_img(fileUrl)
-                    else:
-                        print('第' + str(i + 1) + '个已存在:' + file_url)
+            item_child_url = common.get_img_child_url(item_url)
+            # print(item_child_url)
+            item_url_list = []
+            item_url_list.append(item_url)
+            for item_url_1 in item_child_url:
+                chile_url = preUrl + item_url_1.get('href')
+                if chile_url not in item_url_list:
+                    item_url_list.append(chile_url)
+            print(item_url_list)
+            for ii in item_url_list:
+                url_list = common.get_img_url_list(ii)
+                imgUrls = url_list[0]
+                newTitle = url_list[1]
+                if len(imgUrls) == 0:
+                    os.chdir(curDir)
+                    common.save_not_down_url(ii, newTitle, num)
+                else:
+                    path = downFilePath + str(newTitle.strip()) + '/'
+                    common.create_file(path)
+                    os.chdir(path)
+                    for i in range(0, len(imgUrls)):
+                        file_url = imgUrls[i].get('file')
+                        fileUrl = file_url.replace('http://pic.w26.rocks/', preUrl)
+                        image_name = fileUrl.split("/")[-1]
+                        if not os.path.exists(image_name):
+                            print('下载第' + str(i + 1) + '个:' + file_url)
+                            common.down_img(fileUrl)
+                        else:
+                            print('第' + str(i + 1) + '个已存在:' + file_url)
             print("-----down over----------------")
     os.remove(file_name)
 
