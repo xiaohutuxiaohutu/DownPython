@@ -7,7 +7,7 @@ import sys
 curDir = os.path.abspath(os.curdir)  # 当前文件路径
 rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取DownPython，也就是项目的根路径
 sys.path.append(rootDir)
-doneDownPath = curDir + '/doneDown.text'
+doneDownPath = curDir + 'C:/workspace/GitHub/DownPython/zhihu/doneDown.text'
 common.create_file(doneDownPath)
 headers = {
     'User-Agent': "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
@@ -54,7 +54,7 @@ def get_image_url(qid, headers):
 
 if __name__ == '__main__':
     os.chdir(curDir)
-    question_id = 50876927
+    question_id = 273711203
     with open('question_id.text', 'a+') as f:
         f.seek(0, 0)
         read_lines = f.read().splitlines()  # 去除换行符
