@@ -1,6 +1,6 @@
 import os
 import sys
-
+import datetime
 import common
 
 curDir = os.path.abspath(os.curdir)
@@ -15,8 +15,9 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录
 # 文件下载保存路径
-downFilePath = userPath + '/Pictures/Camera Roll/jh/自拍达人原创申请/'
-
+# downFilePath = userPath + '/Pictures/Camera Roll/jh/自拍达人原创申请/'
+downFilePath = 'D:/图片/91porn/精华/91自拍达人原创申请/' + (datetime.datetime.now().strftime('%Y-%m-%d')) + '/'
+common.create_file(downFilePath)
 file_name_list = common.get_file_name_list(curDir, 'txt')
 for num, file_name in enumerate(file_name_list, 1):
     print('下载第' + str(num) + '个文件：' + file_name)

@@ -1,6 +1,7 @@
 import os
 import sys
 import common
+import datetime
 
 curDir = os.path.abspath(os.curdir)
 rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
@@ -12,8 +13,9 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 preUrl = 'https://f.wonderfulday30.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录、
-downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren/'
-
+# downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren/'
+downFilePath = 'D:/图片/91porn/ALL/91自拍达人原创申请/' + (datetime.datetime.now().strftime('%Y-%m-%d'))+'/'
+common.create_file(downFilePath)
 file_name_list = common.get_file_name_list(curDir, 'txt')
 for index, file_name in enumerate(file_name_list, 1):
     print('下载第' + str(index) + '个文件：' + file_name)

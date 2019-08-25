@@ -154,6 +154,7 @@ def down_img(file_url):
     image_name = file_url.split("/")[-1]
     if not os.path.exists(image_name):
         proxy_ip = get_ip()
+        # print('随机代理地址：' + str(proxy_ip))
         get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
         image = get_request.content
         image_b = io.BytesIO(image).read()
