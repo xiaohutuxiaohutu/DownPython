@@ -8,7 +8,7 @@ sys.path.append(rootDir)
 
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
-doneDownPath = curDir + '/doneDown.text'
+doneDownPath = curDir + '/DoneDown-JH-WAWQ.text'
 with open(doneDownPath) as fileObj:
     # readLines = fileObj.readlines()
     readLines = fileObj.read().splitlines()

@@ -8,11 +8,11 @@ sys.path.append(rootDir)
 
 temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
-doneDownPath = curDir + '/doneDown.text'
+doneDownPath = curDir + '/DoneDown-JH-zipaidaren.text'
 with open(doneDownPath) as fileObj:
     # readLines = fileObj.readlines()
     readLines = fileObj.read().splitlines()
-for i in range(1, 4):
+for i in range(1, 3):
     print('第' + str(i) + '页')
     url = "https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
     print(url)
