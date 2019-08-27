@@ -14,7 +14,7 @@ temp = 0
 preUrl = 'https://f.wonderfulday30.live/'
 listTagName = ['img']
 # 保存已下载的连接
-doneDownPath = curDir + '/Down-All-WAWQ.py'  # 文件不需要创建，当open是如果不存在会自动打开
+doneDownPath = curDir + '/Down-Done-WAWQ.text'  # 文件不需要创建，当open是如果不存在会自动打开
 with open(doneDownPath) as fileObj:
     readLines = fileObj.read().splitlines()
 for i in range(1, 10):
