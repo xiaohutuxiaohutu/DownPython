@@ -2,8 +2,7 @@ import os
 import sys
 
 curDir = os.getcwd()
-
-
+print(os.path.abspath(os.curdir))  # 获取当前工作目录路径
 def test_os_method():
     root_dir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
     sys.path.append(root_dir)
@@ -43,4 +42,4 @@ def test_method():
     print(os.path.dirname(http_url))  # 获取文件路径
 
 
-test_method()
+# test_method()

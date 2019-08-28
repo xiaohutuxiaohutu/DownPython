@@ -311,3 +311,39 @@ def get_file_name_list(file_dir, file_type):
             if os.path.splitext(file)[1] == ('.' + file_type):
                 file_name_list.append(os.path.join(root, file))
     return file_name_list
+
+
+def down_all_pic(cur_dir, replace_url, down_file_path):
+    file_name_list = get_file_name_list(cur_dir, 'txt')
+    for index, file_name in enumerate(file_name_list, 1):
+        print('下载第' + str(index) + '个文件：' + file_name)
+        # 打开文件
+        # file_obj = open(curDir + "/2019-08-23_10-02_0.txt")
+        with open(file_name) as file_obj:
+            for num, value in enumerate(file_obj, 1):
+                print('第' + str(num) + '行：')
+                line = value.strip('\n')
+                print(line)
+                # 获取除了JH外的所有图片连接
+                url_list = get_img_url_list(line)
+                imgUrls = url_list[0]
+                newTitle = url_list[1]
+                if len(imgUrls) == 0:
+                    os.chdir(cur_dir)
+                    save_not_down_url(line, newTitle, num)
+                else:
+                    path = down_file_path + str(newTitle.strip()) + '/'
+                    create_file(path)
+                    os.chdir(path)
+                    for i in range(0, len(imgUrls)):
+                        file_url = imgUrls[i].get('file')
+                        fileUrl = file_url.replace('http://pic.w26.rocks/', replace_url)
+                        image_name = fileUrl.split("/")[-1]
+                        if not os.path.exists(image_name):
+                            print('下载第' + str(i + 1) + '个:' + file_url)
+                            down_img(fileUrl)
+                        else:
+                            print('第' + str(i + 1) + '个已存在:' + file_url)
+                print("-----down over----------------")
+        os.remove(file_name)
+    print("all over")

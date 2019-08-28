@@ -21,7 +21,6 @@ common.create_file(downFilePath)
 file_name_list = common.get_file_name_list(curDir, 'txt')
 for num, file_name in enumerate(file_name_list, 1):
     print('下载第' + str(num) + '个文件：' + file_name)
-    # with open(curDir + "/2019-08-22_18-57_0.txt", 'r') as fileObject:
     with open(file_name, 'r') as fileObject:
         for num, value in enumerate(fileObject, 1):
             line = value.strip('\n')
