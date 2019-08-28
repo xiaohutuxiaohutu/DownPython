@@ -17,7 +17,7 @@ listTagName = ['img']
 doneDownPath = curDir + '/Down-Done-WAWQ.text'  # 文件不需要创建，当open是如果不存在会自动打开
 with open(doneDownPath) as fileObj:
     readLines = fileObj.read().splitlines()
-for i in range(1, 10):
+for i in range(1, 5):
     print('第' + str(i) + '页')
     url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=21&orderby=dateline&filter=2592000&page=' + str(i)
     print(url)
