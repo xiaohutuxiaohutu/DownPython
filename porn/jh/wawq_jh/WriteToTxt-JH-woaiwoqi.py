@@ -12,7 +12,7 @@ doneDownPath = curDir + '/DoneDown-JH-WAWQ.text'
 with open(doneDownPath) as fileObj:
     # readLines = fileObj.readlines()
     readLines = fileObj.read().splitlines()
-for i in range(1, 6):
+for i in range(1, 3):
     print('第' + str(i) + '页')
     url = "https://f.wonderfulday30.live/forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=" + str(i)
     print(url)

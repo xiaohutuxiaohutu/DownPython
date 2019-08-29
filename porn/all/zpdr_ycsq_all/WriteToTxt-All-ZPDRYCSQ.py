@@ -17,7 +17,7 @@ listTagName = ['img']
 doneDownPath = curDir + '/DoneDown-All-ZPDR.text'  # 文件不需要创建，当open是如果不存在会自动打开
 with open(doneDownPath) as fileObj:
     readLines = fileObj.read().splitlines()
-for i in range(1, 6):
+for i in range(1, 5):
     print('第' + str(i) + '页')
     url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
     print(url)
