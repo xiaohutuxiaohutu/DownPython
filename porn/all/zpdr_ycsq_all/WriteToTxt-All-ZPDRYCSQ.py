@@ -47,11 +47,13 @@ for i in range(1, 5):
                         split = pic_href.split("&")
                         item_name = split[0]
                         # contents__string = contents4.string
+                        name_split = item_name.split("=")
+                        split_ = name_split[1]
                         os.chdir(curDir)
                         temp += 1
-                        if item_name not in readLines:
+                        if split_ not in readLines:
                             print('下载第' + str(temp) + '个'+pic_href)
-                            common.save_url_down(doneDownPath, file_down_url, item_name, temp)
+                            common.save_url_down(doneDownPath, file_down_url, split_, temp)
                         else:
                             print('第' + str(temp) + '已存在')
 print("打印完成")
