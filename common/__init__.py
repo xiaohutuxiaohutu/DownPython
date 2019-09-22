@@ -300,7 +300,7 @@ def get_img_url_list(url):
     # print('图片数量：' + str(len(img_url_list)))
     # print('----------- 去重 ------------------')
     new_list = list_distinct(img_url_list)
-    print('去重后图片数量：' + str(len(new_list)))
+    # print('去重后图片数量：' + str(len(new_list)))
     return [new_list, new_title]
 
 
