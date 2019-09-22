@@ -10,10 +10,12 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
-preUrl = 'https://f.wonderfulday30.live/'
+preUrl = 'https://f.wonderfulday29.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录、
 downFilePath = userPath + '/Pictures/Camera Roll/all/xingqufenxiang/'
+common.down_all_pic(curDir, preUrl, downFilePath)
 
+'''
 file_name_list = common.get_file_name_list(curDir, 'txt')
 for index, file_name in enumerate(file_name_list, 1):
     print('下载第' + str(index) + '个文件：' + file_name)
@@ -59,3 +61,4 @@ for index, file_name in enumerate(file_name_list, 1):
 
 # file_obj.close
 print("all over")
+'''

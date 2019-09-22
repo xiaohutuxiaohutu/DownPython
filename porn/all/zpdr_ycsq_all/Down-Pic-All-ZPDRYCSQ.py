@@ -11,7 +11,7 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 ISOTIMEFORMAT = '%Y-%m-%d %X'
 
-preUrl = 'https://f.wonderfulday30.live/'
+preUrl = 'https://f.wonderfulday29.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录、
 downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren/'
 

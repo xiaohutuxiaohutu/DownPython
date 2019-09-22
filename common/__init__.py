@@ -327,6 +327,8 @@ def down_all_pic(cur_dir, replace_url, down_file_path):
                 # 获取除了JH外的所有图片连接
                 url_list = get_img_url_list(line)
                 imgUrls = url_list[0]
+                total = str(len(imgUrls))
+                print('去重后图片数量：' + total)
                 newTitle = url_list[1]
                 if len(imgUrls) == 0:
                     os.chdir(cur_dir)
@@ -340,10 +342,10 @@ def down_all_pic(cur_dir, replace_url, down_file_path):
                         fileUrl = file_url.replace('http://pic.w26.rocks/', replace_url)
                         image_name = fileUrl.split("/")[-1]
                         if not os.path.exists(image_name):
-                            print('下载第' + str(i + 1) + '个:' + file_url)
+                            print('下载第' + total + '-' + str(i + 1) + '个:' + file_url)
                             down_img(fileUrl)
                         else:
-                            print('第' + str(i + 1) + '个已存在:' + file_url)
+                            print('第' + total + '-' + str(i + 1) + '个已存在:' + file_url)
                 print("-----down over----------------")
         os.remove(file_name)
     print("all over")

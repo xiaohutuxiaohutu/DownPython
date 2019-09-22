@@ -17,6 +17,9 @@ userPath = os.path.expanduser('~')  # 获取用户目录
 # 文件下载保存路径
 downFilePath = userPath + '/Pictures/Camera Roll/jh/自拍达人原创申请/'
 # downFilePath = 'D:/图片/91porn/精华/91自拍达人原创申请/' + (datetime.datetime.now().strftime('%Y-%m-%d')) + '/'
+common.down_all_pic(curDir, preUrl, downFilePath)
+
+'''
 common.create_file(downFilePath)
 file_name_list = common.get_file_name_list(curDir, 'txt')
 for num, file_name in enumerate(file_name_list, 1):
@@ -53,3 +56,4 @@ for num, file_name in enumerate(file_name_list, 1):
     os.remove(file_name)
 # file.close
 print("all over")
+'''

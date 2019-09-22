@@ -11,15 +11,15 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 
 temp = 0
-preUrl = 'https://f.wonderfulday30.live/'
+preUrl = 'https://f.wonderfulday29.live/'
 listTagName = ['img']
 # 保存已下载的连接
 doneDownPath = curDir + '/DoneDown-All-ZPDR.text'  # 文件不需要创建，当open是如果不存在会自动打开
 with open(doneDownPath) as fileObj:
     readLines = fileObj.read().splitlines()
-for i in range(1, 5):
+for i in range(1, 25):
     print('第' + str(i) + '页')
-    url = 'https://f.wonderfulday30.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
+    url = 'https://f.wonderfulday29.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
     print(url)
     soup = common.get_beauty_soup(url)
     # 查找所有 id 包含normalthread 的tags
