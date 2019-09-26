@@ -7,7 +7,7 @@ rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取Do
 sys.path.append(rootDir)
 
 temp = 0
-preUrl = 'https://f.wonderfulday30.live/'
+preUrl = 'https://f.wonderfulday29.live/'
 doneDownPath = curDir + '/DoneDown-JH-WAWQ.text'
 with open(doneDownPath) as fileObj:
     # readLines = fileObj.readlines()

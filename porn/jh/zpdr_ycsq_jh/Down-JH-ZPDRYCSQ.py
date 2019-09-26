@@ -8,9 +8,9 @@ rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取my
 # sys.path.append(r"C:\workspace\GitHub\DownPython")
 sys.path.append(rootDir)
 
-header = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
-ISOTIMEFORMAT = '%Y-%m-%d %X'
+# header = {
+#     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
+# ISOTIMEFORMAT = '%Y-%m-%d %X'
 
 preUrl = 'https://f.wonderfulday29.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录
@@ -19,6 +19,7 @@ downFilePath = userPath + '/Pictures/Camera Roll/jh/自拍达人原创申请/'
 # downFilePath = 'D:/图片/91porn/精华/91自拍达人原创申请/' + (datetime.datetime.now().strftime('%Y-%m-%d')) + '/'
 common.down_all_pic(curDir, preUrl, downFilePath)
 
+common.del_old_Undown_Text(curDir)
 '''
 common.create_file(downFilePath)
 file_name_list = common.get_file_name_list(curDir, 'txt')

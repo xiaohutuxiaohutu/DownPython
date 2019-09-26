@@ -313,6 +313,24 @@ def get_file_name_list(file_dir, file_type):
     return file_name_list
 
 
+def del_old_Undown_Text(file_dir):
+    file_list = []
+    for root, dirs, files in os.walk(file_dir):
+        for file in files:
+            if file.endswith('未下载.text'):
+                file_list.append(os.path.join(root, file))
+    if len(file_list) >= 2:
+        file_name = datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.text'
+        print(file_name)
+        for f in file_list:
+            split = f.split('\\')
+            L = len(split) - 1
+            print(split)
+            print(split[L])
+            if split[L] != file_name:
+                os.remove(f)
+
+
 def down_all_pic(cur_dir, replace_url, down_file_path):
     file_name_list = get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(file_name_list, 1):
