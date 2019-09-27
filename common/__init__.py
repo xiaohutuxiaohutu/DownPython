@@ -331,13 +331,12 @@ def del_old_Undown_Text(file_dir):
                 os.remove(f)
 
 
-# 下载text文档中的连接图片
-def down_all_pic(cur_dir, replace_url, down_file_path):
-    file_name_list = get_file_name_list(cur_dir, 'txt')
+# 91-下载text文档中的连接图片
+def down_all_pic(down_param):
+    file_name_list = get_file_name_list(down_param['cur_dir'], 'txt')
     for index, file_name in enumerate(file_name_list, 1):
         print('下载第' + str(index) + '个文件：' + file_name)
         # 打开文件
-        # file_obj = open(curDir + "/2019-08-23_10-02_0.txt")
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
                 print('第' + str(num) + '行：')
@@ -350,15 +349,15 @@ def down_all_pic(cur_dir, replace_url, down_file_path):
                 print('去重后图片数量：' + total)
                 newTitle = url_list[1]
                 if len(imgUrls) == 0:
-                    os.chdir(cur_dir)
+                    os.chdir(down_param['cur_dir'])
                     save_not_down_url(line, newTitle, num)
                 else:
-                    path = down_file_path + str(newTitle.strip()) + '/'
+                    path = down_param['down_file_path'] + str(newTitle.strip()) + '/'
                     create_file(path)
                     os.chdir(path)
                     for i in range(0, len(imgUrls)):
                         file_url = imgUrls[i].get('file')
-                        fileUrl = file_url.replace('http://pic.w26.rocks/', replace_url)
+                        fileUrl = file_url.replace('http://pic.w26.rocks/', down_param['replace_url'])
                         image_name = fileUrl.split("/")[-1]
                         if not os.path.exists(image_name):
                             print('第' + str(num) + '行：第 ' + str(i + 1) + ' / ' + total + '个:' + file_url)
