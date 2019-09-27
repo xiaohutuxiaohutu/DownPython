@@ -331,6 +331,7 @@ def del_old_Undown_Text(file_dir):
                 os.remove(f)
 
 
+# 下载text文档中的连接图片
 def down_all_pic(cur_dir, replace_url, down_file_path):
     file_name_list = get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(file_name_list, 1):
@@ -367,3 +368,90 @@ def down_all_pic(cur_dir, replace_url, down_file_path):
                 print("-----down over----------------")
         os.remove(file_name)
     print("all over")
+
+
+listTagName = ['img']
+
+
+# 保存非精华连接   current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
+def write_to_text_exclude_jh(down_param):
+    temp = 0
+    with open(down_param['done_down_path']) as fileObj:
+        readLines = fileObj.read().splitlines()
+    for i in range(1, 10):
+        print('第' + str(i) + '页')
+        # url = 'https://f.wonderfulday29.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
+        url = down_param['down_url'] + str(i)
+        print(url)
+        soup = get_beauty_soup(url)
+        # 查找所有 id 包含normalthread 的tags
+        resultTags = soup.find_all(id=re.compile('normalthread'))
+        for tag in resultTags:
+            for child in tag.children:
+                if len(child) > 1:
+                    contents1 = child.contents[5]
+                    contents2 = contents1.contents
+                    if len(contents2) >= 0:
+                        flag = True  # 默认不是精华
+                        for item in range(0, len(contents2)):
+                            tag_name = contents2[item]
+                            if tag_name.name in listTagName:
+                                tag_name_src = tag_name['src']
+                                rfind = tag_name_src.find('digest_1.gif') >= 0
+                                if rfind:
+                                    flag = False
+                                    break
+                        contents3 = contents2[3].contents
+                        if len(contents3) > 0 and flag:
+                            contents4 = contents3[0]
+                            pic_href = contents4['href']
+                            file_down_url = down_param['pre_url'] + pic_href
+                            split = pic_href.split("&")
+                            item_name = split[0]
+                            # contents__string = contents4.string
+                            name_split = item_name.split("=")
+                            split_ = name_split[1]
+                            os.chdir(down_param['cur_dir'])
+                            temp += 1
+                            if split_ not in readLines:
+                                print('下载第' + str(temp) + '个' + pic_href)
+                                save_url_down(down_param['done_down_path'], file_down_url, split_, temp)
+                            else:
+                                print('第' + str(temp) + '已存在')
+    print("打印完成")
+
+
+# 保存精华下载链接
+
+# current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
+def write_to_text_include_jh(down_param):
+    temp = 0
+    with open(down_param['done_down_path']) as fileObj:
+        # readLines = fileObj.readlines()
+        readLines = fileObj.read().splitlines()
+    for i in range(1, 2):
+        print('第' + str(i) + '页')
+        # url = "https://f.wonderfulday29.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
+        url = down_param['down_url'] + str(i)
+        print(url)
+        soup = get_beauty_soup(url)
+        itemUrl = soup.select(
+            "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
+
+        for j in range(0, len(itemUrl)):
+            sort_href = itemUrl[j].get('href')
+            # print(sort_href)
+            file_url = down_param['pre_url'] + sort_href
+            split = sort_href.split("&")
+            item_name = split[0]
+            name_split = item_name.split("=")
+            split_ = name_split[1]
+            print(split_)
+            temp += 1
+            os.chdir(down_param['cur_dir'])
+            if split_ not in readLines:
+                print('下载第' + str(j + 1) + '个:' + file_url)
+                save_url_down(down_param['done_down_path'], file_url, split_, temp)
+            else:
+                print('第' + str(j + 1) + '个已存在:' + file_url)
+    print("打印完成")
