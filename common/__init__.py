@@ -297,7 +297,6 @@ def get_img_url_list(url):
     img_url_list.extend(img_url_list_2)
     img_url_list.extend(img_url_list_3)
     img_url_list.extend(img_url_list_1)
-    # print('图片数量：' + str(len(img_url_list)))
     # print('----------- 去重 ------------------')
     new_list = list_distinct(img_url_list)
     # print('去重后图片数量：' + str(len(new_list)))
@@ -321,13 +320,14 @@ def del_old_Undown_Text(file_dir):
                 file_list.append(os.path.join(root, file))
     if len(file_list) >= 2:
         file_name = datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.text'
-        print(file_name)
+
         for f in file_list:
             split = f.split('\\')
             L = len(split) - 1
-            print(split)
-            print(split[L])
+            # print(split)
+            # print(split[L])
             if split[L] != file_name:
+                print('删除***未下载.text:' + f)
                 os.remove(f)
 
 
@@ -342,21 +342,21 @@ def down_all_pic(down_param):
                 print('第' + str(num) + '行：')
                 line = value.strip('\n')
                 print(line)
-                # 获取除了JH外的所有图片连接
+                # 获取所有图片连接
                 url_list = get_img_url_list(line)
-                imgUrls = url_list[0]
-                total = str(len(imgUrls))
+                img_urls = url_list[0]
+                total = str(len(img_urls))
                 print('去重后图片数量：' + total)
-                newTitle = url_list[1]
-                if len(imgUrls) == 0:
+                new_title = url_list[1]
+                if len(img_urls) == 0:
                     os.chdir(down_param['cur_dir'])
-                    save_not_down_url(line, newTitle, num)
+                    save_not_down_url(line, new_title, num)
                 else:
-                    path = down_param['down_file_path'] + str(newTitle.strip()) + '/'
+                    path = down_param['down_file_path'] + str(new_title.strip()) + '/'
                     create_file(path)
                     os.chdir(path)
-                    for i in range(0, len(imgUrls)):
-                        file_url = imgUrls[i].get('file')
+                    for i in range(0, len(img_urls)):
+                        file_url = img_urls[i].get('file')
                         fileUrl = file_url.replace('http://pic.w26.rocks/', down_param['replace_url'])
                         image_name = fileUrl.split("/")[-1]
                         if not os.path.exists(image_name):
@@ -384,8 +384,8 @@ def write_to_text_exclude_jh(down_param):
         print(url)
         soup = get_beauty_soup(url)
         # 查找所有 id 包含normalthread 的tags
-        resultTags = soup.find_all(id=re.compile('normalthread'))
-        for tag in resultTags:
+        result_tags = soup.find_all(id=re.compile('normalthread'))
+        for tag in result_tags:
             for child in tag.children:
                 if len(child) > 1:
                     contents1 = child.contents[5]
@@ -434,11 +434,11 @@ def write_to_text_include_jh(down_param):
         url = down_param['down_url'] + str(i)
         print(url)
         soup = get_beauty_soup(url)
-        itemUrl = soup.select(
+        item_url = soup.select(
             "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
 
-        for j in range(0, len(itemUrl)):
-            sort_href = itemUrl[j].get('href')
+        for j in range(0, len(item_url)):
+            sort_href = item_url[j].get('href')
             # print(sort_href)
             file_url = down_param['pre_url'] + sort_href
             split = sort_href.split("&")
