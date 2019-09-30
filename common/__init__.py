@@ -30,7 +30,7 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 # 替换特殊字符
 def replace_special_char(old_str):
     # newstr = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', old_str)
-    new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+', '', old_str)
+    new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+|\.\.\.+', '', old_str)
     return new_str
 
 
