@@ -6,6 +6,7 @@ import common
 curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
 rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
 sys.path.append(rootDir)
+# downFilePath = 'D:/图片/91porn/ALL/91自拍达人原创申请/' + (datetime.datetime.now().strftime('%Y-%m-%d')) + '/'
 
 down_param = {
     'cur_dir': curDir,
