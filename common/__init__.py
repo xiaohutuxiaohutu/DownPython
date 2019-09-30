@@ -377,7 +377,7 @@ def write_to_text_exclude_jh(down_param):
     temp = 0
     with open(down_param['done_down_path']) as fileObj:
         readLines = fileObj.read().splitlines()
-    for i in range(1, 10):
+    for i in range(down_param['start_page'], down_param['end_page']):
         print('第' + str(i) + '页')
         # url = 'https://f.wonderfulday29.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
         url = down_param['down_url'] + str(i)
@@ -428,7 +428,7 @@ def write_to_text_include_jh(down_param):
     with open(down_param['done_down_path']) as fileObj:
         # readLines = fileObj.readlines()
         readLines = fileObj.read().splitlines()
-    for i in range(1, 2):
+    for i in range(down_param['start_page'], down_param['end_page']):
         print('第' + str(i) + '页')
         # url = "https://f.wonderfulday29.live/forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=" + str(i)
         url = down_param['down_url'] + str(i)

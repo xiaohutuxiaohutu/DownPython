@@ -1,6 +1,6 @@
 import os
-import re
 import sys
+
 import common
 
 curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
