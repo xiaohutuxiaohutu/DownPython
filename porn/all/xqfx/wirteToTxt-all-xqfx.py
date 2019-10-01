@@ -13,6 +13,6 @@ down_param = {
     'done_down_path': curDir + '/down-done.text',
     'down_url': 'https://f.wonderfulday29.live/forumdisplay.php?fid=33&orderby=dateline&filter=2592000&page=',
     'start_page': 1,
-    'end_page': 5
+    'end_page': 3
 }
 common.write_to_text_exclude_jh(down_param)

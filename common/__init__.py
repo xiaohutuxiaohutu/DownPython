@@ -445,7 +445,7 @@ def write_to_text_include_jh(down_param):
             item_name = split[0]
             name_split = item_name.split("=")
             split_ = name_split[1]
-            print(split_)
+            # print(split_)
             temp += 1
             os.chdir(down_param['cur_dir'])
             if split_ not in readLines:

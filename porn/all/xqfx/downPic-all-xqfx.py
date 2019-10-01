@@ -1,6 +1,7 @@
 import os
 import sys
 import common
+import datetime
 
 curDir = os.path.abspath(os.curdir)
 rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
@@ -9,8 +10,8 @@ sys.path.append(rootDir)
 
 
 userPath = os.path.expanduser('~')  # 获取用户目录、
-downFilePath = userPath + '/Pictures/Camera Roll/all/xingqufenxiang/'
-# downFilePath = 'D:/图片/91porn/ALL/兴趣分享/' + (datetime.datetime.now().strftime('%Y-%m-%d')) + '/'
+# downFilePath = userPath + '/Pictures/Camera Roll/all/xingqufenxiang/'
+downFilePath = 'D:/图片/91porn/ALL/兴趣分享/' + (datetime.datetime.now().strftime('%Y-%m-%d')) + '/'
 
 down_param = {
     'cur_dir': curDir,
