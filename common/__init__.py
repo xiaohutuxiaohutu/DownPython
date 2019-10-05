@@ -348,7 +348,7 @@ def down_all_pic(down_param):
                 total = str(len(img_urls))
                 print('去重后图片数量：' + total)
                 new_title = url_list[1]
-                if len(img_urls) == 0:
+                if len(img_urls) == 0 or len(img_urls) == 1:
                     os.chdir(down_param['cur_dir'])
                     save_not_down_url(line, new_title, num)
                 else:
