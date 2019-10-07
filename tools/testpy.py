@@ -21,6 +21,10 @@ url = "https://www.790nd.com/piclist5/index_1.html"
 split = url.split('_')[0]
 print(split)
 
+url='/AAtupian/AAAwz/136676.html'
+split_ = url.split('/')[3].split('.')[0]
+print(split_)
+
 
 def listen_music(name):
     while True:

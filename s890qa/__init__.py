@@ -19,7 +19,7 @@ def write_txt(params):
     end_page = params['end_page']
     down_url = params['down_url']
     with open(done_down_txt, 'a+') as fileObj:
-        read_lines = fileObj.readlines()
+        read_lines = fileObj.read().splitlines()
     temp = 0
     for i in range(start_page, end_page):
         print('第' + str(i) + '页')

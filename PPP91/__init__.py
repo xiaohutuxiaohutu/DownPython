@@ -3,14 +3,10 @@ import common
 import requests
 import sys
 from bs4 import BeautifulSoup
+import datetime
 
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
-ISOTIMEFORMAT = '%Y-%m-%d %X'
-
-curDir = os.path.abspath(os.curdir)  # 当前文件路径
-rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取DownPython，也就是项目的根路径
-sys.path.append(rootDir)
 
 
 def down_pic(img_urls, down_file_path, row_num):
@@ -64,7 +60,7 @@ def down_image(params):
     cur_dir = params['cur_dir']
     down_path = params['down_path']
     # print(cur_dir)
-    name_list = common.get_file_name_list(curDir, 'txt')
+    name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(name_list, 1):
         print('下载第' + str(index) + '个文件：' + file_name)
         with open(file_name) as file:
@@ -75,3 +71,46 @@ def down_image(params):
                 path = down_path + img_urls[0] + '/'
                 down_pic(img_urls[1], path, num)
         os.remove(file_name)
+
+
+def write_txt(params):
+    cur_dir = params['cur_dir']
+    pre_url = params['pre_url']
+    down_url = params['down_url']
+    start_page = params['start_page']
+    end_page = params['end_page']
+    done_down_txt = params['done_down_txt']
+    with open(done_down_txt, 'a+') as downObj:
+        readlines = downObj.read().splitlines()
+    # 用get方法打开url并发送headers
+    temp = 0
+    for i in range(start_page, end_page):
+        print('第' + str(i) + '页')
+        url = ''
+        if i == 1:
+            url = down_url.split('-')[0] + '.html'
+        else:
+            url = down_url % i
+        print(url)
+        proxy_ip = common.get_ip()
+        html = requests.get(url, headers=header, proxies=proxy_ip)
+
+        html.encoding = 'utf-8'
+
+        soup = BeautifulSoup(html.text, 'lxml')
+        itemUrl = soup.select("body div[class='main'] li a")
+
+        for j in range(0, len(itemUrl)):
+            fileUrl = itemUrl[j].get('href')
+            # print('fileUrl:' + fileUrl)
+            fileU = pre_url + fileUrl
+            temp += 1
+            # print("fileUrl:" + fileUrl)
+            os.chdir(cur_dir)
+            file_num = fileUrl.split('/')[3].split('.')[0]
+            if file_num not in readlines:
+                with open(datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+') as f:
+                    f.write(fileU + '\n')
+                with open(done_down_txt, 'a+') as f:
+                    f.write(file_num + '\n')
+    print("打印完成")
