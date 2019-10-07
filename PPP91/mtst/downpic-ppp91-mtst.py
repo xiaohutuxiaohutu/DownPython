@@ -4,7 +4,6 @@ import PPP91
 import threading
 
 curDir = os.path.abspath(os.curdir)  # 当前文件路径
-ISOTIMEFORMAT = '%Y-%m-%d %X'
 down_path = 'D:/图片/PPP91/美腿/%s/' % (datetime.datetime.now().strftime('%Y-%m-%d'))
 down_param = {
     'cur_dir': curDir,
