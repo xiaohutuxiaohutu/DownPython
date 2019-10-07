@@ -51,10 +51,11 @@ temp=0
 for i in range(397,400):
     print('第'+str(i)+'页')
     url=''
+    'http://www.h7j2.com/AAtupian/AAAtb/zipai/index-2.html'
     if(i==1):
-        url='http://www.m1f3.com/AAtupian/AAAtb/zipai/'
+        url='http://www.h7j2.com/AAtupian/AAAtb/zipai/'
     else:
-        url="http://www.m1f3.com/AAtupian/AAAtb/zipai/index-"+str(i)+".html"
+        url="http://www.h7j2.com/AAtupian/AAAtb/zipai/index-"+str(i)+".html"
     print(url)
     proxyip=get_random_ip(ip_list)
     html = requests.get(url,headers = header, proxies=proxyip)
