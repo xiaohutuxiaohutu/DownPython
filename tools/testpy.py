@@ -16,6 +16,10 @@ with open(file_path) as fileObj:
     read = fileObj.read()
     print(read)
 '''
+url = "https://www.790nd.com/piclist5/index_1.html"
+
+split = url.split('_')[0]
+print(split)
 
 
 def listen_music(name):

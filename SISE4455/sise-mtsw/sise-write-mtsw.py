@@ -1,11 +1,6 @@
-import datetime
 import os
 import SISE4455
 
-if (os.name == 'nt'):
-    print(u'windows 系统')
-else:
-    print(u'linux')
 curDir = os.path.abspath(os.curdir)  # 当前文件路径
 params = {
     'cur_dir': curDir,

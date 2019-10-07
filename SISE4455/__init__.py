@@ -10,6 +10,14 @@ header = {
 proxy_ip = common.get_ip()
 
 
+def get_soup(url):
+    print(url)
+    html = requests.get(url, headers=header, proxies=proxy_ip)
+    html.encoding = 'utf-8'
+    soup = BeautifulSoup(html.text, 'lxml')
+    return soup
+
+
 def write_to_txt(params):
     cur_dir = params['cur_dir']
     pre_url = params['pre_url']
@@ -18,15 +26,9 @@ def write_to_txt(params):
     end_page = params['end_page']
     temp = 0
     for i in range(start_page, end_page):
-        print('第' + str(i) + '页')
-        # url = "https://www.4455sk.com/tupian/list-偷拍自拍-" + str(i) + ".html"
-        url = down_url % (i)
-        print(url)
-        html = requests.get(url, headers=header, proxies=proxy_ip)
-
-        html.encoding = 'utf-8'
-
-        soup = BeautifulSoup(html.text, 'lxml')
+        print('第 %i 页' % i)
+        url = down_url % i
+        soup = get_soup(url)
         itemUrl = soup.select(
             "body div[class='maomi-content'] main[id='main-container'] div[class='text-list-html'] div ul li a")
 
@@ -42,3 +44,45 @@ def write_to_txt(params):
                 f = open(file_name, 'a+')
                 f.write(fileUrl + '\n')
                 f.close()
+
+
+def down_pic(params):
+    cur_dir = params['cur_dir']
+    down_path = params['down_path']
+    name_list = common.get_file_name_list(cur_dir, 'txt')
+    for index, file_name in enumerate(name_list, 1):
+        print('下载第 %i 个文件：%s ' % (index, file_name))
+
+        with open(file_name) as file:
+            for num, value in enumerate(file, 1):
+                line = value.strip('\n')
+                print('第 %i 行： %s' % (num, line))
+                itemSoup = get_soup(line)
+                title = itemSoup.title.string
+                title = common.replace_special_char(title).strip()
+                new_title = title.split('www')[-1]
+                print(new_title)
+
+                imgUrls = itemSoup.select(
+                    "body div[class='maomi-content'] main[id='main-container'] div[class='content'] img")
+
+                img_urls = common.list_distinct(imgUrls)
+                print('去重后图片数量： %i' % len(img_urls))
+                s = len(img_urls)
+                if s > 1:
+                    path = down_path + str(new_title) + '/'
+                    if not (os.path.exists(path)):
+                        os.makedirs(path)
+                    os.chdir(path)
+                    for i in range(0, len(img_urls)):
+                        img_url = img_urls[i].get('data-original')
+                        image_name = img_url.split("/")[-1]
+                        if not os.path.exists(image_name):
+                            print('下载第 %i 行； 第 %i  / %i  个: %s' % (num, i + 1, s, img_url))
+                            imageUrl = requests.get(img_url, headers=header, verify=True)
+                            with open(image_name, 'wb') as f:
+                                f.write(imageUrl.content)
+                print("-----down over----------------")
+
+        os.remove(file_name)
+    print("all over")
