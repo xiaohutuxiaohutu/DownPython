@@ -28,12 +28,11 @@ def down_pic(img_urls, down_file_path, row_num):
                 imageUrl = requests.get(img_url, headers=header, proxies=proxy_ip, timeout=15)
                 if imageUrl.status_code == 200:
                     if not os.path.exists(image_name):
-                        print('下载第' + str(row_num) + '行； 第' + str(i + 1) + '  / ' + str(total_num) + '  个: ' + img_url)
+                        print('下载第%i 行； 第 %i  / %i 个： %s' % (row_num, i + 1, total_num, img_url))
                         with open(image_name, 'wb') as f:
                             f.write(imageUrl.content)
                     else:
-                        print(
-                            '第' + str(row_num) + '行； 第' + str(i + 1) + '  / ' + str(total_num) + '  个 已存在: ' + img_url)
+                        print('第%i 行； 第 %i  / %i 个 已存在： %s' % (row_num, i + 1, total_num, img_url))
             except requests.exceptions.RequestException:
                 print('--第%i行：第%i / %i 个-- %s连接错误----' % (row_num, i + 1, total_num, img_url))
                 # print('尝试第%i次连接'%restart)
@@ -59,3 +58,20 @@ def get_img_urls(url, row_num):
         return [new_title, new_list]
     except requests.exceptions.RequestException:
         print('第%i行:%s---连接超时' % (row_num, url))
+
+
+def down_image(params):
+    cur_dir = params['cur_dir']
+    down_path = params['down_path']
+    # print(cur_dir)
+    name_list = common.get_file_name_list(curDir, 'txt')
+    for index, file_name in enumerate(name_list, 1):
+        print('下载第' + str(index) + '个文件：' + file_name)
+        with open(file_name) as file:
+            for num, value in enumerate(file, 1):
+                line = value.strip('\n')
+                print('第%i行:%s' % (num, line))
+                img_urls = get_img_urls(line, num)
+                path = down_path + img_urls[0] + '/'
+                down_pic(img_urls[1], path, num)
+        os.remove(file_name)

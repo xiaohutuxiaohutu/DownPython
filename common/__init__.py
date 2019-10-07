@@ -458,7 +458,8 @@ def write_to_text_include_jh(down_param):
 def xs_down_pic(down_path, cur_dir, split_char):
     name_list = get_file_name_list(cur_dir, 'text')
     for index, file_name in enumerate(name_list, 1):
-        print('下载第' + str(index) + '个文件：' + file_name)
+        # print('下载第' + str(index) + '个文件：' + file_name)
+        print('下载第%i 个文件：%s' % (index, file_name))
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
