@@ -30,7 +30,7 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 # 替换特殊字符
 def replace_special_char(old_str):
     # newstr = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', old_str)
-    new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+|\.\.\.+', '', old_str)
+    new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+|\.\.\.+|\�+', '', old_str)
     return new_str
 
 
@@ -485,11 +485,11 @@ def xs_down_pic(down_path, cur_dir, split_char):
                     f = open(datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.txt', 'a+', encoding='utf-8')
                     f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n', )
                     f.close()
-
-                for i in range(0, len(img_urls)):
-                    img_url = img_urls[i].get('src')
-                    if img_url.startswith('http://tu.2015img.com'):
-                        print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
-                        os.chdir(path)
-                        down_img(img_url)
+                else:
+                    for i in range(0, len(img_urls)):
+                        img_url = img_urls[i].get('src')
+                        if img_url.startswith('http://tu.2015img.com'):
+                            print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
+                            os.chdir(path)
+                            down_img(img_url)
         os.remove(file_name)
