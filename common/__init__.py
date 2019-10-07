@@ -318,14 +318,12 @@ def del_old_Undown_Text(file_dir):
         for file in files:
             if file.endswith('未下载.text'):
                 file_list.append(os.path.join(root, file))
-    if len(file_list) >= 2:
+        # if len(file_list) >= 2:
         file_name = datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.text'
 
         for f in file_list:
             split = f.split('\\')
             L = len(split) - 1
-            # print(split)
-            # print(split[L])
             if split[L] != file_name:
                 print('删除***未下载.text:' + f)
                 os.remove(f)
