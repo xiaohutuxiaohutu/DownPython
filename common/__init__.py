@@ -452,3 +452,44 @@ def write_to_text_include_jh(down_param):
             else:
                 print('第' + str(j + 1) + '个已存在:' + file_url)
     print("打印完成")
+
+
+# 667xs下载图片
+def xs_down_pic(down_path, cur_dir, split_char):
+    name_list = get_file_name_list(cur_dir, 'text')
+    for index, file_name in enumerate(name_list, 1):
+        print('下载第' + str(index) + '个文件：' + file_name)
+        with open(file_name) as file_obj:
+            for num, value in enumerate(file_obj, 1):
+                line = value.strip('\n')
+                print('第' + str(num) + '行：' + line)
+                proxy_ip = get_ip()
+                html = requests.get(line, headers=header, proxies=proxy_ip)
+                html.encoding = 'gb2312'
+                itemSoup = BeautifulSoup(html.text, "lxml")
+                title = itemSoup.title.string
+                posi = title.index(split_char)
+                title = title[0:posi]
+                new_title = replace_special_char(title).strip()
+                imgUrls = itemSoup.select(
+                    "body div[id='wrap'] div[id='ks'] div[id='ks_xp'] div[class='main'] div[class='content'] div div[class='n_bd'] img")
+                img_urls = list_distinct(imgUrls)
+                s = str(len(img_urls))
+                print('图片数量：' + s)
+                path = down_path + str(new_title) + '/'
+                if not (os.path.exists(path)):
+                    os.makedirs(path)
+                os.chdir(path)
+                if len(img_urls) <= 1:
+                    os.chdir(cur_dir)
+                    f = open(datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.txt', 'a+', encoding='utf-8')
+                    f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n', )
+                    f.close()
+
+                for i in range(0, len(img_urls)):
+                    img_url = img_urls[i].get('src')
+                    if img_url.startswith('http://tu.2015img.com'):
+                        print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
+                        os.chdir(path)
+                        down_img(img_url)
+        os.remove(file_name)
