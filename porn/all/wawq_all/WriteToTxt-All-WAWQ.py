@@ -1,17 +1,14 @@
 import os
-import sys
 
 import common
 
 curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
-rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
-sys.path.append(rootDir)
 
 down_param = {
     'cur_dir': curDir,
     'pre_url': 'https://f.wonderfulday29.live/',
-    'done_down_path': curDir + '/Down-Done-WAWQ.text',
-    'down_url': 'https://f.wonderfulday29.live/forumdisplay.php?fid=21&orderby=dateline&filter=2592000&page=',
+    'done_down_text': curDir + '/Down-Done-WAWQ.text',
+    'down_url': 'https://f.wonderfulday29.live/forumdisplay.php?fid=21&orderby=dateline&filter=2592000&page=%i',
     'start_page': 1,
     'end_page': 4
 }
