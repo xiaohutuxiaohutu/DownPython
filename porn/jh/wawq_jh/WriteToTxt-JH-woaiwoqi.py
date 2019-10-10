@@ -8,7 +8,7 @@ down_param = {
     'cur_dir': curDir,
     'pre_url': 'https://f.wonderfulday29.live/',
     'done_down_text': curDir + '/DoneDown-JH-WAWQ.text',
-    'down_url': 'https://f.wonderfulday29.live/forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=',
+    'down_url': 'https://f.wonderfulday29.live/forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=%i',
     'start_page': 1,
     'end_page': 2
 }

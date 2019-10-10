@@ -140,12 +140,14 @@ def save_not_down_url(line, new_title, num):
 
 
 # 保存下载连接到txt文档
-def save_url_down(done_down_path, file_down_url, pic_href, num):
-    with open(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(num // 500) + '.txt', 'a+') as f:
+def save_url_down(done_down_text, file_down_url, pic_href, num):
+    file_name = '%s_%i.txt' % (datetime.datetime.now().strftime('%Y-%m-%d_%H-%M'), num)
+    # with open(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(num // 500) + '.txt', 'a+') as f:
+    with open(file_name, 'a+') as f:
         f.write(file_down_url + '\n')
     # 保存已下载的连接，防止重复下载
     # print(split)
-    with open(done_down_path, 'a+') as f:
+    with open(done_down_text, 'a+') as f:
         f.write(pic_href + '\n')
 
 
@@ -333,18 +335,18 @@ def del_old_Undown_Text(file_dir):
 def down_all_pic(down_param):
     file_name_list = get_file_name_list(down_param['cur_dir'], 'txt')
     for index, file_name in enumerate(file_name_list, 1):
-        print('下载第' + str(index) + '个文件：' + file_name)
+        print('下载第 %i 个文件： %s' % (index, file_name))
         # 打开文件
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
-                print('第' + str(num) + '行：')
                 line = value.strip('\n')
-                print(line)
+                print('第 %i 行： %s' % (num, line))
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
-                total = str(len(img_urls))
-                print('去重后图片数量：' + total)
+                # total = str(len(img_urls))
+                l = len(img_urls)
+                print('去重后图片数量： %i ' % l)
                 new_title = url_list[1]
                 if len(img_urls) == 0 or len(img_urls) == 1:
                     os.chdir(down_param['cur_dir'])
@@ -358,10 +360,10 @@ def down_all_pic(down_param):
                         fileUrl = file_url.replace('http://pic.w26.rocks/', down_param['replace_url'])
                         image_name = fileUrl.split("/")[-1]
                         if not os.path.exists(image_name):
-                            print('第' + str(num) + '行：第 ' + str(i + 1) + ' / ' + total + '个:' + file_url)
+                            print('第 %i 行：第 %i  / %i 个: %s' % (num, i, l, file_url))
                             down_img(fileUrl)
                         else:
-                            print('第' + str(num) + '行：第 ' + str(i + 1) + ' / ' + total + '个:' + file_url)
+                            print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i, l, file_url))
                 print("-----down over----------------")
         os.remove(file_name)
     print("all over")
@@ -382,8 +384,7 @@ def write_to_text_exclude_jh(down_param):
     with open(done_down_text) as fileObj:
         readLines = fileObj.read().splitlines()
     for i in range(start_page, end_page):
-        print('第' + str(i) + '页')
-        # url = 'https://f.wonderfulday29.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=' + str(i)
+        print('第 %i 页' % i)
         url = down_url % i
         print(url)
         soup = get_beauty_soup(url)
@@ -417,8 +418,8 @@ def write_to_text_exclude_jh(down_param):
                             os.chdir(cur_dir)
                             temp += 1
                             if split_ not in readLines:
-                                print('下载第' + str(temp) + '个' + pic_href)
-                                save_url_down(down_param['done_down_path'], file_down_url, split_, temp)
+                                print('下载第 %i 个: %s' % (temp, pic_href))
+                                save_url_down(done_down_text, file_down_url, split_, temp)
                             else:
                                 print('第' + str(temp) + '已存在')
     print("打印完成")
