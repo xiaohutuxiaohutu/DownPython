@@ -141,7 +141,7 @@ def save_not_down_url(line, new_title, num):
 
 # 保存下载连接到txt文档
 def save_url_down(done_down_text, file_down_url, pic_href, num):
-    file_name = '%s_%i.txt' % (datetime.datetime.now().strftime('%Y-%m-%d_%H-%M'), num)
+    file_name = '%s_%i.txt' % (datetime.datetime.now().strftime('%Y-%m-%d_%H-%M'), num // 500)
     # with open(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(num // 500) + '.txt', 'a+') as f:
     with open(file_name, 'a+') as f:
         f.write(file_down_url + '\n')

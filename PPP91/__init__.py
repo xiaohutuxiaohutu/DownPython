@@ -30,7 +30,7 @@ def down_pic(img_urls, down_file_path, row_num):
                     else:
                         print('第%i 行； 第 %i  / %i 个 已存在： %s' % (row_num, i + 1, total_num, img_url))
             except requests.exceptions.RequestException:
-                print('--第%i行：第%i / %i 个-- %s连接错误----' % (row_num, i + 1, total_num, img_url))
+                print('第 %i 行：第%i / %i 个---连接错误：-- %s----' % (row_num, i + 1, total_num, img_url))
                 # print('尝试第%i次连接'%restart)
         print("---------------------")
 
