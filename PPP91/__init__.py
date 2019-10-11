@@ -1,9 +1,11 @@
-import os
-import common
-import requests
-import sys
-from bs4 import BeautifulSoup
 import datetime
+import os
+from urllib import parse
+
+import requests
+from bs4 import BeautifulSoup
+
+import common
 
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
@@ -18,7 +20,10 @@ def down_pic(img_urls, down_file_path, row_num):
         proxy_ip = common.get_ip()
         for i in range(0, total_num):
             img_url = img_urls[i].get('src')
-            image_name = img_url.split("/")[-1]
+
+            # print(parse.unquote(img_url))
+            unquote = parse.unquote(img_url)
+            image_name = unquote.split("/")[-1]
 
             try:
                 imageUrl = requests.get(img_url, headers=header, proxies=proxy_ip, timeout=15)
@@ -40,6 +45,8 @@ def get_img_urls(url, row_num):
     try:
         html = requests.get(url, headers=header, proxies=proxy_ip, timeout=10)
         html.encoding = 'utf-8'
+        # html.encoding = 'gbk'
+
         itemSoup = BeautifulSoup(html.text, 'lxml')
         title = itemSoup.title.string
         title = common.replace_special_char(title)
