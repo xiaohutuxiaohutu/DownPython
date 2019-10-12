@@ -48,6 +48,8 @@ def get_img_urls(url, row_num):
         # html.encoding = 'gbk'
 
         itemSoup = BeautifulSoup(html.text, 'lxml')
+        # print(itemSoup.text)
+
         title = itemSoup.title.string
         title = common.replace_special_char(title)
         ind = title.index('-')

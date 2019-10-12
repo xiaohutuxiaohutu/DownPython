@@ -31,8 +31,11 @@ ISOTIMEFORMAT = '%Y-%m-%d %X'
 def replace_special_char(old_str):
     # newstr = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', old_str)
     # print('old_str:'+old_str)
-    new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+|\.\.\.+|\�+|�+', '', old_str)
-    return new_str
+    if old_str is not None:
+        new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+|\.\.\.+|\�+|�+', '', old_str)
+        return new_str
+    else:
+        return old_str
 
 
 # 替换并截取名字-porn使用
