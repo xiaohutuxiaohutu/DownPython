@@ -2,7 +2,7 @@ import os
 import sys
 
 import common
-
+import porn
 curDir = os.path.abspath(os.curdir)  # 当前文件路径
 
 down_param = {
@@ -13,4 +13,4 @@ down_param = {
     'start_page': 1,
     'end_page': 2
 }
-common.write_to_text_include_jh(down_param)
+porn.write_to_text_include_jh(down_param)

@@ -1,10 +1,8 @@
 import os
-import sys
-import common
 
+import common
+import porn
 curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
-rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
-sys.path.append(rootDir)
 
 down_param = {
     'cur_dir': curDir,
@@ -14,4 +12,4 @@ down_param = {
     'start_page': 1,
     'end_page': 4
 }
-common.write_to_text_exclude_jh(down_param)
+porn.write_to_text_exclude_jh(down_param)

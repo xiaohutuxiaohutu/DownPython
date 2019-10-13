@@ -1,7 +1,7 @@
 import os
 import datetime
 import common
-
+import porn
 curDir = os.path.abspath(os.curdir)
 
 userPath = os.path.expanduser('~')  # 获取用户目录、
@@ -12,7 +12,7 @@ down_param = {
     'replace_url': 'https://f.wonderfulday29.live/',
     'down_file_path': downFilePath
 }
-common.down_all_pic(down_param)
+porn.down_all_pic(down_param)
 
 # 删除旧的未下载文件
 common.del_old_Undown_Text(curDir)

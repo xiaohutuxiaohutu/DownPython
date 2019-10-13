@@ -2,7 +2,7 @@ import os
 import sys
 import common
 import datetime
-
+import porn
 curDir = os.path.abspath(os.curdir)
 
 
@@ -16,6 +16,6 @@ down_param = {
     'down_file_path': downFilePath
 }
 
-common.down_all_pic(down_param)
+porn.down_all_pic(down_param)
 
 common.del_old_Undown_Text(curDir)
