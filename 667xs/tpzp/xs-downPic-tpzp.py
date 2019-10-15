@@ -3,7 +3,7 @@ import os
 import sys
 
 import common
-
+import xs
 if (os.name == 'nt'):
     print(u'windows 系统')
 else:
@@ -19,6 +19,6 @@ sys.path.append(rootDir)
 
 down_path = 'D:/图片/667xs/自拍偷拍/' + datetime.datetime.now().strftime('%Y-%m-%d') + '/'
 
-common.xs_down_pic(down_path, curDir, '_自拍偷拍')
+xs.xs_down_pic(down_path, curDir, '_自拍偷拍')
 common.del_old_Undown_Text(curDir)
 print("all over")
