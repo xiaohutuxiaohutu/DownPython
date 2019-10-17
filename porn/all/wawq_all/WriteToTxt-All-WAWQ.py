@@ -11,7 +11,7 @@ down_param = {
     'done_down_text': curDir + '/Down-Done-WAWQ.text',
     'down_url': 'https://f.wonderfulday29.live/forumdisplay.php?fid=21&orderby=dateline&filter=2592000&page=%i',
     'start_page': 1,
-    'end_page': 4
+    'end_page': 3
 }
 # common.write_to_text_exclude_jh(down_param)
 porn.write_to_text_exclude_jh(down_param)

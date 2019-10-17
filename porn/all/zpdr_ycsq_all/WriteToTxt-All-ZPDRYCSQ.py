@@ -10,6 +10,6 @@ down_param = {
     'done_down_text': curDir + '/DoneDown-All-ZPDR.text',
     'down_url': 'https://f.wonderfulday29.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i',
     'start_page': 1,
-    'end_page': 4
+    'end_page': 3
 }
 porn.write_to_text_exclude_jh(down_param)
