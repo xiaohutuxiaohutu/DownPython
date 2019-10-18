@@ -16,6 +16,6 @@ down_param = {
     'down_file_path': downFilePath
 }
 
-porn.down_all_pic(down_param)
+porn.down_pic_inclue_child(down_param)
 
 common.del_old_Undown_Text(curDir)

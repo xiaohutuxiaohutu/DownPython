@@ -164,8 +164,6 @@ def get_jh_img_url_list(line):
     return [new_list, new_title]
 
 
-
-
 def get_img_child_url(url):
     soup = common.get_beauty_soup(url)
     # 获取当前页面的分页连接
@@ -197,6 +195,23 @@ def get_img_url_list(url):
     return [new_list, new_title]
 
 
+def get_child_img_url(url):
+    soup = common.get_beauty_soup(url)
+    img_url_list = soup.select(
+        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
+    img_url_list_2 = soup.select(
+        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tr td img[file]")
+    img_url_list_3 = soup.select(
+        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div div[class='postattachlist'] dl dd p img[file]")
+    img_url_list_1 = soup.select(
+        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tbody tr td a[href]")
+    img_url_list.extend(img_url_list_2)
+    img_url_list.extend(img_url_list_3)
+    img_url_list.extend(img_url_list_1)
+    new_list = common.list_distinct(img_url_list)
+    return new_list
+
+
 def down_all_pic(down_param):
     file_name_list = common.get_file_name_list(down_param['cur_dir'], 'txt')
     for index, file_name in enumerate(file_name_list, 1):
@@ -206,9 +221,57 @@ def down_all_pic(down_param):
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
                 print('第 %i 行： %s' % (num, line))
+                # 获取子页面连接
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
+                # total = str(len(img_urls))
+                l = len(img_urls)
+                print('去重后图片数量： %i ' % l)
+                new_title = url_list[1]
+                if len(img_urls) == 0 or len(img_urls) == 1:
+                    os.chdir(down_param['cur_dir'])
+                    save_not_down_url(line, new_title, num)
+                else:
+                    path = down_param['down_file_path'] + str(new_title.strip()) + '/'
+                    common.create_file(path)
+                    os.chdir(path)
+                    for i in range(0, len(img_urls)):
+                        file_url = img_urls[i].get('file')
+                        fileUrl = file_url.replace('http://pic.w26.rocks/', down_param['replace_url'])
+                        image_name = fileUrl.split("/")[-1]
+                        if not os.path.exists(image_name):
+                            print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, l, file_url))
+                            common.down_img(fileUrl)
+                        else:
+                            print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i + 1, l, file_url))
+                print("-----down over----------------")
+        os.remove(file_name)
+    print("all over")
+
+
+def down_pic_inclue_child(down_param):
+    file_name_list = common.get_file_name_list(down_param['cur_dir'], 'txt')
+    for index, file_name in enumerate(file_name_list, 1):
+        print('下载第 %i 个文件： %s' % (index, file_name))
+        # 打开文件
+        with open(file_name) as file_obj:
+            for num, value in enumerate(file_obj, 1):
+                line = value.strip('\n')
+                print('第 %i 行： %s' % (num, line))
+                # 获取子页面连接
+                child_img_url = get_img_child_url(line)
+                print(child_img_url)
+                new_img_list=[]
+                if len(child_img_url) > 0:
+                    new_list = []
+                    for item in child_img_url:
+                        new_list.extend(get_child_img_url(item))
+                    new_img_list = common.list_distinct(new_list)
+                # 获取所有图片连接
+                url_list = get_img_url_list(line)
+                img_urls = url_list[0]
+                img_urls.extend(new_img_list)
                 # total = str(len(img_urls))
                 l = len(img_urls)
                 print('去重后图片数量： %i ' % l)

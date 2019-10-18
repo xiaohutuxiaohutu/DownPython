@@ -17,6 +17,7 @@ ipUrl = 'https://www.kuaidaili.com/free/intr/'
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 
+
 # 667xs下载图片
 def xs_down_pic(down_path, cur_dir, split_char):
     name_list = common.get_file_name_list(cur_dir, 'text')
@@ -52,8 +53,12 @@ def xs_down_pic(down_path, cur_dir, split_char):
                 else:
                     for i in range(0, len(img_urls)):
                         img_url = img_urls[i].get('src')
-                        if img_url.startswith('http://tu.2015img.com'):
+                        # if img_url.startswith('http://tu.2015img.com'):
+                        os.chdir(path)
+                        image_name = img_url.split("/")[-1]
+                        if not os.path.exists(image_name):
                             print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
-                            os.chdir(path)
                             common.down_img(img_url)
-        os.remove(file_name)
+                        else:
+                            print('第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个:已存在 ' + img_url)
+    os.remove(file_name)

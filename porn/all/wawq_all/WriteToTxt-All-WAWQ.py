@@ -13,5 +13,4 @@ down_param = {
     'start_page': 1,
     'end_page': 3
 }
-# common.write_to_text_exclude_jh(down_param)
 porn.write_to_text_exclude_jh(down_param)

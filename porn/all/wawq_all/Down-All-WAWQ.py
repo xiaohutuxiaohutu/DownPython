@@ -12,7 +12,7 @@ down_param = {
     'replace_url': 'https://f.wonderfulday29.live/',
     'down_file_path': downFilePath
 }
-porn.down_all_pic(down_param)
+porn.down_pic_inclue_child(down_param)
 
 # 删除旧的未下载文件
 common.del_old_Undown_Text(curDir)
