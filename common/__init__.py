@@ -108,7 +108,8 @@ test_image_url = [
     'http://pic.w26.rocks/attachments//1908131059de4602941152bcd6.jpg'
 ]
 
-#获取指定目录下 指定类型的文件
+
+# 获取指定目录下 指定类型的文件
 def get_file_name_list(file_dir, file_type):
     file_name_list = []
     for root, dirs, files in os.walk(file_dir):
@@ -143,6 +144,7 @@ def file_exist(file_path):
 def create_file(file_path):
     if not (os.path.exists(file_path)):
         os.makedirs(file_path)
+
 
 # 根据图片连接保存图片
 def down_img(file_url):
@@ -209,6 +211,13 @@ def get_beauty_soup(url):
     return BeautifulSoup(html.text, 'lxml')
 
 
+def get_beauty_soup_encoding(url, encoding):
+    proxy_ip = get_ip()
+    html = requests.get(url, headers=header, proxies=proxy_ip)
+    html.encoding = encoding
+    return BeautifulSoup(html.text, 'lxml')
+
+
 # 排序
 def list_distinct(old_list):
     new_list = list(set(old_list))
@@ -222,6 +231,7 @@ def get_title(url):
     soup = get_beauty_soup(url)
     new_title = replace_sub(soup.title.string)
     return new_title
+
 
 def del_old_Undown_Text(file_dir):
     file_list = []

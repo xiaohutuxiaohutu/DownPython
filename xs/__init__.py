@@ -18,6 +18,21 @@ header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 
 
+def get_img_urls(url, encoding, split_char):
+    proxy_ip = common.get_ip()
+    html = requests.get(url, headers=header, proxies=proxy_ip)
+    html.encoding = encoding
+    itemSoup = BeautifulSoup(html.text, "lxml")
+    title = itemSoup.title.string
+    posi = title.index(split_char)
+    title = title[0:posi]
+    new_title = common.replace_special_char(title).strip()
+    imgUrls = itemSoup.select(
+        "body div[id='wrap'] div[id='ks'] div[id='ks_xp'] div[class='main'] div[class='content'] div div[class='n_bd'] img")
+    img_urls = common.list_distinct(imgUrls)
+    return [img_urls, new_title]
+
+
 # 667xs下载图片
 def xs_down_pic(down_path, cur_dir, split_char):
     name_list = common.get_file_name_list(cur_dir, 'text')
@@ -28,17 +43,21 @@ def xs_down_pic(down_path, cur_dir, split_char):
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
                 print('第' + str(num) + '行：' + line)
-                proxy_ip = common.get_ip()
-                html = requests.get(line, headers=header, proxies=proxy_ip)
-                html.encoding = 'gb2312'
-                itemSoup = BeautifulSoup(html.text, "lxml")
-                title = itemSoup.title.string
-                posi = title.index(split_char)
-                title = title[0:posi]
-                new_title = common.replace_special_char(title).strip()
-                imgUrls = itemSoup.select(
-                    "body div[id='wrap'] div[id='ks'] div[id='ks_xp'] div[class='main'] div[class='content'] div div[class='n_bd'] img")
-                img_urls = common.list_distinct(imgUrls)
+                urls = get_img_urls(line, 'gb2312', split_char)
+
+                # proxy_ip = common.get_ip()
+                # html = requests.get(line, headers=header, proxies=proxy_ip)
+                # html.encoding = 'gb2312'
+                # itemSoup = BeautifulSoup(html.text, "lxml")
+                # title = itemSoup.title.string
+                # posi = title.index(split_char)
+                # title = title[0:posi]
+                # new_title = common.replace_special_char(title).strip()
+                # imgUrls = itemSoup.select(
+                #     "body div[id='wrap'] div[id='ks'] div[id='ks_xp'] div[class='main'] div[class='content'] div div[class='n_bd'] img")
+                # img_urls = common.list_distinct(imgUrls)
+                img_urls = urls[0]
+                new_title = urls[1]
                 s = str(len(img_urls))
                 print('图片数量：' + s)
                 path = down_path + str(new_title) + '/'
