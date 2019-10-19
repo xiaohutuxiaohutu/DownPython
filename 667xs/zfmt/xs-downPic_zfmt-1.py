@@ -6,7 +6,7 @@ import xs
 curDir = os.path.abspath(os.curdir)  # 当前文件路径
 userPath = os.path.expanduser('~')  # 获取用户目录
 down_path = 'D:/图片/667xs/制服美腿/' + datetime.datetime.now().strftime('%Y-%m-%d') + '/'
-file_name = curDir + '/tpzp-2019-10-07_5.text'
+file_name = curDir + '/tpzp-2019-10-07_9.text'
 with open(file_name) as file_obj:
     for num, value in enumerate(file_obj, 1):
         line = value.strip('\n')

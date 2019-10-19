@@ -11,7 +11,7 @@ proxy_ip = common.get_ip()
 
 
 def get_soup(url):
-    print(url)
+    # print(url)
     html = requests.get(url, headers=header, proxies=proxy_ip)
     html.encoding = 'utf-8'
     soup = BeautifulSoup(html.text, 'lxml')
@@ -67,7 +67,7 @@ def down_pic(params):
                 title = itemSoup.title.string
                 title = common.replace_special_char(title).strip()
                 new_title = title.split('www')[-1]
-                print(new_title)
+                # print(new_title)
 
                 imgUrls = itemSoup.select(
                     "body div[class='maomi-content'] main[id='main-container'] div[class='content'] img")
@@ -88,6 +88,8 @@ def down_pic(params):
                             imageUrl = requests.get(img_url, headers=header, verify=True)
                             with open(image_name, 'wb') as f:
                                 f.write(imageUrl.content)
+                        else:
+                            print('第 %i 行； 第 %i  / %i  个 已存在: %s' % (num, i + 1, s, img_url))
                 print("-----down over----------------")
 
         os.remove(file_name)

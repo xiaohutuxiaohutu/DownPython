@@ -44,18 +44,6 @@ def xs_down_pic(down_path, cur_dir, split_char):
                 line = value.strip('\n')
                 print('第' + str(num) + '行：' + line)
                 urls = get_img_urls(line, 'gb2312', split_char)
-
-                # proxy_ip = common.get_ip()
-                # html = requests.get(line, headers=header, proxies=proxy_ip)
-                # html.encoding = 'gb2312'
-                # itemSoup = BeautifulSoup(html.text, "lxml")
-                # title = itemSoup.title.string
-                # posi = title.index(split_char)
-                # title = title[0:posi]
-                # new_title = common.replace_special_char(title).strip()
-                # imgUrls = itemSoup.select(
-                #     "body div[id='wrap'] div[id='ks'] div[id='ks_xp'] div[class='main'] div[class='content'] div div[class='n_bd'] img")
-                # img_urls = common.list_distinct(imgUrls)
                 img_urls = urls[0]
                 new_title = urls[1]
                 s = str(len(img_urls))
@@ -70,14 +58,18 @@ def xs_down_pic(down_path, cur_dir, split_char):
                     f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n', )
                     f.close()
                 else:
+
                     for i in range(0, len(img_urls)):
-                        img_url = img_urls[i].get('src')
-                        # if img_url.startswith('http://tu.2015img.com'):
-                        os.chdir(path)
-                        image_name = img_url.split("/")[-1]
-                        if not os.path.exists(image_name):
-                            print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
-                            common.down_img(img_url)
-                        else:
-                            print('第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个:已存在 ' + img_url)
+                        try:
+                            img_url = img_urls[i].get('src')
+                            # if img_url.startswith('http://tu.2015img.com'):
+                            os.chdir(path)
+                            image_name = img_url.split("/")[-1]
+                            if not os.path.exists(image_name):
+                                print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
+                                common.down_img(img_url)
+                            else:
+                                print('第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个:已存在 ' + img_url)
+                        except requests.exceptions.RequestException:
+                            print('第 %i 行：第%i / %i 个---连接错误：-- %s----' % (num, i + 1, s, img_url))
     os.remove(file_name)
