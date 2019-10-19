@@ -24,6 +24,7 @@ def write_to_txt(params):
     down_url = params['down_url']
     start_page = params['start_page']
     end_page = params['end_page']
+    done_down_text = params['done_down_text']
     temp = 0
     for i in range(start_page, end_page):
         print('第 %i 页' % i)
@@ -31,19 +32,24 @@ def write_to_txt(params):
         soup = get_soup(url)
         itemUrl = soup.select(
             "body div[class='maomi-content'] main[id='main-container'] div[class='text-list-html'] div ul li a")
-
+        with open(done_down_text) as fileObj:
+            readLines = fileObj.read().splitlines()
         for j in range(0, len(itemUrl)):
             fileUrl = itemUrl[j].get('href')
             # print('fileUrl:'+fileUrl)
             if fileUrl is not None and fileUrl.find('.html') >= 0:
-                fileUrl = pre_url + fileUrl
-                temp += 1
-                print("fileUrl:" + fileUrl)
-                os.chdir(cur_dir)
-                file_name = '%s_%i.txt' % (datetime.datetime.now().strftime('%Y-%m-%d'), temp // 500)
-                f = open(file_name, 'a+')
-                f.write(fileUrl + '\n')
-                f.close()
+                if fileUrl not in readLines:
+                    fileUrl = pre_url + fileUrl
+                    temp += 1
+                    print("fileUrl:" + fileUrl)
+                    os.chdir(cur_dir)
+                    file_name = '%s_%i.txt' % (datetime.datetime.now().strftime('%Y-%m-%d'), temp // 500)
+                    with open(file_name, 'a+') as f:
+                        f.write(fileUrl + '\n')
+                else:
+                    print('第' + str(j + 1) + '个已存在:' + fileUrl)
+                    with open(done_down_text) as file_obj:
+                        file_obj.write(fileUrl, 'a+')
 
 
 def down_pic(params):
