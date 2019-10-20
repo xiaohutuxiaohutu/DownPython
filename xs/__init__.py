@@ -66,10 +66,12 @@ def xs_down_pic(down_path, cur_dir, split_char):
                             os.chdir(path)
                             image_name = img_url.split("/")[-1]
                             if not os.path.exists(image_name):
-                                print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
+                                # print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
+                                print('下载第 %i 行；第% i / %s个: %s ' % (num, i + 1, s, img_url))
                                 common.down_img(img_url)
                             else:
-                                print('第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个:已存在 ' + img_url)
+                                # print('第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个:已存在 ' + img_url)
+                                print('第 %i 行；第% i / %s个 已存在: %s ' % (num, i + 1, s, img_url))
                         except requests.exceptions.RequestException:
-                            print('第 %i 行：第%i / %i 个---连接错误：-- %s----' % (num, i + 1, s, img_url))
-    os.remove(file_name)
+                            print('第 %i 行：第%i / %s 个---连接错误：-- %s----' % (num, i + 1, s, img_url))
+        os.remove(file_name)
