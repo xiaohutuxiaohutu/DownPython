@@ -6,9 +6,9 @@ curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
 
 down_param = {
     'cur_dir': curDir,
-    'pre_url': 'https://f.wonderfulday29.live/',
+    'pre_url': 'https://f.w24.rocks/',
     'done_down_text': curDir + '/DoneDown-All-ZPDR.text',
-    'down_url': 'https://f.wonderfulday29.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i',
+    'down_url': 'https://f.w24.rocks/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i',
     'start_page': 1,
     'end_page': 3
 }

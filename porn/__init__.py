@@ -164,12 +164,18 @@ def get_jh_img_url_list(line):
     return [new_list, new_title]
 
 
-def get_img_child_url(url):
+def get_img_child_url(url, pre_url):
     soup = common.get_beauty_soup(url)
     # 获取当前页面的分页连接
     child_page_url = soup.select(
         "body div[id='wrap']  div[class='forumcontrol s_clear'] table tr td div[class='pages'] a[href]")
-    return child_page_url
+    new_list = []
+    for item in child_page_url:
+        get = pre_url + item.get('href')
+        print('child_page:%s' % get)
+        new_list.extend(get_img_url_list(get))
+    print('child_page_img:%i' % len(new_list))
+    return new_list
 
 
 def get_img_url_list(url):
@@ -252,6 +258,7 @@ def down_all_pic(down_param):
 
 def down_pic_inclue_child(down_param):
     file_name_list = common.get_file_name_list(down_param['cur_dir'], 'txt')
+    replace_url = down_param['replace_url']
     for index, file_name in enumerate(file_name_list, 1):
         print('下载第 %i 个文件： %s' % (index, file_name))
         # 打开文件
@@ -260,21 +267,23 @@ def down_pic_inclue_child(down_param):
                 line = value.strip('\n')
                 print('第 %i 行： %s' % (num, line))
                 # 获取子页面连接
-                child_img_url = get_img_child_url(line)
-                print(child_img_url)
-                new_img_list=[]
-                if len(child_img_url) > 0:
-                    new_list = []
-                    for item in child_img_url:
-                        new_list.extend(get_child_img_url(item))
-                    new_img_list = common.list_distinct(new_list)
+                child_img_url = get_img_child_url(line, replace_url)
+                # print(child_img_url)
+                # new_img_list = []
+                # if len(child_img_url) > 0:
+                #     new_list = []
+                #     for item in child_img_url:
+                #         get = replace_url + item.get('href')
+                #         print(get)
+                #         new_list.extend(get_img_url_list(get))
+                #     if len(new_img_list) > 0:
+                #         new_img_list = common.list_distinct(new_list)
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
-                img_urls.extend(new_img_list)
-                # total = str(len(img_urls))
-                l = len(img_urls)
-                print('去重后图片数量： %i ' % l)
+                img_urls.extend(child_img_url)
+                total = len(img_urls)
+                print('去重后图片数量： %i ' % total)
                 new_title = url_list[1]
                 if len(img_urls) == 0 or len(img_urls) == 1:
                     os.chdir(down_param['cur_dir'])
@@ -288,10 +297,10 @@ def down_pic_inclue_child(down_param):
                         fileUrl = file_url.replace('http://pic.w26.rocks/', down_param['replace_url'])
                         image_name = fileUrl.split("/")[-1]
                         if not os.path.exists(image_name):
-                            print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, l, file_url))
+                            print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, total, file_url))
                             common.down_img(fileUrl)
                         else:
-                            print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i + 1, l, file_url))
+                            print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i + 1, total, file_url))
                 print("-----down over----------------")
         os.remove(file_name)
     print("all over")
