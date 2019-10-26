@@ -1,8 +1,9 @@
 import os
-import common
 import datetime
-curDir = os.path.abspath(os.curdir)
 import porn
+curDir = os.path.abspath(os.curdir)
+
+
 preUrl = 'https://f.wonderfulday29.live/'
 userPath = os.path.expanduser('~')  # 获取用户目录
 # 文件下载保存路径
@@ -16,4 +17,3 @@ down_param = {
 }
 porn.down_all_pic(down_param)
 
-common.del_old_Undown_Text(curDir)

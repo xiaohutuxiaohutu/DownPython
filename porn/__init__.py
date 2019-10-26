@@ -9,6 +9,8 @@ import common
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 
+pre_url = 'https://f.w24.rocks/'
+
 
 def save_not_down_url(line, new_title, num):
     # os.chdir(cur_dir)
@@ -31,11 +33,11 @@ listTagName = ['img']
 
 # 非精华连接
 def write_to_text_exclude_jh(down_param):
-    down_url = down_param['down_url']
+    down_url = pre_url + down_param['down_url']
     start_page = down_param['start_page']
     end_page = down_param['end_page']
     done_down_text = down_param['done_down_text']
-    pre_url = down_param['pre_url']
+    # pre_url = down_param['pre_url']
     cur_dir = down_param['cur_dir']
     temp = 0
     with open(done_down_text) as fileObj:
@@ -84,11 +86,11 @@ def write_to_text_exclude_jh(down_param):
 
 # current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
 def write_to_text_include_jh(down_param):
-    down_url = down_param['down_url']
+    down_url = pre_url + down_param['down_url']
     start_page = down_param['start_page']
     end_page = down_param['end_page']
     done_down_text = down_param['done_down_text']
-    pre_url = down_param['pre_url']
+    # pre_url = down_param['pre_url']
     cur_dir = down_param['cur_dir']
     temp = 0
     with open(done_down_text) as fileObj:
@@ -219,7 +221,8 @@ def get_child_img_url(url):
 
 
 def down_all_pic(down_param):
-    file_name_list = common.get_file_name_list(down_param['cur_dir'], 'txt')
+    cur_dir = down_param['cur_dir']
+    file_name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(file_name_list, 1):
         print('下载第 %i 个文件： %s' % (index, file_name))
         # 打开文件
@@ -244,21 +247,23 @@ def down_all_pic(down_param):
                     os.chdir(path)
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
-                        fileUrl = file_url.replace('http://pic.w26.rocks/', down_param['replace_url'])
-                        image_name = fileUrl.split("/")[-1]
+                        # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
+                        image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
                             print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, l, file_url))
-                            common.down_img(fileUrl)
+                            common.down_img(file_url)
                         else:
                             print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i + 1, l, file_url))
                 print("-----down over----------------")
         os.remove(file_name)
-    print("all over")
+    print("down all over----------------start delete old undown text-------------------")
+    common.del_old_Undown_Text(cur_dir)
 
 
 def down_pic_inclue_child(down_param):
-    file_name_list = common.get_file_name_list(down_param['cur_dir'], 'txt')
-    replace_url = down_param['replace_url']
+    cur_dir = down_param['cur_dir']
+    file_name_list = common.get_file_name_list(cur_dir, 'txt')
+    # replace_url = down_param['replace_url']
     for index, file_name in enumerate(file_name_list, 1):
         print('下载第 %i 个文件： %s' % (index, file_name))
         # 打开文件
@@ -267,18 +272,7 @@ def down_pic_inclue_child(down_param):
                 line = value.strip('\n')
                 print('第 %i 行： %s' % (num, line))
                 # 获取子页面连接
-                child_img_url = get_img_child_url(line, replace_url)
-                # print(child_img_url)
-                # new_img_list = []
-                # if len(child_img_url) > 0:
-                #     new_list = []
-                #     for item in child_img_url:
-                #         get = replace_url + item.get('href')
-                #         print(get)
-                #         new_list.extend(get_img_url_list(get))
-                #     if len(new_img_list) > 0:
-                #         new_img_list = common.list_distinct(new_list)
-                # 获取所有图片连接
+                child_img_url = get_img_child_url(line, pre_url)
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
                 img_urls.extend(child_img_url)
@@ -294,7 +288,7 @@ def down_pic_inclue_child(down_param):
                     os.chdir(path)
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
-                        fileUrl = file_url.replace('http://pic.w26.rocks/', down_param['replace_url'])
+                        fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = fileUrl.split("/")[-1]
                         if not os.path.exists(image_name):
                             print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, total, file_url))
@@ -303,4 +297,5 @@ def down_pic_inclue_child(down_param):
                             print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i + 1, total, file_url))
                 print("-----down over----------------")
         os.remove(file_name)
-    print("all over")
+    print("all over----------------start delete old undown text-------------------")
+    common.del_old_Undown_Text(cur_dir)
