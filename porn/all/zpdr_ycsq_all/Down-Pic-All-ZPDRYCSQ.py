@@ -3,7 +3,6 @@ import datetime
 import porn
 
 curDir = os.path.abspath(os.curdir)
-
 userPath = os.path.expanduser('~')  # 获取用户目录、
 # downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren/'
 

@@ -4,7 +4,6 @@ curDir = os.path.abspath(os.curdir)  # 当前文件路径
 
 down_param = {
     'cur_dir': curDir,
-    # 'pre_url': 'https://f.w24.rocks/',
     'done_down_text': curDir + '/DoneDown-JH-WAWQ.text',
     'down_url': 'forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=%i',
     'start_page': 1,

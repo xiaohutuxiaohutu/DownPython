@@ -1,7 +1,6 @@
-import os
-import sys
-import common
 import datetime
+import os
+
 import porn
 
 curDir = os.path.abspath(os.curdir)
