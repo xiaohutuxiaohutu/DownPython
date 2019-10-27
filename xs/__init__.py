@@ -75,3 +75,5 @@ def xs_down_pic(down_path, cur_dir, split_char):
                         except requests.exceptions.RequestException:
                             print('第 %i 行：第%i / %s 个---连接错误：-- %s----' % (num, i + 1, s, img_url))
         os.remove(file_name)
+    print('down over -----start delete old----------')
+    common.del_old_Undown_Text(cur_dir)

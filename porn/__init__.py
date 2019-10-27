@@ -272,10 +272,10 @@ def down_pic_inclue_child(down_param):
                 line = value.strip('\n')
                 print('第 %i 行： %s' % (num, line))
                 # 获取子页面连接
-                child_img_url = get_img_child_url(line, pre_url)
+                # child_img_url = get_img_child_url(line, pre_url)
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
-                img_urls.extend(child_img_url)
+                # img_urls.extend(child_img_url)
                 total = len(img_urls)
                 print('去重后图片数量： %i ' % total)
                 new_title = url_list[1]
