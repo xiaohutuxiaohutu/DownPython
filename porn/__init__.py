@@ -279,7 +279,7 @@ def down_pic_inclue_child(down_param):
                 total = len(img_urls)
                 print('去重后图片数量： %i ' % total)
                 new_title = url_list[1]
-                if len(img_urls) == 0 or len(img_urls) == 1:
+                if len(img_urls) == 0:  # or len(img_urls) == 1
                     os.chdir(down_param['cur_dir'])
                     save_not_down_url(line, new_title, num)
                 else:
