@@ -247,11 +247,12 @@ def down_all_pic(down_param):
                     os.chdir(path)
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
+
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
                             print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, l, file_url))
-                            common.down_img(file_url)
+                            common.down_img(pre_url + file_url)
                         else:
                             print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i + 1, l, file_url))
                 print("-----down over----------------")
@@ -288,7 +289,8 @@ def down_pic_inclue_child(down_param):
                     os.chdir(path)
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
-                        fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
+                        # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
+                        fileUrl = pre_url + file_url
                         image_name = fileUrl.split("/")[-1]
                         if not os.path.exists(image_name):
                             print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, total, file_url))
