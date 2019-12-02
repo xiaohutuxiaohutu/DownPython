@@ -4,11 +4,12 @@ import os
 
 import porn
 
+# 或缺当前文件目录
 curDir = os.path.abspath(os.curdir)
-
-userPath = os.path.expanduser('~')  # 获取用户目录
+# 获取用户目录
+userPath = os.path.expanduser('~') + os.sep
 # 文件下载保存路径
-# downFilePath = userPath + '/Pictures/Camera Roll/jh/woaiwoqi/'
+# downFilePath = userPath + 'Pictures/Camera Roll/jh/woaiwoqi/'
 downFilePath = 'D:/图片/91porn/精华/我爱我妻/' + (datetime.datetime.now().strftime('%Y-%m-%d')) + '/'
 down_param = {
     'cur_dir': curDir,

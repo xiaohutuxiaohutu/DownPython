@@ -3,11 +3,12 @@ import os
 
 import porn
 
-curDir = os.path.abspath(os.curdir)  # 当前文件路径
+# 当前文件路径
+curDir = os.path.abspath(os.curdir) + os.sep
 
 down_param = {
     'cur_dir': curDir,
-    'done_down_text': curDir + '/DoneDown-JH-WAWQ.text',
+    'done_down_text': curDir + 'DoneDown-JH-WAWQ.text',
     'down_url': 'forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=%i',
     'start_page': 1,
     'end_page': 2
