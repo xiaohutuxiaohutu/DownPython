@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
 import os
 
 import PPP91
 
-curDir = os.path.abspath(os.curdir)  # 当前文件路径
+# 当前文件路径
+curDir = os.path.abspath(os.curdir) + os.sep
 params = {
     'cur_dir': curDir,
     'down_url': 'http://www.h7j2.com/AAtupian/AAAtb/meitui/index-%i.html',

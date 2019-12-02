@@ -1,12 +1,16 @@
+#!/usr/bin/env python3
 import datetime
 import os
+
 import common
 import xs
 
-curDir = os.path.abspath(os.curdir)  # 当前文件路径
-userPath = os.path.expanduser('~')  # 获取用户目录
+curDir = os.path.abspath(os.curdir) + os.sep  # 当前文件路径
+# userPath = os.path.expanduser('~')  # 获取用户目录
 # down_path = userPath + '/Pictures/Camera Roll/667xs/zfmt/'
-down_path = 'D:/图片/667xs/制服美腿/' + datetime.datetime.now().strftime('%Y-%m-%d') + '/'
+
+# down_path = 'D:/图片/667xs/制服美腿/' + datetime.datetime.now().strftime('%Y-%m-%d') + '/'
+down_path = curDir + (datetime.datetime.now().strftime('%Y-%m-%d')) + os.sep
 file_name = curDir + '/tpzp-2019-10-07_8.text'
 with open(file_name) as file_obj:
     for num, value in enumerate(file_obj, 1):

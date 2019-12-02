@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 import os
+
 import SISE4455
 
 curDir = os.path.abspath(os.curdir)  # 当前文件路径

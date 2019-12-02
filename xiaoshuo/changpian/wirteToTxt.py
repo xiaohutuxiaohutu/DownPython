@@ -1,13 +1,13 @@
-import requests
-from bs4 import BeautifulSoup
-import os
-import sys
-import imghdr
-import time
+#!/usr/bin/env python3
 import datetime
+import os
 import random
 from urllib.request import Request
 from urllib.request import urlopen
+
+import requests
+from bs4 import BeautifulSoup
+
 if(os.name=='nt'):
     print(u'windows 系统')
 else:

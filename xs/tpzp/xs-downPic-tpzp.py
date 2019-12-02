@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
 import datetime
 import os
 import sys
 
 import common
 import xs
+
 if (os.name == 'nt'):
     print(u'windows 系统')
 else:

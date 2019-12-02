@@ -1,7 +1,10 @@
-import os
-import common
+#!/usr/bin/env python3
 import datetime
+import os
+
+import common
 import xs
+
 userPath = os.path.expanduser('~')  # 获取用户目录
 curDir = os.path.abspath(os.curdir)  # 当前文件路径
 

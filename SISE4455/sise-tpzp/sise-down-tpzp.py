@@ -1,12 +1,16 @@
+#!/usr/bin/env python3
 import datetime
 import os
-import SISE4455
+
 import requests.packages.urllib3.util.ssl_
 
-curDir = os.path.abspath(os.curdir)  # 当前文件路径
+import SISE4455
 
-down_path = 'D:/图片/四色AV/自拍偷拍/%s/' % datetime.datetime.now().strftime('%Y-%m-%d')
+# 当前文件路径
+curDir = os.path.abspath(os.curdir) + os.sep
 
+# down_path = 'D:/图片/四色AV/自拍偷拍/%s/' % datetime.datetime.now().strftime('%Y-%m-%d')
+down_path = curDir + (datetime.datetime.now().strftime('%Y-%m-%d')) + os.sep
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
 params = {
     'cur_dir': curDir,

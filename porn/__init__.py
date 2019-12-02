@@ -303,3 +303,9 @@ def down_pic_inclue_child(down_param):
         os.remove(file_name)
     print("all over----------------start delete old undown text-------------------")
     common.del_old_Undown_Text(cur_dir)
+
+
+def get_cur_dir():
+    # 当前文件路径
+    curDir = os.path.abspath(os.curdir) + os.sep
+    return curDir
