@@ -1,13 +1,12 @@
+#!/usr/bin/env python3
+import datetime
+import os
+
 import requests
 from bs4 import BeautifulSoup
-import os
-import sys
-import imghdr
-import time
-import datetime
+
 import common
 
-sys.path.append(r"C:\workspace\GitHub\DownPython\common")
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 path = 'C:/workspace/GitHub/DownPython/porn/jh/原创自拍/'
