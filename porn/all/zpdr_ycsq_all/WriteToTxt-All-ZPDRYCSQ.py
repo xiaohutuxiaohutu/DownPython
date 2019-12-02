@@ -1,8 +1,9 @@
+#!/usr/bin/env python3
 import os
-
 import porn
 
-curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
+curDir = os.path.abspath(os.curdir) 
+ # 获取当前文件路径
 
 down_param = {
     'cur_dir': curDir,
