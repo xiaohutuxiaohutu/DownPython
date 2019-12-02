@@ -1,12 +1,11 @@
+import datetime
+import os
+import re
+import sys
+
 import requests
 from bs4 import BeautifulSoup
-import os
-import sys
-import imghdr
-import time
-import io
-import re
-import datetime
+
 import common
 
 sys.path.append(r"C:\workspace\GitHub\DownPython\common")

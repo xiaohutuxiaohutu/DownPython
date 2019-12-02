@@ -1,8 +1,10 @@
-import requests
-from bs4 import BeautifulSoup
+import datetime
 import os
 import sys
-import datetime
+
+import requests
+from bs4 import BeautifulSoup
+
 import common
 
 curDir = os.path.abspath(os.curdir)  # 获取当前文件路径

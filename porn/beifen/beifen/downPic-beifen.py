@@ -1,9 +1,10 @@
-import requests
-from bs4 import BeautifulSoup
+import datetime
 import os
 import sys
-import re
-import datetime
+
+import requests
+from bs4 import BeautifulSoup
+
 import common
 
 curDir = os.path.abspath(os.curdir)
