@@ -90,7 +90,6 @@ def write_to_text_include_jh(down_param):
     start_page = down_param['start_page']
     end_page = down_param['end_page']
     done_down_text = down_param['done_down_text']
-    # pre_url = down_param['pre_url']
     cur_dir = down_param['cur_dir']
     temp = 0
     with open(done_down_text) as fileObj:
@@ -222,6 +221,9 @@ def get_child_img_url(url):
 
 def down_all_pic(down_param):
     cur_dir = down_param['cur_dir']
+    path_ = down_param['down_file_path']
+    if not (os.path.exists(path_)):
+        os.makedirs(path_)
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(file_name_list, 1):
         print('下载第 %i 个文件： %s' % (index, file_name))
