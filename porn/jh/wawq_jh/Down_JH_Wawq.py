@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
 import datetime
 import os
+
 import porn
 
 curDir = os.path.abspath(os.curdir)

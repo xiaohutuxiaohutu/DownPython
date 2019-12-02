@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import datetime
 import os
 
@@ -5,8 +6,6 @@ import porn
 
 curDir = os.path.abspath(os.curdir)
 
-
-preUrl = 'https://f.w24.rocks/'
 userPath = os.path.expanduser('~')  # 获取用户目录
 # 文件下载保存路径
 # downFilePath = userPath + '/Pictures/Camera Roll/jh/自拍达人原创申请/'
@@ -17,4 +16,3 @@ down_param = {
     'down_file_path': downFilePath
 }
 porn.down_all_pic(down_param)
-
