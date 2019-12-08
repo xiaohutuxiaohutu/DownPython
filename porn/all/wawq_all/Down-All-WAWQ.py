@@ -8,7 +8,7 @@ curDir = os.path.abspath(os.curdir) + os.sep
 
 userPath = os.path.expanduser('~') + os.sep  # 获取用户目录、
 # downFilePath = userPath + 'Pictures/Camera Roll/all/woaiwoqi/'
-downFilePath = 'D:/图片/91porn/ALL/我爱我妻/' + (datetime.datetime.now().strftime('%Y-%m-%d')) + '/'
+downFilePath = 'D:/图片/91porn/ALL/我爱我妻/' + (datetime.datetime.now().strftime('%Y-%m')) + '/'
 # downFilePath = curDir + (datetime.datetime.now().strftime('%Y-%m-%d')) + os.sep
 down_param = {
     'cur_dir': curDir,
