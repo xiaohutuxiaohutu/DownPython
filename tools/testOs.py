@@ -49,3 +49,15 @@ def test_method():
 params = {'pre_url': 'https://f.wonderfulday29.live/', 'down_path': '/DoneDown-JH-zipaidaren.text'}
 print(params['pre_url'])
 # test_method()
+print('***获取当前目录***')
+print(os.getcwd())
+print(os.path.abspath(os.path.dirname(__file__)))
+
+print('***获取上级目录***')
+print(os.path.dirname(os.getcwd()))
+print(os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
+print(os.path.abspath(os.path.dirname(os.getcwd())))
+print(os.path.abspath(os.path.join(os.getcwd(), "..")))
+
+print('***获取上上级目录***')
+print(os.path.abspath(os.path.join(os.getcwd(), "../..")))
