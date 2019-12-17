@@ -3,9 +3,6 @@ import os
 
 import porn
 
-getcwd = os.getcwd()
-print(getcwd)
-# curDir = os.path.abspath(os.curdir) + os.sep
 # 获取用户目录、
 # userPath = os.path.expanduser('~') + os.sep
 # downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren'

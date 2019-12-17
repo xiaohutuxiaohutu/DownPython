@@ -66,7 +66,7 @@ def get_img_urls(url, row_num):
 
 
 def down_image(params):
-    cur_dir = params['cur_dir']
+    cur_dir = os.getcwd() + os.sep
     down_path = params['down_path']
     # print(cur_dir)
     name_list = common.get_file_name_list(cur_dir, 'txt')
@@ -83,12 +83,12 @@ def down_image(params):
 
 
 def write_txt(params):
-    cur_dir = params['cur_dir']
+    cur_dir = os.getcwd() + os.sep
     pre_url = params['pre_url']
     down_url = params['down_url']
     start_page = params['start_page']
     end_page = params['end_page']
-    done_down_txt = params['done_down_txt']
+    done_down_txt = cur_dir + params['done_down_txt']
     with open(done_down_txt, 'a+') as downObj:
         readlines = downObj.read().splitlines()
     # 用get方法打开url并发送headers
@@ -118,7 +118,7 @@ def write_txt(params):
             os.chdir(cur_dir)
             file_num = fileUrl.split('/')[3].split('.')[0]
             if file_num not in readlines:
-                with open(datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+') as f:
+                with open(common.get_datetime('%Y-%m-%d') + '_' + str(temp // 500) + '.txt', 'a+') as f:
                     f.write(fileU + '\n')
                 with open(done_down_txt, 'a+') as f:
                     f.write(file_num + '\n')

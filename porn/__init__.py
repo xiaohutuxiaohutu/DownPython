@@ -9,7 +9,7 @@ import common
 cur_dir = os.getcwd() + os.sep
 
 # 获取当前月份
-cur_month = os.sep + common.get_cur_date('%Y-%m') + os.sep
+cur_month = os.sep + common.get_datetime('%Y-%m') + os.sep
 
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
@@ -18,13 +18,13 @@ pre_url = 'https://f.w24.rocks/'
 
 
 def save_not_down_url(line, new_title, num):
-    with open(common.get_cur_date('%Y-%m-%d') + '_未下载.text', 'a+', encoding='utf-8') as f:
+    with open(common.get_datetime('%Y-%m-%d') + '_未下载.text', 'a+', encoding='utf-8') as f:
         f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
 
 
 # 保存下载连接到txt文档
 def save_url_down(done_down_text, file_down_url, pic_href, num):
-    file_name = '%s_%i.txt' % (common.get_cur_date('%Y-%m-%d_%H-%M'), num // 500)
+    file_name = '%s_%i.txt' % (common.get_datetime('%Y-%m-%d_%H-%M'), num // 500)
     with open(file_name, 'a+') as f:
         f.write(file_down_url + '\n')
     # 保存已下载的连接，防止重复下载

@@ -19,7 +19,7 @@ def get_soup(url):
 
 
 def write_to_txt(params):
-    cur_dir = params['cur_dir']
+    cur_dir = os.getcwd() + os.sep
     pre_url = params['pre_url']
     down_url = params['down_url']
     start_page = params['start_page']
@@ -43,7 +43,7 @@ def write_to_txt(params):
                     temp += 1
                     print("fileUrl:" + fileUrl)
                     os.chdir(cur_dir)
-                    file_name = '%s_%i.txt' % (datetime.datetime.now().strftime('%Y-%m-%d'), temp // 500)
+                    file_name = '%s_%i.txt' % (common.get_datetime('%Y-%m-%d'), temp // 500)
                     with open(file_name, 'a+') as f:
                         f.write(fileUrl + '\n')
                 else:
@@ -53,8 +53,8 @@ def write_to_txt(params):
 
 
 def down_pic(params):
-    cur_dir = params['cur_dir']
-    down_path = params['down_path']
+    cur_dir = os.getcwd() + os.sep
+    down_path = params['down_path']+common.get_datetime('%Y-%m-%d')
     name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(name_list, 1):
         print('下载第 %i 个文件：%s ' % (index, file_name))

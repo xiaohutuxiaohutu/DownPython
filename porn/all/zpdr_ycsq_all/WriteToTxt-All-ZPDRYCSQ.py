@@ -2,12 +2,7 @@
 
 import porn
 
-# 获取当前文件路径
-# curDir = os.path.abspath(os.curdir) + os.sep
-
 down_param = {
-    # 'cur_dir': curDir,
-    # 'done_down_text': curDir + 'DoneDown-All-ZPDR.text',
     'done_down_text': 'DoneDown-All-ZPDR.text',
     'down_url': 'forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i',
     'start_page': 1,

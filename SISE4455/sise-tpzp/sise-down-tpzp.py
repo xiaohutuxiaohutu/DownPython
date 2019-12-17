@@ -9,8 +9,7 @@ import SISE4455
 # 当前文件路径
 curDir = os.path.abspath(os.curdir) + os.sep
 
-# down_path = 'D:/图片/四色AV/自拍偷拍/%s/' % datetime.datetime.now().strftime('%Y-%m-%d')
-down_path = curDir + (datetime.datetime.now().strftime('%Y-%m-%d')) + os.sep
+down_path = 'D:/图片/四色AV/自拍偷拍'
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
 params = {
     'cur_dir': curDir,

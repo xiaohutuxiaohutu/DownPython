@@ -14,7 +14,7 @@ proxy_ip = common.get_ip()
 
 def write_txt(params):
     pre_url = params['pre_url']
-    done_down_txt = params['done_down_txt']
+    done_down_txt = os.getcwd() + os.sep + params['done_down_txt']
     start_page = params['start_page']
     end_page = params['end_page']
     down_url = params['down_url']
@@ -43,15 +43,13 @@ def write_txt(params):
             if file_url.startswith("http"):
                 continue
             else:
-
+                os.chdir(os.getcwd())
                 url_num = file_url.split('piclist5')[1].split('.')[0].split('/')[1]
                 if url_num not in read_lines:
                     with open(done_down_txt, 'a+') as downObj:
                         downObj.write(url_num + '\n')
                     fileUrl = pre_url + file_url
                     temp += 1
-                    f = open('tpzp-' + datetime.datetime.now().strftime('%Y-%m-%d') + '_' + str(temp // 500) + '.text',
-                             'a+')
-                    f.write(fileUrl + '\n')
-                    f.close()
+                    with open('tpzp-%s-%i.text' % (common.get_datetime('%Y-%m-%d'), temp // 500), 'a+') as f:
+                        f.write(fileUrl + '\n')
     print("打印完成")

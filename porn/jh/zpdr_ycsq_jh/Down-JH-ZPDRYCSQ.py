@@ -3,7 +3,6 @@ import os
 
 import porn
 
-cur_dir = os.path.abspath(os.curdir) + os.sep
 # 获取用户目录
 # userPath = os.path.expanduser('~') + os.sep
 # downFilePath = userPath + 'Pictures/Camera Roll/jh/自拍达人原创申请'

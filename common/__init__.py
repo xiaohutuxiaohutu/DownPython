@@ -108,6 +108,17 @@ test_image_url = [
 ]
 
 
+def get_cur_dir():
+    # 当前文件路径
+    # curDir = os.path.abspath(os.curdir) + os.sep
+    curDir = os.getcwd() + os.sep
+    return curDir
+
+
+def get_datetime(template):
+    return datetime.datetime.now().strftime(template)
+
+
 # 获取指定目录下 指定类型的文件
 def get_file_name_list(file_dir, file_type):
     file_name_list = []
@@ -278,7 +289,7 @@ def xs_down_pic(down_path, cur_dir, split_char):
                 os.chdir(path)
                 if len(img_urls) <= 1:
                     os.chdir(cur_dir)
-                    f = open(datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.txt', 'a+', encoding='utf-8')
+                    f = open(get_datetime('%Y-%m-%d') + '_未下载.txt', 'a+', encoding='utf-8')
                     f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n', )
                     f.close()
                 else:
@@ -289,14 +300,3 @@ def xs_down_pic(down_path, cur_dir, split_char):
                             os.chdir(path)
                             down_img(img_url)
         os.remove(file_name)
-
-
-def get_cur_dir():
-    # 当前文件路径
-    curDir = os.path.abspath(os.curdir) + os.sep
-    return curDir
-
-
-def get_cur_date(format_template):
-    cur_date = os.sep + datetime.datetime.now().strftime(format_template) + os.sep
-    return cur_date
