@@ -17,16 +17,6 @@ headers = {
     'Accept-Encoding': 'gzip, deflate'}
 
 
-# 保存下载连接到txt文档
-def save_url_down(done_down_text, file_down_url, pic_href, num):
-    file_name = '%s_%i.txt' % (common.get_datetime('%Y-%m-%d_%H-%M'), num // 500)
-    with open(file_name, 'a+') as f:
-        f.write(file_down_url + '\n')
-    # 保存已下载的连接，防止重复下载
-    with open(done_down_text, 'a+') as f:
-        f.write(pic_href + '\n')
-
-
 def get_image_url(qid):
     # 利用正则表达式把源代码中的图片地址过滤出来
     # reg = r'data-actualsrc="(.*?)">'
@@ -54,8 +44,6 @@ def get_image_url(qid):
                 tmp_list.append(image_url)
             # 清理掉头像和去重 获取data-original的内容
             tmp_list = list(set(tmp_list))  # 去重
-            # print(tmp_list)
-            # print('tmp_list:' + str(len(tmp_list)))
             for item in tmp_list:
                 pattern = re.compile(r'^https://.*.(jpg|png|gif|jpeg)$')
                 if pattern.match(item):
@@ -65,14 +53,18 @@ def get_image_url(qid):
         print('size: %d, num : %d' % (size, len(image_urls)))
 
 
-def write_txt(params):
-    os.chdir(cur_dir)
-    question_id = params['question_id']
+def save_question_id(question_id_path, question_id):
     with open(question_id_path, 'a+') as f:
         f.seek(0, 0)
         read_lines = f.read().splitlines()  # 去除换行符
         if str(question_id) not in read_lines:
             f.write(str(question_id) + '\n')
+
+
+def write_txt(params):
+    os.chdir(cur_dir)
+    question_id = params['question_id']
+    save_question_id(question_id_path, question_id)
     # url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
 
     img_list = get_image_url(question_id)  # 获取图片的地址列表
