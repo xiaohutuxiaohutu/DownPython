@@ -2,7 +2,9 @@ import os
 import sys
 
 curDir = os.getcwd()
+print(os.curdir)
 print(os.path.abspath(os.curdir))  # 获取当前工作目录路径
+print(os.getcwd())
 
 
 def test_os_method():

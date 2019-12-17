@@ -1,10 +1,15 @@
-import datetime
 import os
 import re
 
 import common
 
 # from urlparse import urlsplit
+# 获取当前文件路径
+# cur_dir = os.path.abspath(os.curdir) + os.sep
+cur_dir = os.getcwd() + os.sep
+
+# 获取当前月份
+cur_month = os.sep + common.get_cur_date('%Y-%m') + os.sep
 
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
@@ -13,14 +18,13 @@ pre_url = 'https://f.w24.rocks/'
 
 
 def save_not_down_url(line, new_title, num):
-    # os.chdir(cur_dir)
-    with open(datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.text', 'a+', encoding='utf - 8') as f:
+    with open(common.get_cur_date('%Y-%m-%d') + '_未下载.text', 'a+', encoding='utf-8') as f:
         f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
 
 
 # 保存下载连接到txt文档
 def save_url_down(done_down_text, file_down_url, pic_href, num):
-    file_name = '%s_%i.txt' % (datetime.datetime.now().strftime('%Y-%m-%d_%H-%M'), num // 500)
+    file_name = '%s_%i.txt' % (common.get_cur_date('%Y-%m-%d_%H-%M'), num // 500)
     with open(file_name, 'a+') as f:
         f.write(file_down_url + '\n')
     # 保存已下载的连接，防止重复下载
@@ -36,9 +40,7 @@ def write_to_text_exclude_jh(down_param):
     down_url = pre_url + down_param['down_url']
     start_page = down_param['start_page']
     end_page = down_param['end_page']
-    done_down_text = down_param['done_down_text']
-    # pre_url = down_param['pre_url']
-    cur_dir = down_param['cur_dir']
+    done_down_text = cur_dir + down_param['done_down_text']
     temp = 0
     with open(done_down_text) as fileObj:
         readLines = fileObj.read().splitlines()
@@ -89,8 +91,7 @@ def write_to_text_include_jh(down_param):
     down_url = pre_url + down_param['down_url']
     start_page = down_param['start_page']
     end_page = down_param['end_page']
-    done_down_text = down_param['done_down_text']
-    cur_dir = down_param['cur_dir']
+    done_down_text = cur_dir + down_param['done_down_text']
     temp = 0
     with open(done_down_text) as fileObj:
         # readLines = fileObj.readlines()
@@ -158,8 +159,6 @@ def get_jh_img_url_list(line):
     img_url_list.extend(img_url_list_2)
     img_url_list.extend(img_url_list_3)
     img_url_list.extend(img_url_list_1)
-    # print('图片数量：' + str(len(img_url_list)))
-    # print('----------- 去重 ------------------')
     new_list = common.list_distinct(img_url_list)
     print('去重后图片数量：' + str(len(new_list)))
     return [new_list, new_title]
@@ -220,8 +219,7 @@ def get_child_img_url(url):
 
 
 def down_all_pic(down_param):
-    cur_dir = down_param['cur_dir']
-    path_ = down_param['down_file_path']
+    path_ = down_param['down_file_path'] + cur_month
     if not (os.path.exists(path_)):
         os.makedirs(path_)
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
@@ -240,11 +238,11 @@ def down_all_pic(down_param):
                 l = len(img_urls)
                 print('去重后图片数量： %i ' % l)
                 new_title = url_list[1]
-                if len(img_urls) == 0 or len(img_urls) == 1:
-                    os.chdir(down_param['cur_dir'])
+                if len(img_urls) == 0:
+                    os.chdir(cur_dir)
                     save_not_down_url(line, new_title, num)
                 else:
-                    path = down_param['down_file_path'] + str(new_title.strip()) + '/'
+                    path = path_ + str(new_title.strip()) + os.sep
                     common.create_file(path)
                     os.chdir(path)
                     for i in range(0, len(img_urls)):
@@ -264,9 +262,7 @@ def down_all_pic(down_param):
 
 
 def down_pic_inclue_child(down_param):
-    cur_dir = down_param['cur_dir']
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
-    # replace_url = down_param['replace_url']
     for index, file_name in enumerate(file_name_list, 1):
         print('下载第 %i 个文件： %s' % (index, file_name))
         # 打开文件
@@ -283,7 +279,7 @@ def down_pic_inclue_child(down_param):
                 print('去重后图片数量： %i ' % total)
                 new_title = url_list[1]
                 if len(img_urls) == 0:  # or len(img_urls) == 1
-                    os.chdir(down_param['cur_dir'])
+                    os.chdir(cur_dir)
                     save_not_down_url(line, new_title, num)
                 else:
                     path = down_param['down_file_path'] + str(new_title.strip()) + '/'

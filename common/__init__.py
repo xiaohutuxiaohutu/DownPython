@@ -3,16 +3,15 @@ import io
 import os
 import random
 import re
-from urllib.request import Request
-from urllib.request import urlopen
+import urllib.parse
 import urllib.request
-import requests
-from bs4 import BeautifulSoup
-
 # from urlparse import urlsplit
 from os.path import basename
+from urllib.request import Request
+from urllib.request import urlopen
 
-import urllib.parse
+import requests
+from bs4 import BeautifulSoup
 
 if os.name == 'nt':
     print(u'windows 系统')
@@ -290,3 +289,14 @@ def xs_down_pic(down_path, cur_dir, split_char):
                             os.chdir(path)
                             down_img(img_url)
         os.remove(file_name)
+
+
+def get_cur_dir():
+    # 当前文件路径
+    curDir = os.path.abspath(os.curdir) + os.sep
+    return curDir
+
+
+def get_cur_date(format_template):
+    cur_date = os.sep + datetime.datetime.now().strftime(format_template) + os.sep
+    return cur_date
