@@ -262,6 +262,7 @@ def down_all_pic(down_param):
 
 def down_pic_include_child(down_param):
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
+    down_path = down_param['down_file_path'] + os.sep
     for index, file_name in enumerate(file_name_list, 1):
         print('下载第 %i 个文件： %s' % (index, file_name))
         # 打开文件
@@ -281,7 +282,7 @@ def down_pic_include_child(down_param):
                     os.chdir(cur_dir)
                     save_not_down_url(line, new_title, num)
                 else:
-                    path = down_param['down_file_path'] + str(new_title.strip()) + '/'
+                    path = down_path + common.get_datetime('%Y-%m') + str(new_title.strip()) + '/'
                     common.create_file(path)
                     os.chdir(path)
                     for i in range(0, len(img_urls)):

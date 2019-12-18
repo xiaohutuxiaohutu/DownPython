@@ -2,10 +2,7 @@
 
 import porn
 
-# curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
 down_param = {
-    # 'cur_dir': curDir,
-    # 'done_down_text': curDir + '/Down-Done-WAWQ.text',
     'done_down_text': 'Down-Done-WAWQ.text',
     'down_url': 'forumdisplay.php?fid=21&orderby=dateline&filter=2592000&page=%i',
     'start_page': 1,
