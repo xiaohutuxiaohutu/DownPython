@@ -13,4 +13,4 @@ down_param = {
     # 'cur_dir': curDir,
     'down_file_path': downFilePath
 }
-porn.down_pic_inclue_child(down_param)
+porn.down_pic_include_child(down_param)

@@ -234,7 +234,6 @@ def down_all_pic(down_param):
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
-                # total = str(len(img_urls))
                 l = len(img_urls)
                 print('去重后图片数量： %i ' % l)
                 new_title = url_list[1]
@@ -261,7 +260,7 @@ def down_all_pic(down_param):
     common.del_old_Undown_Text(cur_dir)
 
 
-def down_pic_inclue_child(down_param):
+def down_pic_include_child(down_param):
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(file_name_list, 1):
         print('下载第 %i 个文件： %s' % (index, file_name))

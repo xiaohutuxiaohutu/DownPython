@@ -1,14 +1,15 @@
-from bs4 import BeautifulSoup
 import os
 
-if (os.name == 'nt'):
+from bs4 import BeautifulSoup
+
+if os.name == 'nt':
     print(u'windows 系统')
 else:
     print(u'linux')
-
-curDir = os.path.abspath(os.curdir)
+userPath = os.path.expanduser('~')
+curDir = os.getcwd()
 print(curDir)
-f = open("C:/Users/xiaohutu/Downloads/page.html", 'r', encoding='utf8')
+f = open(curDir + "/page.html", 'r', encoding='utf8')
 # coding=utf-8
 htmlFile = f.read()
 itemSoup = BeautifulSoup(htmlFile, 'lxml')
@@ -21,7 +22,7 @@ print(itemName)
 title = itemSoup.title.string
 title = title.split('www')[-1]
 print(title)
-path = 'C:/Users/23948/Pictures/Camera Roll/' + title + '/'
+path = userPath + '/Pictures/Camera Roll/' + title + '/'
 
 for i in range(0, len(itemName)):
     text = itemName[i].text

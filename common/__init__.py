@@ -23,18 +23,17 @@ ipUrl = 'https://www.kuaidaili.com/free/intr/'
 
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
-ISOTIMEFORMAT = '%Y-%m-%d %X'
+
+default_time_format = '%Y-%m-%d %X'
 
 
 # 替换特殊字符
 def replace_special_char(old_str):
-    # newstr = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|\：+|\:+|\【+|\】+|\.+|\~+|\*+', '', old_str)
-    # print('old_str:'+old_str)
     if old_str is not None:
         new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+|\.\.\.+|\�+|�+', '', old_str)
-        return new_str
+        return new_str.strip()
     else:
-        return old_str
+        return old_str.strip()
 
 
 # 替换并截取名字-porn使用
@@ -161,7 +160,6 @@ def down_img(file_url):
     image_name = file_url.split("/")[-1]
     if not os.path.exists(image_name):
         proxy_ip = get_ip()
-        # print('随机代理地址：' + str(proxy_ip))
         get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
         image = get_request.content
         image_b = io.BytesIO(image).read()
@@ -206,9 +204,6 @@ def mkdir(path):
         return False
 
 
-# down_img('http://pic.w26.rocks/attachments//1908131059de4602941152bcd6.jpg')
-
-
 # 判断文件是否存在
 def is_file(file_name):
     return os.path.isfile(file_name)
@@ -233,7 +228,6 @@ def list_distinct(old_list):
     new_list = list(set(old_list))
     # 按照原来顺序去重
     new_list.sort(key=old_list.index)
-    # print(len(new_list))
     return new_list
 
 
@@ -250,7 +244,7 @@ def del_old_Undown_Text(file_dir):
             if file.endswith('未下载.text'):
                 file_list.append(os.path.join(root, file))
         # if len(file_list) >= 2:
-        file_name = datetime.datetime.now().strftime('%Y-%m-%d') + '_未下载.text'
+        file_name = get_datetime('%Y-%m-%d') + '_未下载.text'
 
         for f in file_list:
             split = f.split('\\')
@@ -258,45 +252,3 @@ def del_old_Undown_Text(file_dir):
             if split[L] != file_name:
                 print('删除***未下载.text:' + f)
                 os.remove(f)
-
-
-# 667xs下载图片
-def xs_down_pic(down_path, cur_dir, split_char):
-    name_list = get_file_name_list(cur_dir, 'text')
-    for index, file_name in enumerate(name_list, 1):
-        # print('下载第' + str(index) + '个文件：' + file_name)
-        print('下载第%i 个文件：%s' % (index, file_name))
-        with open(file_name) as file_obj:
-            for num, value in enumerate(file_obj, 1):
-                line = value.strip('\n')
-                print('第' + str(num) + '行：' + line)
-                proxy_ip = get_ip()
-                html = requests.get(line, headers=header, proxies=proxy_ip)
-                html.encoding = 'gb2312'
-                itemSoup = BeautifulSoup(html.text, "lxml")
-                title = itemSoup.title.string
-                posi = title.index(split_char)
-                title = title[0:posi]
-                new_title = replace_special_char(title).strip()
-                imgUrls = itemSoup.select(
-                    "body div[id='wrap'] div[id='ks'] div[id='ks_xp'] div[class='main'] div[class='content'] div div[class='n_bd'] img")
-                img_urls = list_distinct(imgUrls)
-                s = str(len(img_urls))
-                print('图片数量：' + s)
-                path = down_path + str(new_title) + '/'
-                if not (os.path.exists(path)):
-                    os.makedirs(path)
-                os.chdir(path)
-                if len(img_urls) <= 1:
-                    os.chdir(cur_dir)
-                    f = open(get_datetime('%Y-%m-%d') + '_未下载.txt', 'a+', encoding='utf-8')
-                    f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n', )
-                    f.close()
-                else:
-                    for i in range(0, len(img_urls)):
-                        img_url = img_urls[i].get('src')
-                        if img_url.startswith('http://tu.2015img.com'):
-                            print('下载第' + str(num) + '行；第' + str(i + 1) + ' / ' + s + ' 个: ' + img_url)
-                            os.chdir(path)
-                            down_img(img_url)
-        os.remove(file_name)

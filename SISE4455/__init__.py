@@ -1,21 +1,8 @@
-import common
-import datetime
-import requests
-from bs4 import BeautifulSoup
 import os
 
-header = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
+import requests
 
-proxy_ip = common.get_ip()
-
-
-def get_soup(url):
-    # print(url)
-    html = requests.get(url, headers=header, proxies=proxy_ip)
-    html.encoding = 'utf-8'
-    soup = BeautifulSoup(html.text, 'lxml')
-    return soup
+import common
 
 
 def write_to_txt(params):
@@ -29,7 +16,7 @@ def write_to_txt(params):
     for i in range(start_page, end_page):
         print('第 %i 页' % i)
         url = down_url % i
-        soup = get_soup(url)
+        soup = common.get_beauty_soup(url)
         itemUrl = soup.select(
             "body div[class='maomi-content'] main[id='main-container'] div[class='text-list-html'] div ul li a")
         with open(done_down_text) as fileObj:
@@ -54,7 +41,7 @@ def write_to_txt(params):
 
 def down_pic(params):
     cur_dir = os.getcwd() + os.sep
-    down_path = params['down_path']+common.get_datetime('%Y-%m-%d')
+    down_path = params['down_path'] + common.get_datetime('%Y-%m-%d')
     name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(name_list, 1):
         print('下载第 %i 个文件：%s ' % (index, file_name))
@@ -63,7 +50,7 @@ def down_pic(params):
             for num, value in enumerate(file, 1):
                 line = value.strip('\n')
                 print('第 %i 行： %s' % (num, line))
-                itemSoup = get_soup(line)
+                itemSoup = common.get_beauty_soup(line)
                 title = itemSoup.title.string
                 title = common.replace_special_char(title).strip()
                 new_title = title.split('www')[-1]
@@ -85,7 +72,7 @@ def down_pic(params):
                         image_name = img_url.split("/")[-1]
                         if not os.path.exists(image_name):
                             print('下载第 %i 行； 第 %i  / %i  个: %s' % (num, i + 1, s, img_url))
-                            imageUrl = requests.get(img_url, headers=header, verify=True)
+                            imageUrl = requests.get(img_url, headers=common.header, verify=True)
                             with open(image_name, 'wb') as f:
                                 f.write(imageUrl.content)
                         else:
