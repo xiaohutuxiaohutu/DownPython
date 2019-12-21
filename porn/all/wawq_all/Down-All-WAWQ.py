@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import porn
 
 # 获取用户目录、
