@@ -95,7 +95,7 @@ def get_random_ip(ip_list):
 def get_ip():
     global ipList
     if len(ipList) == 0:
-        print("请求代理地址列表：" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M'))
+        # print("get proxy_ip list ：" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M'))
         ipList = get_ip_list(ipUrl)
     random_ip = get_random_ip(ipList)
     return random_ip

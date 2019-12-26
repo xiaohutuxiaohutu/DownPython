@@ -45,7 +45,7 @@ def write_to_text_exclude_jh(down_param):
     with open(done_down_text) as fileObj:
         readLines = fileObj.read().splitlines()
     for i in range(start_page, end_page):
-        print('第 %i 页' % i)
+        print('Page %i :' % i)
         url = down_url % i
         print(url)
         soup = common.get_beauty_soup(url)
@@ -79,11 +79,11 @@ def write_to_text_exclude_jh(down_param):
                             os.chdir(cur_dir)
                             temp += 1
                             if split_ not in readLines:
-                                print('下载第 %i 个: %s' % (temp, pic_href))
+                                print('down the %i ge: %s' % (temp, pic_href))
                                 save_url_down(done_down_text, file_down_url, split_, temp)
                             else:
-                                print('第' + str(temp) + '已存在')
-    print("打印完成")
+                                print('the %i   is exist : %s ' % (temp, file_down_url))
+    print("print over")
 
 
 # current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
@@ -97,7 +97,7 @@ def write_to_text_include_jh(down_param):
         # readLines = fileObj.readlines()
         readLines = fileObj.read().splitlines()
     for i in range(start_page, end_page):
-        print('第' + str(i) + '页')
+        print('Page' + str(i) + ':')
         url = down_url % i
         print(url)
         soup = common.get_beauty_soup(url)
@@ -116,11 +116,11 @@ def write_to_text_include_jh(down_param):
             temp += 1
             os.chdir(cur_dir)
             if split_ not in readLines:
-                print('下载第' + str(j + 1) + '个:' + file_url)
+                print('down the %i : %s ' % ((j + 1), file_url))
                 save_url_down(done_down_text, file_url, split_, temp)
             else:
-                print('第' + str(j + 1) + '个已存在:' + file_url)
-    print("打印完成")
+                print('the ' + str(j + 1) + ' is exist:' + file_url)
+    print("print over ")
 
 
 # # 获取除了JH图片外链接集合
@@ -224,18 +224,18 @@ def down_all_pic(down_param):
         os.makedirs(path_)
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(file_name_list, 1):
-        print('下载第 %i 个文件： %s' % (index, file_name))
+        print('down the %i file： %s' % (index, file_name))
         # 打开文件
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
-                print('第 %i 行： %s' % (num, line))
+                print('the %i line： %s' % (num, line))
                 # 获取子页面连接
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
                 l = len(img_urls)
-                print('去重后图片数量： %i ' % l)
+                print('duplicate removal image num： %i ' % l)
                 new_title = url_list[1]
                 if len(img_urls) == 0:
                     os.chdir(cur_dir)
@@ -250,10 +250,10 @@ def down_all_pic(down_param):
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
-                            print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, l, file_url))
+                            print('the %i line：the %i  / %i ge : %s' % (num, i + 1, l, file_url))
                             common.down_img(pre_url + file_url)
                         else:
-                            print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i + 1, l, file_url))
+                            print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, l, file_url))
                 print("-----down over----------------")
         os.remove(file_name)
     print("down all over----------------start delete old undown text-------------------")
@@ -264,19 +264,19 @@ def down_pic_include_child(down_param):
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
     down_path = down_param['down_file_path']
     for index, file_name in enumerate(file_name_list, 1):
-        print('下载第 %i 个文件： %s' % (index, file_name))
+        print('down the %i file ： %s' % (index, file_name))
         # 打开文件
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
-                print('第 %i 行： %s' % (num, line))
+                print('the %i line： %s' % (num, line))
                 # 获取子页面连接
                 # child_img_url = get_img_child_url(line, pre_url)
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
                 # img_urls.extend(child_img_url)
                 total = len(img_urls)
-                print('去重后图片数量： %i ' % total)
+                print('duplicate removal image num： %i ' % total)
                 new_title = url_list[1]
                 if len(img_urls) == 0:  # or len(img_urls) == 1
                     os.chdir(cur_dir)
@@ -291,10 +291,10 @@ def down_pic_include_child(down_param):
                         fileUrl = pre_url + file_url
                         image_name = fileUrl.split("/")[-1]
                         if not os.path.exists(image_name):
-                            print('第 %i 行：第 %i  / %i 个: %s' % (num, i + 1, total, file_url))
+                            print('the %i line：the %i  / %i ge: %s' % (num, i + 1, total, file_url))
                             common.down_img(fileUrl)
                         else:
-                            print('第 %i 行：第 %i  / %i 个 已存在: %s' % (num, i + 1, total, file_url))
+                            print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, total, file_url))
                 print("-----down over----------------")
         os.remove(file_name)
     print("all over----------------start delete old undown text-------------------")
