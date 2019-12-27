@@ -14,7 +14,7 @@ import requests
 from bs4 import BeautifulSoup
 
 if os.name == 'nt':
-    print(u'windows 系统')
+    print(u'windows system')
 else:
     print(u'linux')
 
