@@ -4,9 +4,6 @@ REM chcp 936
 set rootDir=/d %~dp0
 C:
 REM
-cd %rootDir%all\zpdr_ycsq_all\
-call python Down-Pic-All-ZPDRYCSQ.py
-REM
 cd %rootDir%all\xqfx\
 call python downPic-all-xqfx.py
 REM
