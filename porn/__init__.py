@@ -237,7 +237,7 @@ def down_all_pic(down_param):
                 l = len(img_urls)
                 print('duplicate removal image num： %i ' % l)
                 new_title = url_list[1]
-                if len(img_urls) == 0:
+                if len(img_urls) < 2:
                     os.chdir(cur_dir)
                     save_not_down_url(line, new_title, num)
                 else:
@@ -278,7 +278,7 @@ def down_pic_include_child(down_param):
                 total = len(img_urls)
                 print('duplicate removal image num： %i ' % total)
                 new_title = url_list[1]
-                if len(img_urls) == 0:  # or len(img_urls) == 1
+                if len(img_urls) < 2:
                     os.chdir(cur_dir)
                     save_not_down_url(line, new_title, num)
                 else:
