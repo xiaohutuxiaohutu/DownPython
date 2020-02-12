@@ -9,9 +9,10 @@ import porn
 # sys.path.append(rootDir)
 
 # 获取用户目录
-userPath = os.path.expanduser('~') + os.sep
+# userPath = os.path.expanduser('~') + os.sep
 # downFilePath = userPath + 'Pictures/Camera Roll/all/xingqufenxiang/'
-downFilePath = 'F:/图片/91porn/ALL/兴趣分享'
+#
+downFilePath = 'D:/porn/ALL/兴趣分享'
 down_param = {
     'down_file_path': downFilePath
 }
