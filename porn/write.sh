@@ -1,5 +1,5 @@
-./jh/zpdr_ycsq_jh/WriteToTxt-JH-ZPDRYCSQ.py
-./jh/zpdr_ycsq_jh/WriteToTxt-JH-woaiwoqi.py
-./all/xqfx/writeToTxt-all-xqfx.py
-./all/zpdr_ycsq_all/WriteToTxt-All-ZPDRYCSQ.py
-./all/wawq_all/WriteToTxt-All-WAWQ.py
+./jh/zpdr_ycsq_jh/Write-JH-ZPDRYCSQ.py
+./jh/zpdr_ycsq_jh/Write-JH-woaiwoqi.py
+./all/xqfx/write-all-xqfx.py
+./all/zpdr_ycsq_all/Write-All-ZPDRYCSQ.py
+./all/wawq_all/Write-All-WAWQ.py
