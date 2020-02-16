@@ -3,6 +3,29 @@ import re
 
 import common
 
+# 用户目录
+user_dir = os.path.expanduser('~') + os.sep;
+
+# 我爱我妻
+DOWN_PATH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/all/woaiwoqi/'
+DOWN_PATH_WAWQ_F = 'F:/porn/ALL/我爱我妻'
+DOWN_PATH_WAWQ_D = 'D:/porn/ALL/我爱我妻'
+
+# 兴趣分享
+DOWN_PATH_XQFX_OS = user_dir + 'Pictures/Camera Roll/all/xingqufenxiang/'
+DOWN_PATH_XQFX_F = 'F:/porn/ALL/兴趣分享'
+DOWN_PATH_XQFX_D = 'D:/porn/ALL/兴趣分享'
+
+# 自拍达人原创申请
+DOWN_PATH_ZPDR_OS = user_dir + '/Pictures/Camera Roll/all/zipaidaren'
+DOWN_PATH_ZPDR_F = 'F:/图片/porn/ALL/91自拍达人原创申请'
+DOWN_PATH_ZPDR_D = 'D:/porn/ALL/91自拍达人原创申请'
+
+# 91自拍达人原创申请-精华
+DOWN_PATH_JH_ZPDR_OS = user_dir + 'Pictures/Camera Roll/jh/自拍达人原创申请'
+DOWN_PATH_JH_ZPDR_F = 'F:/图片/porn/精华/91自拍达人原创申请'
+DOWN_PATH_JH_ZPDR_D = 'D:/porn/精华/91自拍达人原创申请'
+
 # from urlparse import urlsplit
 # 获取当前文件路径
 # cur_dir = os.path.abspath(os.curdir) + os.sep

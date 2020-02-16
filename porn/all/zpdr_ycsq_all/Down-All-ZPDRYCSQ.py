@@ -11,13 +11,11 @@ import porn
 # 获取用户目录、
 #
 # userPath = os.path.expanduser('~') + os.sep
-# downFilePath = userPath + '/Pictures/Camera Roll/all/zipaidaren'
-#
-# downFilePath = 'F:/图片/91porn/ALL/91自拍达人原创申请'
-#
-downFilePath = 'D:/porn/ALL/91自拍达人原创申请'
+
 down_param = {
-    'down_file_path': downFilePath
+    'down_file_path': porn.DOWN_PATH_ZPDR_D
+    # 'down_file_path': porn.DOWN_PATH_ZPDR_F
+    # 'down_file_path': porn.DOWN_PATH_ZPDR_OS
 }
 
 porn.down_all_pic(down_param)
