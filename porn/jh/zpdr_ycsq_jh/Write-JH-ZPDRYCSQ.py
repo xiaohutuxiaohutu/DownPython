@@ -12,8 +12,7 @@ import sys
 import porn
 
 down_param = {
-    'done_down_text': 'Done-JH-zpdr.text',
-    'down_url': "forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=%i",
+    'down_url': porn.down_url_zpdr_jh,
     'start_page': 1,
     'end_page': 3
 }

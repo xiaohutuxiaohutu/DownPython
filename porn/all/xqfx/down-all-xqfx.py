@@ -8,11 +8,8 @@ import porn
 # sys.path.append(rootDir)
 #
 # sys.path.append(r"C:\workspace\GitHub\DownPython")
+down_file_path=porn.DOWN_PATH_XQFX_D
+# down_file_path=porn.DOWN_PATH_XQFX_F
+# down_file_path=porn.DOWN_PATH_XQFX_OS
 
-down_param = {
-    'down_file_path': porn.DOWN_PATH_XQFX_D
-    # 'down_file_path': porn.DOWN_PATH_XQFX_F
-    # 'down_file_path': porn.DOWN_PATH_XQFX_OS
-}
-
-porn.down_pic_include_child(down_param)
+porn.down_pic_include_child(down_file_path)

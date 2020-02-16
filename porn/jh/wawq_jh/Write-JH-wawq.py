@@ -2,8 +2,7 @@
 import porn
 
 down_param = {
-    'done_down_text': 'Done-JH-WAWQ.text',
-    'down_url': 'forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=%i',
+    'down_url': porn.down_url_wawq_jh,
     'start_page': 1,
     'end_page': 2
 }

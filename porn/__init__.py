@@ -10,6 +10,10 @@ user_dir = os.path.expanduser('~') + os.sep;
 DOWN_PATH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/all/woaiwoqi/'
 DOWN_PATH_WAWQ_F = 'F:/porn/ALL/我爱我妻'
 DOWN_PATH_WAWQ_D = 'D:/porn/ALL/我爱我妻'
+#JH
+DOWN_PATH_JH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/all/woaiwoqi/'
+DOWN_PATH_JH_WAWQ_F = 'F:/porn/ALL/我爱我妻'
+DOWN_PATH_JH_WAWQ_D = 'D:/porn/ALL/我爱我妻'
 
 # 兴趣分享
 DOWN_PATH_XQFX_OS = user_dir + 'Pictures/Camera Roll/all/xingqufenxiang/'
@@ -39,6 +43,24 @@ header = {
 
 pre_url = 'https://f.w24.rocks/'
 
+# 自拍达人-精华-已下载文件名
+done_file_zpdr_jh = 'Done-JH-zpdr.text'
+# 自拍达人-已下载文件名
+done_file_zpdr_jh = 'Done-All-ZPDR.text'
+# 兴趣分享-已下载文件名
+done_file_zpdr_jh = 'Done-XQFX.text'
+# 我爱我妻-已下载文件名
+done_file_zpdr_jh = 'Done-WAWQ.text'
+
+# 自拍达人下载链接
+down_url_zpdr = 'forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i'
+down_url_zpdr_jh = 'forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=%i'
+# 兴趣分享下载链接
+down_url_xqfx = 'forumdisplay.php?fid=33&orderby=dateline&filter=2592000&page=%i'
+# 我爱我妻下载链接
+down_url_wawq = 'forumdisplay.php?fid=21&orderby=dateline&filter=2592000&page=%i'
+down_url_wawq_jh = 'forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=%i'
+
 
 def save_not_down_url(line, new_title, num):
     with open(common.get_datetime('%Y-%m-%d') + '_未下载.text', 'a+', encoding='utf-8') as f:
@@ -63,7 +85,10 @@ def write_to_text_exclude_jh(down_param):
     down_url = pre_url + down_param['down_url']
     start_page = down_param['start_page']
     end_page = down_param['end_page']
-    done_down_text = cur_dir + down_param['done_down_text']
+    # done_down_text = cur_dir + down_param['done_down_text']
+    file_name_list = common.get_file_name_list(cur_dir, 'text')
+    done_down_text = file_name_list[0]
+    print(done_down_text)
     temp = 0
     with open(done_down_text) as fileObj:
         readLines = fileObj.read().splitlines()
@@ -114,7 +139,10 @@ def write_to_text_include_jh(down_param):
     down_url = pre_url + down_param['down_url']
     start_page = down_param['start_page']
     end_page = down_param['end_page']
-    done_down_text = cur_dir + down_param['done_down_text']
+    # done_down_text = cur_dir + down_param['done_down_text']
+    file_name_list = common.get_file_name_list(cur_dir, 'text')
+    done_down_text = file_name_list[0]
+    print(done_down_text)
     temp = 0
     with open(done_down_text) as fileObj:
         # readLines = fileObj.readlines()
@@ -242,7 +270,8 @@ def get_child_img_url(url):
 
 
 def down_all_pic(down_param):
-    path_ = down_param['down_file_path'] + cur_month
+    # path_ = down_param['down_file_path'] + cur_month
+    path_ = down_param + cur_month
     if not (os.path.exists(path_)):
         os.makedirs(path_)
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
@@ -253,7 +282,6 @@ def down_all_pic(down_param):
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
                 print('the %i line： %s' % (num, line))
-                # 获取子页面连接
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
@@ -269,7 +297,6 @@ def down_all_pic(down_param):
                     os.chdir(path)
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
-
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
@@ -283,9 +310,9 @@ def down_all_pic(down_param):
     common.del_old_Undown_Text(cur_dir)
 
 
-def down_pic_include_child(down_param):
+def down_pic_include_child(down_path):
     file_name_list = common.get_file_name_list(cur_dir, 'txt')
-    down_path = down_param['down_file_path']
+    # down_path = down_param['down_file_path']
     for index, file_name in enumerate(file_name_list, 1):
         print('down the %i file ： %s' % (index, file_name))
         # 打开文件
