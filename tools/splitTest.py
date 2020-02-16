@@ -2,7 +2,7 @@ import os
 import sys
 curDir = os.getcwd()
 print(curDir)
-with open('C:/workspace/GitHub/DownPython/porn/all/xqfx/down-done.text') as file_obj:
+with open('C:/workspace/GitHub/DownPython/porn/all/xqfx/Done-XQFX.text') as file_obj:
     read_lines = file_obj.readlines()
 
     for item in read_lines:

@@ -12,7 +12,7 @@ import sys
 import porn
 
 down_param = {
-    'done_down_text': 'Down-Done-WAWQ.text',
+    'done_down_text': 'Done-WAWQ.text',
     'down_url': 'forumdisplay.php?fid=21&orderby=dateline&filter=2592000&page=%i',
     'start_page': 1,
     'end_page': 5

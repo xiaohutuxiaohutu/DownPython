@@ -11,7 +11,7 @@ import sys
 import porn
 
 down_param = {
-    'done_down_text': 'down-done.text',
+    'done_down_text': 'Done-XQFX.text',
     'down_url': 'forumdisplay.php?fid=33&orderby=dateline&filter=2592000&page=%i',
     'start_page': 1,
     'end_page': 5

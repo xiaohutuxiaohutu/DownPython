@@ -46,7 +46,7 @@ def test_method():
     print(os.path.dirname(http_url))  # 获取文件路径
 
 
-params = {'pre_url': 'https://f.wonderfulday29.live/', 'down_path': '/DoneDown-JH-zipaidaren.text'}
+params = {'pre_url': 'https://f.wonderfulday29.live/', 'down_path': '/Done-JH-zpdr.text'}
 print(params['pre_url'])
 # test_method()
 print('***获取当前目录***')
