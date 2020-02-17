@@ -2,8 +2,7 @@
 import novel
 
 down_param = {
-    'done_down_text': 'lun-done.text',
-    'down_url': "https://www.4455sk.com/xiaoshuo/list-家庭乱伦-%i.html",
+    'down_url': novel.down_url_luanlun,
     'start_page': 1,
     'end_page': 3,
     'select_str': "body div[class='maomi-content'] main[id='main-container'] div[class='text-list-html'] div ul li a"

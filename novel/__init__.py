@@ -5,6 +5,20 @@ cur_dir = os.getcwd() + os.sep
 pre_url = 'https://www.4455sk.com'
 cur_month = os.sep + common.get_datetime('%Y-%m') + os.sep
 
+down_url_changpian = 'http://www.ve2s.com/AAbook/AAAtb/changpian/index-%i.html'
+
+down_url_jiqiao = "https://www.4455sk.com/xiaoshuo/list-性爱技巧-%i.html"
+
+down_url_linglei = "https://www.4455sk.com/xiaoshuo/list-另类小说-%i.html"
+
+down_url_qinggan = "https://www.4455sk.com/xiaoshuo/list-情感小说-%i.html"
+
+down_url_wuxia = "https://www.4455sk.com/xiaoshuo/list-武侠古典-%i.html"
+
+down_url_xiaoyuan = "https://www.4455sk.com/xiaoshuo/list-校园春色-%i.html"
+
+down_url_luanlun =  "https://www.4455sk.com/xiaoshuo/list-家庭乱伦-%i.html"
+
 
 # 获取下载连接
 def write_to_text(params):
@@ -13,7 +27,11 @@ def write_to_text(params):
     end_page = params['end_page']
     select_str = params['select_str']
     down_url = params['down_url']
-    done_down_text = cur_dir + params['done_down_text']
+
+    # done_down_text = cur_dir + params['done_down_text']
+    # print(os.getcwd())
+    done_down_text = common.get_file_name_list(os.getcwd(), "text")[0]
+    print(done_down_text)
     with open(done_down_text, 'a+') as fileObj:
         readLines = fileObj.read().splitlines()
     for i in range(start_page, end_page):

@@ -2,8 +2,8 @@
 import novel
 
 down_param = {
-    'done_down_text': 'changpian-done.text',
-    'down_url': "http://www.ve2s.com/AAbook/AAAtb/changpian/index-%i.html",
+    # 'done_down_text': 'changpian-done.text',
+    'down_url': novel.down_url_changpian,
     'start_page': 1,
     'end_page': 3,
     'select_str': "body div[class='main'] div[class='classList'] ul li a"

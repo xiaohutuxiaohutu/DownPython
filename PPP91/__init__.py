@@ -10,6 +10,11 @@ import common
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 
+cur_dir = os.getcwd() + os.sep
+
+# 获取用户目录
+user_dir = os.path.expanduser('~')
+
 
 def down_pic(img_urls, down_file_path, row_num):
     total_num = len(img_urls)
@@ -65,10 +70,14 @@ def get_img_urls(url, row_num):
         print('第%i行:%s---连接超时' % (row_num, url))
 
 
-def down_image(params):
-    cur_dir = os.getcwd() + os.sep
-    down_path = params['down_path']
-    # print(cur_dir)
+DOWN_PATH_D_WYZP = 'D:/图片/PPP91/网友自拍/%s/' % (datetime.datetime.now().strftime('%Y-%m-%d'))
+DOWN_PATH_OS_WYZP = user_dir + '/Pictures/Camera Roll/PPP91/wyzp/'
+
+DOWN_PATH_D_MT = 'D:/图片/PPP91/美腿'
+# 文件下载保存路径
+DOWN_PATH_OS_MT = user_dir + '/Pictures/Camera Roll/PPP91/meitui'
+
+def down_image(down_path):
     name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(name_list, 1):
         print('下载第' + str(index) + '个文件：' + file_name)
@@ -83,12 +92,12 @@ def down_image(params):
 
 
 def write_txt(params):
-    cur_dir = os.getcwd() + os.sep
     pre_url = params['pre_url']
     down_url = params['down_url']
     start_page = params['start_page']
     end_page = params['end_page']
-    done_down_txt = cur_dir + params['done_down_txt']
+    done_down_txt = common.get_file_name_list(cur_dir, 'text')[0]
+    print(done_down_txt)
     with open(done_down_txt, 'a+') as downObj:
         readlines = downObj.read().splitlines()
     # 用get方法打开url并发送headers
