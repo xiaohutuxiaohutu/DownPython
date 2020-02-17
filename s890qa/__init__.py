@@ -14,7 +14,8 @@ proxy_ip = common.get_ip()
 
 def write_txt(params):
     pre_url = params['pre_url']
-    done_down_txt = os.getcwd() + os.sep + params['done_down_txt']
+    # done_down_txt = os.getcwd() + os.sep + params['done_down_txt']
+    done_down_txt = common.get_file_name_list(os.getcwd(), "txt")[0]
     start_page = params['start_page']
     end_page = params['end_page']
     down_url = params['down_url']

@@ -4,14 +4,18 @@ import requests
 
 import common
 
+cur_dir = os.getcwd()
+
+DOWN_PATH_D_TP = 'D:/图片/四色AV/自拍偷拍'
+
 
 def write_to_txt(params):
-    cur_dir = os.getcwd() + os.sep
     pre_url = params['pre_url']
     down_url = params['down_url']
     start_page = params['start_page']
     end_page = params['end_page']
-    done_down_text = params['done_down_text']
+    # done_down_text = params['done_down_text']
+    done_down_text = common.get_file_name_list(cur_dir, 'text')[0]
     temp = 0
     for i in range(start_page, end_page):
         print('第 %i 页' % i)
@@ -40,7 +44,6 @@ def write_to_txt(params):
 
 
 def down_pic(params):
-    cur_dir = os.getcwd() + os.sep
     down_path = params['down_path'] + common.get_datetime('%Y-%m-%d')
     name_list = common.get_file_name_list(cur_dir, 'txt')
     for index, file_name in enumerate(name_list, 1):
