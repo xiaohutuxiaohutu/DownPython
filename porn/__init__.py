@@ -43,14 +43,6 @@ header = {
 
 pre_url = 'https://f.w24.rocks/'
 
-# 自拍达人-精华-已下载文件名
-done_file_zpdr_jh = 'Done-JH-zpdr.text'
-# 自拍达人-已下载文件名
-done_file_zpdr_jh = 'Done-All-ZPDR.text'
-# 兴趣分享-已下载文件名
-done_file_zpdr_jh = 'Done-XQFX.text'
-# 我爱我妻-已下载文件名
-done_file_zpdr_jh = 'Done-WAWQ.text'
 
 # 自拍达人下载链接
 down_url_zpdr = 'forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i'
