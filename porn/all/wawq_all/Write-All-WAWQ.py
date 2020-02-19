@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-
+# !/usr/bin/env python3
+# coding=UTF-8
 import os
 import sys
 
@@ -12,7 +12,7 @@ import sys
 import porn
 
 down_param = {
-    'down_url':porn.down_url_wawq,
+    'down_url': porn.down_url_wawq,
     'start_page': 1,
     'end_page': 5
 }

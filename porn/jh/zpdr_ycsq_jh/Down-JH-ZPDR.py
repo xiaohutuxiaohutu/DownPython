@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding=UTF-8
 import os
 
 # curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
@@ -10,6 +11,7 @@ import porn
 
 
 down_file_path = porn.DOWN_PATH_JH_ZPDR_D
+# down_file_path = porn.DOWN_PATH_JH_ZPDR_Linux
 # down_file_path= porn.DOWN_PATH_JH_ZPDR_F
 # down_file_path=porn.DOWN_PATH_JH_ZPDR_OS
 porn.down_all_pic(down_file_path)
