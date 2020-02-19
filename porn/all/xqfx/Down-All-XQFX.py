@@ -10,8 +10,11 @@ import porn
 #
 # sys.path.append(r"C:\workspace\GitHub\DownPython")
 down_file_path = porn.DOWN_PATH_XQFX_D
-# down_file_path = porn.DOWN_PATH_XQFX_Linux
 # down_file_path = porn.DOWN_PATH_XQFX_F
 # down_file_path = porn.DOWN_PATH_XQFX_OS
-
+if os.name == 'nt':
+    print(u'windows system')
+else:
+    print(u'linux')
+    down_file_path = porn.DOWN_PATH_XQFX_Linux
 porn.down_pic_include_child(down_file_path)

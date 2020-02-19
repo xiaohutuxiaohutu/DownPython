@@ -9,9 +9,12 @@ import os
 # sys.path.append(r"C:\workspace\GitHub\DownPython")
 import porn
 
-
 down_file_path = porn.DOWN_PATH_JH_ZPDR_D
-# down_file_path = porn.DOWN_PATH_JH_ZPDR_Linux
 # down_file_path= porn.DOWN_PATH_JH_ZPDR_F
 # down_file_path=porn.DOWN_PATH_JH_ZPDR_OS
+if os.name == 'nt':
+    print(u'windows system')
+else:
+    print(u'linux')
+    down_file_path = porn.DOWN_PATH_JH_ZPDR_Linux
 porn.down_all_pic(down_file_path)
