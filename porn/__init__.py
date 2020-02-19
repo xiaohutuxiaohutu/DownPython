@@ -83,7 +83,7 @@ def write_to_text_exclude_jh(down_param):
     # done_down_text = cur_dir + down_param['done_down_text']
     file_name_list = common.get_file_name_list(cur_dir, 'text')
     done_down_text = file_name_list[0]
-    print(done_down_text)
+    # print(done_down_text)
     temp = 0
     with open(done_down_text) as fileObj:
         readLines = fileObj.read().splitlines()
@@ -137,7 +137,7 @@ def write_to_text_include_jh(down_param):
     # done_down_text = cur_dir + down_param['done_down_text']
     file_name_list = common.get_file_name_list(cur_dir, 'text')
     done_down_text = file_name_list[0]
-    print(done_down_text)
+    # print(done_down_text)
     temp = 0
     with open(done_down_text) as fileObj:
         # readLines = fileObj.readlines()
