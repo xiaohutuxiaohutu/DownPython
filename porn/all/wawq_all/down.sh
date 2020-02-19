@@ -1,0 +1,1 @@
+python3 ./Down-All-WAWQ.py

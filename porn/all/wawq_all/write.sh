@@ -1,0 +1,1 @@
+python3 ./Write-All-WAWQ.py
