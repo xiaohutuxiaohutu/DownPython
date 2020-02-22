@@ -299,8 +299,8 @@ def down_all_pic(down_param):
                         if not os.path.exists(image_name):
                             print('the %i line：the %i  / %i ge : %s' % (num, i + 1, l, file_url))
                             common.down_img(pre_url + file_url)
-                        else:
-                            print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, l, file_url))
+                        # else:
+                        #     print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, l, file_url))
                 print("-----down over----------------")
         os.remove(file_name)
     print("down all over----------------start delete old undown text-------------------")
