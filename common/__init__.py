@@ -262,3 +262,17 @@ def del_old_Undown_Text(file_dir):
                 print('删除***未下载.text:' + f)
                 os.remove(f)
         '''
+
+
+# 获取当前指定类型的文件
+def get_cur_file_list(file_type, pattern):
+    file_name_list = []
+    for root, dirs, files in os.walk(os.getcwd()):
+        # print(root)
+        # print(dirs)
+        print(files)
+        for file in files:
+            print(file)
+            if os.path.splitext(file)[1] == ('.' + file_type) and pattern in file:
+                file_name_list.append(os.path.join(root, file))
+    return file_name_list

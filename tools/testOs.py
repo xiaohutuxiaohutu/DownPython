@@ -6,6 +6,13 @@ print(os.curdir)
 print(os.path.abspath(os.curdir))  # 获取当前工作目录路径
 print(os.getcwd())
 
+str = "Everyone has a world, quite and lonely!"
+
+result = "world" in str
+result2 = "hello" in str
+
+print(result, result2)
+
 
 def test_os_method():
     root_dir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径

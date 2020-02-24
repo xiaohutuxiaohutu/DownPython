@@ -14,7 +14,7 @@ DOWN_PATH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/all/woaiwoqi/'
 DOWN_PATH_WAWQ_F = 'F:/porn/ALL/我爱我妻'
 DOWN_PATH_WAWQ_D = 'D:/porn/ALL/我爱我妻'
 DOWN_PATH_WAWQ_Linux = '/usr/local/src/porn/ALL/我爱我妻'
-#JH
+# JH
 DOWN_PATH_JH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/all/woaiwoqi/'
 DOWN_PATH_JH_WAWQ_F = 'F:/porn/ALL/我爱我妻'
 DOWN_PATH_JH_WAWQ_D = 'D:/porn/ALL/我爱我妻'
@@ -48,7 +48,6 @@ header = {
 
 pre_url = 'https://f.w24.rocks/'
 
-
 # 自拍达人下载链接
 down_url_zpdr = 'forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i'
 down_url_zpdr_jh = 'forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=%i'
@@ -60,13 +59,22 @@ down_url_wawq_jh = 'forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=
 
 
 def save_not_down_url(line, new_title, num):
-    with open(common.get_datetime('%Y-%m-%d') + '_未下载.text', 'a+', encoding='utf-8') as f:
-        f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
+    # name_list = common.get_file_name_list(cur_dir, "log")
+    name_list = common.get_file_name_list('log', "un_down.log")
+    if len(name_list) == 0:
+        file_name = 'un_down.log'
+    else:
+        file_name = name_list[0]
+    # file_name = '%s_un_down.log' % common.get_datetime('%Y-%m-%d')
+    # with open(common.get_datetime('%Y-%m-%d') + '_undown.log', 'a+', encoding='utf-8') as f:
+    with open(file_name, 'a+', encoding='utf-8') as f:
+        # f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
+        f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
 
 
 # 保存下载连接到txt文档
 def save_url_down(done_down_text, file_down_url, pic_href, num):
-    file_name = '%s_%i.txt' % (common.get_datetime('%Y-%m-%d_%H-%M'), num // 500)
+    file_name = '%s_%i.txt' % (common.get_datetime('%Y-%m-%d_%H%M'), num // 500)
     with open(file_name, 'a+') as f:
         f.write(file_down_url + '\n')
     # 保存已下载的连接，防止重复下载
@@ -126,8 +134,8 @@ def write_to_text_exclude_jh(down_param):
                             if split_ not in readLines:
                                 print('down the %i ge: %s' % (temp, pic_href))
                                 save_url_down(done_down_text, file_down_url, split_, temp)
-                            else:
-                                print('the %i   is exist : %s ' % (temp, file_down_url))
+                            # else:
+                            #     print('the %i   is exist : %s ' % (temp, file_down_url))
     print("print over")
 
 
@@ -266,6 +274,16 @@ def get_child_img_url(url):
     return new_list
 
 
+def write_to_done_log(line, new_title):
+    done_file_list = common.get_cur_file_list('log', 'done.log')
+    if len(done_file_list) == 0:
+        done_log = 'done.log'
+    else:
+        done_log = done_file_list[0]
+    with open(done_log, 'a+', encoding='utf-8') as f:
+        f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
+
+
 def down_all_pic(down_param):
     # path_ = down_param['down_file_path'] + cur_month
     path_ = down_param + cur_month
@@ -285,6 +303,9 @@ def down_all_pic(down_param):
                 l = len(img_urls)
                 print('duplicate removal image num： %i ' % l)
                 new_title = url_list[1]
+                # 保存所有的下载链接
+                write_to_done_log(line, new_title)
+
                 if len(img_urls) < 2:
                     os.chdir(cur_dir)
                     save_not_down_url(line, new_title, num)
@@ -325,6 +346,8 @@ def down_pic_include_child(down_path):
                 total = len(img_urls)
                 print('duplicate removal image num： %i ' % total)
                 new_title = url_list[1]
+                # 保存所有的下载记录
+                write_to_done_log(line, new_title)
                 if len(img_urls) < 2:
                     os.chdir(cur_dir)
                     save_not_down_url(line, new_title, num)
