@@ -65,8 +65,7 @@ def save_not_down_url(line, new_title, num):
         file_name = 'un_down.log'
     else:
         file_name = name_list[0]
-    # file_name = '%s_un_down.log' % common.get_datetime('%Y-%m-%d')
-    # with open(common.get_datetime('%Y-%m-%d') + '_undown.log', 'a+', encoding='utf-8') as f:
+        print('un_down_file:' + file_name)
     with open(file_name, 'a+', encoding='utf-8') as f:
         # f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
         f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
@@ -280,6 +279,7 @@ def write_to_done_log(line, new_title):
         done_log = 'done.log'
     else:
         done_log = done_file_list[0]
+        print("done.log:" + done_log)
     with open(done_log, 'a+', encoding='utf-8') as f:
         f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
 
@@ -304,6 +304,7 @@ def down_all_pic(down_param):
                 print('duplicate removal image num： %i ' % l)
                 new_title = url_list[1]
                 # 保存所有的下载链接
+                os.chdir(cur_dir)
                 write_to_done_log(line, new_title)
 
                 if len(img_urls) < 2:
@@ -347,6 +348,7 @@ def down_pic_include_child(down_path):
                 print('duplicate removal image num： %i ' % total)
                 new_title = url_list[1]
                 # 保存所有的下载记录
+                os.chdir(cur_dir)
                 write_to_done_log(line, new_title)
                 if len(img_urls) < 2:
                     os.chdir(cur_dir)

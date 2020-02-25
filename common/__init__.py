@@ -270,9 +270,9 @@ def get_cur_file_list(file_type, pattern):
     for root, dirs, files in os.walk(os.getcwd()):
         # print(root)
         # print(dirs)
-        print(files)
+        # print(files)
         for file in files:
-            print(file)
+            # print(file)
             if os.path.splitext(file)[1] == ('.' + file_type) and pattern in file:
                 file_name_list.append(os.path.join(root, file))
     return file_name_list
