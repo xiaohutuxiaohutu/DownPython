@@ -303,9 +303,6 @@ def down_all_pic(down_param):
                 l = len(img_urls)
                 print('duplicate removal image num： %i ' % l)
                 new_title = url_list[1]
-                # 保存所有的下载链接
-                os.chdir(cur_dir)
-                write_to_done_log(line, new_title)
 
                 if len(img_urls) < 2:
                     os.chdir(cur_dir)
@@ -324,6 +321,10 @@ def down_all_pic(down_param):
                         # else:
                         #     print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, l, file_url))
                 print("-----down over----------------")
+                # 保存所有的下载链接
+                os.chdir(cur_dir)
+                write_to_done_log(line, new_title)
+
         os.remove(file_name)
     print("down all over----------------start delete old undown text-------------------")
     common.del_old_Undown_Text(cur_dir)
