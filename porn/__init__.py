@@ -234,9 +234,11 @@ def get_img_child_url(url, pre_url):
 
 
 def get_img_url_list(url):
-    soup = common.get_beauty_soup(url)
-    # print(soup)
-    title = soup.title.string
+    try:
+        soup = common.get_beauty_soup(url)
+        title = soup.title.string
+    except:
+        return [[], 'none']
 
     new_title = common.replace_sub(title)
     img_url_list = soup.select(
