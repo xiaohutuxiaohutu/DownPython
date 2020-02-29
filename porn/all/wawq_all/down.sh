@@ -1,1 +1,1 @@
-python3 ./Down-All-WAWQ.py
+python3 ./Down-WAWQ.py

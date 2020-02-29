@@ -1,1 +1,1 @@
-python3 ./Write-All-ZPDR.py
+python3 ./Write-ZPDR.py

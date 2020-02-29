@@ -1,1 +1,1 @@
-python3 ./Down-All-ZPDR.py
+python3 ./Down-ZPDR.py

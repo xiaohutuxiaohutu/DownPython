@@ -1,1 +1,1 @@
-python3 ./Write-All-XQFX.py
+python3 ./Write-XQFX.py

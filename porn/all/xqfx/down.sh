@@ -1,1 +1,1 @@
-python3 ./Down-All-XQFX.py
+python3 ./Down-XQFX.py
