@@ -319,7 +319,8 @@ def down_all_pic(down_param):
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
                             print('the %i line：the %i  / %i ge : %s' % (num, i + 1, l, file_url))
-                            common.down_img(pre_url + file_url)
+                            # common.down_img(pre_url + file_url)
+                            common.down_img(file_url)
                         # else:
                         #     print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, l, file_url))
                 print("-----down over----------------")

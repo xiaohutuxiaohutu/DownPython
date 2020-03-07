@@ -160,12 +160,14 @@ def down_img(file_url):
     image_name = file_url.split("/")[-1]
     if not os.path.exists(image_name):
         proxy_ip = get_ip()
+        # print(file_url)
         get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
         image = get_request.content
         image_b = io.BytesIO(image).read()
         print('image size : %i kb' % (len(image_b) / 1000))
-        with open(image_name, 'wb') as f:
-            f.write(image)
+        if len(image_b) > 0:
+            with open(image_name, 'wb') as f:
+                f.write(image)
     # else:
     #     print(image_name + "已存在")
 
