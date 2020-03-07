@@ -9,9 +9,9 @@ import os
 # sys.path.append(r"C:\workspace\GitHub\DownPython")
 import porn
 
-down_file_path = porn.DOWN_PATH_JH_ZPDR_D
+# down_file_path = porn.DOWN_PATH_JH_ZPDR_D
 # down_file_path= porn.DOWN_PATH_JH_ZPDR_F
-# down_file_path=porn.DOWN_PATH_JH_ZPDR_OS
+down_file_path = porn.DOWN_PATH_JH_ZPDR_OS
 if os.name == 'nt':
     print(u'windows system')
 else:
