@@ -315,6 +315,9 @@ def down_all_pic(down_param):
                     os.chdir(path)
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
+                        if not ('http://' in file_url or 'https://' in file_url):
+                            print('in:' + file_url)
+                            file_url = pre_url + file_url
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
@@ -363,12 +366,15 @@ def down_pic_include_child(down_path):
                     os.chdir(path)
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
+                        # print(file_url)
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
-                        fileUrl = pre_url + file_url
-                        image_name = fileUrl.split("/")[-1]
+                        if not ('http://' in file_url or 'https://' in file_url):
+                            print('in:' + file_url)
+                            file_url = pre_url + file_url
+                        image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
                             print('the %i line：the %i  / %i ge: %s' % (num, i + 1, total, file_url))
-                            common.down_img(fileUrl)
+                            common.down_img(file_url)
                         else:
                             print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, total, file_url))
                 print("-----down over----------------")
