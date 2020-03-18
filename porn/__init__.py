@@ -316,7 +316,7 @@ def down_all_pic(down_param):
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
                         # if not ('http://' in file_url or 'https://' in file_url):
-                        if not file_url.startwith('http'):
+                        if not file_url.startswith('http'):
                             print('in:' + file_url)
                             file_url = pre_url + file_url
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
@@ -368,7 +368,7 @@ def down_pic_include_child(down_path):
                         file_url = img_urls[i].get('file')
                         # print(file_url)
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
-                        if not file_url.startwith('http'):
+                        if not file_url.startswith('http'):
                             # if not ('http://' in file_url or 'https://' in file_url):
                             print('in:' + file_url)
                             file_url = pre_url + file_url
