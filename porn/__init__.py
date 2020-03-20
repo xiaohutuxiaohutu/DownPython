@@ -287,7 +287,6 @@ def write_to_done_log(line, new_title):
 
 
 def down_all_pic(down_param):
-    # path_ = down_param['down_file_path'] + cur_month
     path_ = down_param + cur_month
     if not (os.path.exists(path_)):
         os.makedirs(path_)
@@ -298,6 +297,9 @@ def down_all_pic(down_param):
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
+                if line == '':
+                    print('当前行为空：%i line' % num)
+                    continue
                 print('the %i line： %s' % (num, line), end=' ;')
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
@@ -324,8 +326,6 @@ def down_all_pic(down_param):
                         if not os.path.exists(image_name):
                             print('the %i line：the %i  / %i ge : %s' % (num, i + 1, l, file_url), end=' ;')
                             common.down_img(file_url)
-                        # else:
-                        #     print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, l, file_url))
                 print("-----down over----------------")
                 # 保存所有的下载链接
                 os.chdir(cur_dir)
@@ -333,7 +333,7 @@ def down_all_pic(down_param):
 
         os.remove(file_name)
     print("down all over----------------start delete old undown text-------------------")
-    common.del_old_Undown_Text(cur_dir)
+    # common.del_old_Undown_Text(cur_dir)
 
 
 def down_pic_include_child(down_path):
@@ -345,6 +345,9 @@ def down_pic_include_child(down_path):
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
+                if line == '':
+                    print('当前行为空：%i line' % num)
+                    continue
                 print('the %i line： %s' % (num, line), end=';')
                 # 获取子页面连接
                 # child_img_url = get_img_child_url(line, pre_url)
