@@ -298,12 +298,12 @@ def down_all_pic(down_param):
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
-                print('the %i line： %s' % (num, line))
+                print('the %i line： %s' % (num, line), end=' ;')
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
                 l = len(img_urls)
-                print('duplicate removal image num： %i ' % l)
+                print(' image num： %i ' % l)
                 new_title = url_list[1]
 
                 if len(img_urls) < 2:
@@ -322,7 +322,7 @@ def down_all_pic(down_param):
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
-                            print('the %i line：the %i  / %i ge : %s' % (num, i + 1, l, file_url))
+                            print('the %i line：the %i  / %i ge : %s' % (num, i + 1, l, file_url), end=' ;')
                             common.down_img(file_url)
                         # else:
                         #     print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, l, file_url))
@@ -345,7 +345,7 @@ def down_pic_include_child(down_path):
         with open(file_name) as file_obj:
             for num, value in enumerate(file_obj, 1):
                 line = value.strip('\n')
-                print('the %i line： %s' % (num, line))
+                print('the %i line： %s' % (num, line), end=';')
                 # 获取子页面连接
                 # child_img_url = get_img_child_url(line, pre_url)
                 url_list = get_img_url_list(line)
@@ -373,12 +373,12 @@ def down_pic_include_child(down_path):
                             print('in:' + file_url)
                             file_url = pre_url + file_url
                         image_name = file_url.split("/")[-1]
-                        print(file_url)
+                        # print(file_url)
                         if not os.path.exists(image_name):
-                            print('the %i line：the %i  / %i ge: %s' % (num, i + 1, total, file_url))
+                            print('the %i line：the %i  / %i ge: %s' % (num, i + 1, total, file_url), end=';')
                             common.down_img(file_url)
                         else:
-                            print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, total, file_url))
+                            print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, total, file_url), end=';')
                 print("-----down over----------------")
         os.remove(file_name)
     print("all over----------------start delete old undown text-------------------")
