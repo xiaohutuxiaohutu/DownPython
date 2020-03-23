@@ -95,7 +95,8 @@ def down_zhihu_pic(param):
     url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
     soup = common.get_beauty_soup(url)
     title = common.replace_sub(soup.title.string)
-    down_path = down_path + '/' + title + '/'
+    print(title)
+    down_path = down_path + os.sep + title
     if not (os.path.exists(down_path)):
         os.makedirs(down_path)
     # 获取当前目录下所有的待下载txt
@@ -105,12 +106,12 @@ def down_zhihu_pic(param):
         print('下载第' + str(num) + '个文件：' + file_name)
         with open(file_name, 'r') as fileObject:
             for num, value in enumerate(fileObject, 1):
-                print('第' + str(num) + '行：')
+                print('第%i行' % (num), end=' ; ')
                 img_url = value.strip('\n')
                 image_name = img_url.split("/")[-1]
                 os.chdir(down_path)
                 if not os.path.exists(image_name):
-                    print('下载第' + str(num + 1) + '个:' + img_url)
+                    print('下载第%i个：%s' % (num, img_url), end=" ; ")
                     common.down_img(img_url)
                 else:
                     print('第' + str(num + 1) + '个已存在:' + img_url)
