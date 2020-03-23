@@ -108,6 +108,9 @@ def down_zhihu_pic(param):
             for num, value in enumerate(fileObject, 1):
                 print('第%i行' % (num), end=' ; ')
                 img_url = value.strip('\n')
+                if img_url == '':
+                    print('当前行为空：%i line' % num)
+                    continue
                 image_name = img_url.split("/")[-1]
                 os.chdir(down_path)
                 if not os.path.exists(image_name):

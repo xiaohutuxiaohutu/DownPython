@@ -381,7 +381,7 @@ def down_pic_include_child(down_path):
                             print('the %i line：the %i  / %i ge: %s' % (num, i + 1, total, file_url), end=';')
                             common.down_img(file_url)
                         else:
-                            print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, total, file_url), end=';')
+                            print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, total, file_url))
                 print("-----down over----------------")
         os.remove(file_name)
     print("all over----------------start delete old undown text-------------------")

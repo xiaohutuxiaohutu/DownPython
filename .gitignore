@@ -24,3 +24,4 @@
 /xs/zfmt/1/**
 /venv/**
 *.pyc
+/zhihu/new/*.txt
