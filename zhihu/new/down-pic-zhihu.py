@@ -3,11 +3,10 @@ import os
 
 import zhihu
 
-# 29815334
 userPath = os.path.expanduser('~') + os.sep
 downFilePath = userPath + 'Pictures/zhihu'
 down_param = {
-    'question_id': 266695575,
+    'question_id': 46936305,
 
     'down_path': downFilePath
 }

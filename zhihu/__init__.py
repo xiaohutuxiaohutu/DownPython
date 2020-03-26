@@ -73,8 +73,10 @@ def write_txt(params):
     done_down_path = done_down_file_path % question_id
     with open(done_down_path, 'w+') as file_obj:
         readLines = file_obj.read().splitlines()
+
     with open(parent_dir + '/doneDown.text') as obj:
-        readLines.extend(obj.read().splitlines())
+        readLinesCopy = obj.read().splitlines()
+        readLines.extend(readLinesCopy)
     print('done-length:', end=" ")
     print(len(readLines))
     for i in range(0, len(img_list)):
@@ -92,6 +94,10 @@ def write_txt(params):
                 f.write(img_name + '\n')
         else:
             print('第' + str(i + 1) + '个已存在:' + img_url)
+        if img_name in readLinesCopy:
+            # 保存旧的连接，防止文件太大
+            with open(done_down_path, 'a+') as f:
+                f.write(img_name + '\n')
 
 
 def down_zhihu_pic(param):
@@ -127,3 +133,35 @@ def down_zhihu_pic(param):
         print('删除文件：' + file_name)
         os.remove(file_name)
     print("-----***************down all over********************----------------")
+
+
+def compare_down():
+    old_file = parent_dir + os.sep + 'doneDown.text'
+    print(old_file)
+    new_file = parent_dir + os.sep + 'new_done_down.text'
+    # 读取done文件下内容
+    file_list = common.get_file_name_list(cur_dir, 'text')
+    print(file_list)
+    list = []
+    for num, file_name in enumerate(file_list, 1):
+        print('读取第%i个文件：%s' % (num, file_name))
+        with open(file_name, 'r') as fileObject:
+            readLines = fileObject.read().splitlines()
+            list.extend(readLines)
+    print(len(list))
+    new_num = 0
+    old_num = 0
+    with open(old_file) as obj:
+        for num, value in enumerate(obj, 1):
+            old_num = old_num + 1
+            img_name = value.strip('\n')
+            if img_name == '':
+                print('当前行为空：%i line' % num)
+                continue
+            elif img_name not in list:
+                print('第%i行:%s 不存在，写入新文件' % (num, img_name))
+                new_num = new_num + 1
+                with open(new_file, 'a+') as f:
+                    f.write(img_name + '\n')
+    print('读取旧文件行数：%i; 写入新文件行数：%i' % (old_num, new_num))
+    # 比对，如果不在done文件下，写入新文件
