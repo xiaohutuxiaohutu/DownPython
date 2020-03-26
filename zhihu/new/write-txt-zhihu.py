@@ -3,6 +3,6 @@ import zhihu
 
 # 50876927
 down_param = {
-    'question_id': 297715922
+    'question_id': 266695575
 }
 zhihu.write_txt(down_param)

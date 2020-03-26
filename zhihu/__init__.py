@@ -9,8 +9,8 @@ cur_dir = os.getcwd()
 parent_dir = os.path.dirname(os.getcwd())
 print('parent_dir:' + parent_dir)
 
-done_down_file_path = parent_dir + '/doneDown.text'
-question_id_path = parent_dir + '/question_id.text'
+done_down_file_path = parent_dir + os.sep + 'done' + os.sep + '%i_doneDown.text'
+question_id_path = parent_dir + os.sep + 'question_id.text'
 
 headers = {
     'User-Agent': "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
@@ -70,8 +70,13 @@ def write_txt(params):
     img_list = get_image_url(question_id)  # 获取图片的地址列表
     print(len(img_list))
     temp = 0
-    with open(done_down_file_path) as file_obj:
+    done_down_path = done_down_file_path % question_id
+    with open(done_down_path, 'w+') as file_obj:
         readLines = file_obj.read().splitlines()
+    with open(parent_dir + '/doneDown.text') as obj:
+        readLines.extend(obj.read().splitlines())
+    print('done-length:', end=" ")
+    print(len(readLines))
     for i in range(0, len(img_list)):
         img_url = img_list[i]
         # img_name = img_url.split("/")[-1]
@@ -83,7 +88,7 @@ def write_txt(params):
             with open(file_name, 'a+') as f:
                 f.write(img_url + '\n')
             # 保存已下载的连接，防止重复下载
-            with open(done_down_file_path, 'a+') as f:
+            with open(done_down_path, 'a+') as f:
                 f.write(img_name + '\n')
         else:
             print('第' + str(i + 1) + '个已存在:' + img_url)
