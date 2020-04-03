@@ -30,7 +30,7 @@ default_time_format = '%Y-%m-%d %X'
 # 替换特殊字符
 def replace_special_char(old_str):
     if old_str is not None:
-        new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+/~+|\*+|\.\.\.+|\�+|�+|\？+', '', old_str)
+        new_str = re.sub(r'<+|>+|/+|‘+|’+|\?+|\|+|"+|：+|:+|【+|】+|\.+|~+|\*+|\.\.\.+|\�+|�+|\？+', '', old_str)
         return new_str.strip()
     else:
         return old_str.strip()
