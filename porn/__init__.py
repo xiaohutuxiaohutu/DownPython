@@ -300,7 +300,7 @@ def down_all_pic(down_param):
                 if line == '':
                     print('当前行为空：%i line' % num)
                     continue
-                print('the %i line： %s' % (num, line), end=' ;')
+                print('the %i line： -%s- ' % (num, line), end=' ;')
                 # 获取所有图片连接
                 url_list = get_img_url_list(line)
                 img_urls = url_list[0]
@@ -348,7 +348,7 @@ def down_pic_include_child(down_path):
                 if line == '':
                     print('当前行为空：%i line' % num)
                     continue
-                print('the %i line： %s' % (num, line), end=';')
+                print('the %i line： -%s-  ' % (num, line), end=';')
                 # 获取子页面连接
                 # child_img_url = get_img_child_url(line, pre_url)
                 url_list = get_img_url_list(line)
