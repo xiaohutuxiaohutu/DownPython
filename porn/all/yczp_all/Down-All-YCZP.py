@@ -5,16 +5,22 @@ import sys
 import re
 import datetime
 import common
-
-# curDir = os.path.abspath(os.curdir)  # 获取当前文件路径
+import porn
+# curDir = os.path.abspath(os.curdir) + os.sep
+#     return curDir  # 获取当前文件路径
 # rootDir = curDir[:curDir.find("DownPython\\") + len("DownPython\\")]  # 获取myProject，也就是项目的根路径
 # sys.path.append(rootDir)
 #
 # sys.path.append(r"C:\workspace\GitHub\DownPython")
+# down_file_path = porn.DOWN_PATH_YCZP_D
+# down_file_path = porn.DOWN_PATH_YCZP_F
+down_file_path = porn.DOWN_PATH_YCZP_OS
+if not os.name == 'nt':
+    down_file_path = porn.DOWN_PATH_WAWQ_Linux
 
 preUrl = 'https://f.wonderfulday30.live/'
 # 文件下载保存路径
-osPrePath = 'D:/porn/ALL/原创申请/'
+osPrePath = down_file_path
 if not (os.path.exists(osPrePath)):
     os.makedirs(osPrePath)
 header = common.header

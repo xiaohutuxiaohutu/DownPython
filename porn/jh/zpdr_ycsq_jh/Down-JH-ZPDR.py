@@ -15,7 +15,6 @@ down_file_path = porn.DOWN_PATH_JH_ZPDR_OS
 if os.name != 'nt':
     down_file_path = porn.DOWN_PATH_JH_ZPDR_Linux
 
-# https://f.w24.rocks/viewthread.php?tid=371539&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilter%3Ddigest 20200417 未下载连接
-# porn.down_all_pic(down_file_path)
+porn.down_all_pic(down_file_path)
 # 下载指定连接的区间图片
-porn.down_appoint_url("https://f.w24.rocks/viewthread.php?tid=371539&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilter%3Ddigest", down_file_path, 40, 61)
+# porn.down_appoint_url("https://f.w24.rocks/viewthread.php?tid=371539&extra=page%3D1%26amp%3Borderby%3Ddateline%26amp%3Bfilter%3Ddigest", down_file_path, 29, 61)

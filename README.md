@@ -13,6 +13,7 @@ python
 2. pip install beautifulsoup4
 3. pip install lxml
 4. pip install html5lib
+5. pip install requests
 ```
 #### 使用说明
 ```

@@ -34,7 +34,11 @@ DOWN_PATH_JH_ZPDR_OS = user_dir + 'Pictures/Camera Roll/jh/自拍达人原创申
 DOWN_PATH_JH_ZPDR_F = 'F:/图片/porn/精华/91自拍达人原创申请'
 DOWN_PATH_JH_ZPDR_D = 'D:/porn/精华/91自拍达人原创申请'
 DOWN_PATH_JH_ZPDR_Linux = '/usr/local/src/porn/JH/91自拍达人原创申请'
-
+# 原创自拍
+DOWN_PATH_YCZP_OS = user_dir + '/Pictures/Camera Roll/all/原创自拍'
+DOWN_PATH_YCZP_F = 'F:/图片/porn/ALL/原创自拍'
+DOWN_PATH_YCZP_D = 'D:/porn/ALL/原创自拍'
+DOWN_PATH_YCZP_Linux = '/usr/local/src/porn/ALL/原创自拍'
 # from urlparse import urlsplit
 # 获取当前文件路径
 # cur_dir = os.path.abspath(os.curdir) + os.sep

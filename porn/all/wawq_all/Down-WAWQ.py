@@ -13,9 +13,7 @@ import porn
 # down_file_path = porn.DOWN_PATH_WAWQ_D
 # down_file_path = porn.DOWN_PATH_WAWQ_F
 down_file_path = porn.DOWN_PATH_WAWQ_OS
-if os.name == 'nt':
-    print(u'windows system')
-else:
-    print(u'linux')
+if not os.name == 'nt':
     down_file_path = porn.DOWN_PATH_WAWQ_Linux
+
 porn.down_pic_include_child(down_file_path)
