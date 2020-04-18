@@ -334,7 +334,7 @@ def down_all_pic(down_param):
                             print('第 %i 行：第 %i / %i 个 : %s' % (num, i + 1, len(img_urls), file_url), end=' ;')
                             common.down_img(file_url)
                 # print("-----down over----------------")
-                print('第 %i 行： %s 下载完毕 ' % (num, line), end=' ;')
+                print('第 %i 行： %s 下载完毕 ' % (num, line))
                 # 保存所有的下载链接
                 os.chdir(cur_dir)
                 write_to_done_log(line, new_title)
