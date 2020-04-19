@@ -15,9 +15,9 @@ DOWN_PATH_WAWQ_F = 'F:/porn/ALL/我爱我妻'
 DOWN_PATH_WAWQ_D = 'D:/porn/ALL/我爱我妻'
 DOWN_PATH_WAWQ_Linux = '/usr/local/src/porn/ALL/我爱我妻'
 # JH
-DOWN_PATH_JH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/all/woaiwoqi/'
-DOWN_PATH_JH_WAWQ_F = 'F:/porn/ALL/我爱我妻'
-DOWN_PATH_JH_WAWQ_D = 'D:/porn/ALL/我爱我妻'
+DOWN_PATH_JH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/jh/woaiwoqi/'
+DOWN_PATH_JH_WAWQ_F = 'F:/porn/jh/我爱我妻'
+DOWN_PATH_JH_WAWQ_D = 'D:/porn/jh/我爱我妻'
 DOWN_PATH_JH_WAWQ_Linux = '/usr/local/src/porn/JH/我爱我妻'
 # 兴趣分享
 DOWN_PATH_XQFX_OS = user_dir + 'Pictures/Camera Roll/all/xingqufenxiang/'
