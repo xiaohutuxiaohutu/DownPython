@@ -398,10 +398,10 @@ def down_pic_include_child(down_path):
                         # print('the %i line：the %i  / %i is exist: %s' % (num, i + 1, total, file_url))
                         # print('第 %i 行：第 %i  / % i个已存在: %s' % (num, i + 1, total, file_url))
                 # print("-----down over----------------")
-                print('第 %i 行： %s 下载完毕，开始下载下一行文件  ' % (num, line), end=';')
+                print('第 %i 行： %s 下载完毕，开始下载下一行文件  ' % (num, line))
         print('第 %i 个文件： %s 下载完毕，开始删除...' % (index, file_name))
         os.remove(file_name)
-        print('第 %i 个文件： %s 删除成功，开始读取下一个文件' % (index, file_name), end=";")
+        print('第 %i 个文件： %s 删除成功，开始读取下一个文件' % (index, file_name))
     print("----------------所有文件下载完毕-------------------")
     # common.del_old_Undown_Text(cur_dir)
 
