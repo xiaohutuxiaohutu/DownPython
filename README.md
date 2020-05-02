@@ -14,6 +14,8 @@ python
 3. pip install lxml
 4. pip install html5lib
 5. pip install requests
+6. pip install furl
+7. pip install pypinyin
 ```
 #### 使用说明
 ```
