@@ -21,6 +21,8 @@ else:
 cur_month = os.sep + common.get_datetime('%Y-%m') + os.sep
 cur_dir = os.getcwd() + os.sep
 
+gLock = threading.Lock()
+
 
 def write_to_done_log(dir_path, line, new_title):
   done_file_list = common.get_cur_file_list2('log', 'done.log', dir_path)
@@ -29,7 +31,7 @@ def write_to_done_log(dir_path, line, new_title):
   else:
     done_log = done_file_list[0]
     print("done.log:" + done_log)
-  os.chdir(os.getcwd())
+  # os.chdir(os.getcwd())
   with open(done_log, 'a+', encoding='utf-8') as f:
     f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
 
@@ -58,9 +60,9 @@ def save_not_down_url(dir_path, line, new_title, num):
     f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
 
 
-def get_img_url_list(url):
+def get_img_url_list(url,proxy_ip):
   try:
-    soup = common.get_beauty_soup(url)
+    soup = common.get_beauty_soup2(url,proxy_ip=proxy_ip)
     title = soup.title.string
   except:
     return [[], 'none']
@@ -100,6 +102,7 @@ def get_file_map(file_dir, file_type):
 
 
 def down_all_pic(category_name, file_list, ip_list):
+  gLock.acquire()
   path_ = down_path_c + category_name + os.sep + cur_month
   # 获取路径
   pypinyin_slug = pypinyin.slug(category_name, separator='', style=Style.FIRST_LETTER)
@@ -127,15 +130,16 @@ def down_all_pic(category_name, file_list, ip_list):
           continue
         print('第 %i 行： -%s- ' % (num, line), end=' ;')
         # 获取所有图片连接
-        url_list = get_img_url_list(line)
+
+        url_list = get_img_url_list(line,common.get_random_ip(ip_list))
         img_urls = url_list[0]
         print(' 图片数量： %i ' % len(img_urls))
         new_title = url_list[1]
 
         if len(img_urls) < 2:
-          print()
           # os.chdir(cur_dir)
-          # save_not_down_url(dir_path, line, new_title, num)
+          save_not_down_url(dir_path, line, new_title, num)
+          continue
         else:
           path = path_ + str(new_title.strip()) + os.sep
           common.create_file(path)
@@ -149,25 +153,32 @@ def down_all_pic(category_name, file_list, ip_list):
             image_name = file_url.split("/")[-1]
             if not os.path.exists(image_name):
               print('第 %i 行：第 %i / %i 个 : %s' % (num, i + 1, len(img_urls), file_url), end=' ;')
-              common.down_img(file_url, common.get_random_ip(ip_list))
+              common.down_img2(file_url, common.get_random_ip(ip_list))
         print('第 %i 行： %s 下载完毕 ' % (num, line))
         # 保存所有的下载链接
-        # os.chdir(cur_dir)
+        os.chdir(cur_dir)
         write_to_done_log(dir_path, line, new_title)
     print('第 %i 个文件： %s 下载完毕，开始删除...' % (index, file_name))
     # os.remove(file_name)
     print('第 %i 个文件： %s 删除成功，开始读取下一个文件' % (index, file_name), end=";")
   print("---------------- 所有文件下载完毕 -------------------")
+  gLock.release()
 
 
 if __name__ == '__main__':
   file_map = get_file_map(cur_dir, 'txt')
   ip_list = common.get_ip_list(common.ipUrl)
+  threads = []
   for key, value in file_map.items():
     t = threading.Thread(target=down_all_pic, args=(key, value, ip_list,))
     t.setDaemon(True)
+    threads.append(t)
     t.start()
-  t.join()
+  for t in threads:
+    t.join()
+
+  print("所有线程任务完成")
+  # t.join()
   # print(pypinyin('中心'))
   # print(pypinyin.slug('91自拍达人原创申请_JH-2020-05-02_1925_0.txt',separator='',style=Style.FIRST_LETTER))
   # t = threading.Thread(target=down_all_pic, args=())

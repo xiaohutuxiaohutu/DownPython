@@ -84,8 +84,14 @@ def write_jh_thread(down_url, start_page, end_page, proxy_ip_list):
 if __name__ == '__main__':
   ip_list = common.get_ip_list(common.ipUrl)
   down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx]
+  threads = []
   for index in range(0, len(down_url)):
     t = threading.Thread(target=write_jh_thread, args=(down_url[index], 1, 5, ip_list,))
     t.setDaemon(True)
+    threads.append(t)
     t.start()
-  t.join()
+  for t in threads:
+    t.join()
+
+  print("所有线程任务完成")
+  # t.join()
