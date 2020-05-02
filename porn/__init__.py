@@ -10,35 +10,35 @@ import common
 user_dir = os.path.expanduser('~') + os.sep;
 
 # 我爱我妻
-DOWN_PATH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/all/woaiwoqi/'
-DOWN_PATH_WAWQ_F = 'F:/porn/ALL/我爱我妻'
-DOWN_PATH_WAWQ_D = 'D:/porn/ALL/我爱我妻'
-DOWN_PATH_WAWQ_Linux = '/usr/local/src/porn/ALL/我爱我妻'
+DOWN_PATH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/PORN/我爱我妻/'
+DOWN_PATH_WAWQ_F = 'F:/PORN/我爱我妻'
+DOWN_PATH_WAWQ_D = 'D:/PORN/我爱我妻'
+DOWN_PATH_WAWQ_Linux = '/usr/local/src/PORN/我爱我妻'
 # JH
-DOWN_PATH_JH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/jh/woaiwoqi/'
-DOWN_PATH_JH_WAWQ_F = 'F:/porn/jh/我爱我妻'
-DOWN_PATH_JH_WAWQ_D = 'D:/porn/jh/我爱我妻'
-DOWN_PATH_JH_WAWQ_Linux = '/usr/local/src/porn/JH/我爱我妻'
+DOWN_PATH_JH_WAWQ_OS = user_dir + 'Pictures/Camera Roll/PORN/我爱我妻-JH/'
+DOWN_PATH_JH_WAWQ_F = 'F:/PORN/我爱我妻-JH'
+DOWN_PATH_JH_WAWQ_D = 'D:/PORN/我爱我妻-JH'
+DOWN_PATH_JH_WAWQ_Linux = '/usr/local/src/PORN/我爱我妻-JH'
 # 兴趣分享
-DOWN_PATH_XQFX_OS = user_dir + 'Pictures/Camera Roll/all/xingqufenxiang/'
-DOWN_PATH_XQFX_F = 'F:/porn/ALL/兴趣分享'
-DOWN_PATH_XQFX_D = 'D:/porn/ALL/兴趣分享'
-DOWN_PATH_XQFX_Linux = '/usr/local/src/porn/ALL/兴趣分享'
+DOWN_PATH_XQFX_OS = user_dir + 'Pictures/Camera Roll/PORN/兴趣分享/'
+DOWN_PATH_XQFX_F = 'F:/PORN/兴趣分享'
+DOWN_PATH_XQFX_D = 'D:/PORN/兴趣分享'
+DOWN_PATH_XQFX_Linux = '/usr/local/src/PORN/兴趣分享'
 # 自拍达人原创申请
-DOWN_PATH_ZPDR_OS = user_dir + '/Pictures/Camera Roll/all/zipaidaren'
-DOWN_PATH_ZPDR_F = 'F:/图片/porn/ALL/91自拍达人原创申请'
-DOWN_PATH_ZPDR_D = 'D:/porn/ALL/91自拍达人原创申请'
-DOWN_PATH_ZPDR_Linux = '/usr/local/src/porn/ALL/91自拍达人原创申请'
+DOWN_PATH_ZPDR_OS = user_dir + '/Pictures/Camera Roll/PORN/自拍达人原创申请'
+DOWN_PATH_ZPDR_F = 'F:/PORN/自拍达人原创申请'
+DOWN_PATH_ZPDR_D = 'D:/PORN/自拍达人原创申请'
+DOWN_PATH_ZPDR_Linux = '/usr/local/src/PORN/自拍达人原创申请'
 # 91自拍达人原创申请-精华
-DOWN_PATH_JH_ZPDR_OS = user_dir + 'Pictures/Camera Roll/jh/自拍达人原创申请'
-DOWN_PATH_JH_ZPDR_F = 'F:/图片/porn/精华/91自拍达人原创申请'
-DOWN_PATH_JH_ZPDR_D = 'D:/porn/精华/91自拍达人原创申请'
-DOWN_PATH_JH_ZPDR_Linux = '/usr/local/src/porn/JH/91自拍达人原创申请'
+DOWN_PATH_JH_ZPDR_OS = user_dir + 'Pictures/Camera Roll/PORN/自拍达人原创申请-JH'
+DOWN_PATH_JH_ZPDR_F = 'F:/PORN/精华/自拍达人原创申请-JH'
+DOWN_PATH_JH_ZPDR_D = 'D:/PORN/自拍达人原创申请-JH'
+DOWN_PATH_JH_ZPDR_Linux = '/usr/local/src/PORN/自拍达人原创申请-JH'
 # 原创自拍
-DOWN_PATH_YCZP_OS = user_dir + '/Pictures/Camera Roll/all/原创自拍'
-DOWN_PATH_YCZP_F = 'F:/图片/porn/ALL/原创自拍'
-DOWN_PATH_YCZP_D = 'D:/porn/ALL/原创自拍'
-DOWN_PATH_YCZP_Linux = '/usr/local/src/porn/ALL/原创自拍'
+DOWN_PATH_YCZP_OS = user_dir + '/Pictures/Camera Roll/all/原创自拍区'
+DOWN_PATH_YCZP_F = 'F:/图片/porn/ALL/原创自拍区'
+DOWN_PATH_YCZP_D = 'D:/porn/ALL/原创自拍区'
+DOWN_PATH_YCZP_Linux = '/usr/local/src/porn/ALL/原创自拍区'
 # from urlparse import urlsplit
 # 获取当前文件路径
 # cur_dir = os.path.abspath(os.curdir) + os.sep
