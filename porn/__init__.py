@@ -6,6 +6,8 @@ import re
 
 import common
 
+from configparser import ConfigParser
+
 # 用户目录
 user_dir = os.path.expanduser('~') + os.sep;
 
@@ -508,3 +510,41 @@ def write_to_text_exclude_jh_thread(down_url, start_page, end_page):
               # else:
               #     print('the %i   is exist : %s ' % (temp, file_down_url))
   print("print over")
+
+
+# 获取配置文件
+class DoConfig:
+  def __init__(self, filepath, encoding='utf-8'):
+    self.cf = ConfigParser()
+    self.cf.read(filepath, encoding)
+
+  # 获取所有的section
+  def get_sections(self):
+    return self.cf.sections()
+
+  # 获取某一section下的所有option
+  def get_option(self, section):
+    return self.cf.options(section)
+
+  # 获取section、option下的某一项值-str值
+  def get_strValue(self, section, option):
+    return self.cf.get(section, option)
+
+  # 获取section、option下的某一项值-int值
+  def get_intValue(self, section, option):
+    return self.cf.getint(section, option)
+
+  # 获取section、option下的某一项值-float值
+  def get_floatValue(self, section, option):
+    return self.cf.getfloat(section, option)
+
+  # 获取section、option下的某一项值-bool值
+  def get_boolValue(self, section, option):
+    return self.cf.getboolean(section, option)
+
+  def setdata(self, section, option, value):
+    return self.cf.set(section, option, value)
+
+  # 获取指定section对象
+  def get_section(self, section):
+    return self.cf[section]

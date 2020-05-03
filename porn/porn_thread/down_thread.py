@@ -13,7 +13,6 @@ user_dir = os.path.expanduser('~') + os.sep;
 
 down_path_c = user_dir + 'Pictures/Camera Roll/PORN/'
 if not os.name == 'nt':
-  # print(u'linux')
   down_file_path = '/usr/local/src/PORN/'
 
 # 获取当前月份
