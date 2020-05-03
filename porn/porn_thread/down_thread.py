@@ -12,11 +12,10 @@ from pypinyin import Style
 user_dir = os.path.expanduser('~') + os.sep;
 
 down_path_c = user_dir + 'Pictures/Camera Roll/PORN/'
-if os.name == 'nt':
-  print(u'windows system')
-else:
-  print(u'linux')
+if not os.name == 'nt':
+  # print(u'linux')
   down_file_path = '/usr/local/src/PORN/'
+
 # 获取当前月份
 cur_month = os.sep + common.get_datetime('%Y-%m') + os.sep
 cur_dir = os.getcwd() + os.sep
@@ -60,9 +59,9 @@ def save_not_down_url(dir_path, line, new_title, num):
     f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
 
 
-def get_img_url_list(url,proxy_ip):
+def get_img_url_list(url, proxy_ip):
   try:
-    soup = common.get_beauty_soup2(url,proxy_ip=proxy_ip)
+    soup = common.get_beauty_soup2(url, proxy_ip=proxy_ip)
     title = soup.title.string
   except:
     return [[], 'none']
@@ -110,6 +109,8 @@ def down_all_pic(category_name, file_list, ip_list):
   dir_path = ''
   if pypinyin_slug.endswith('JH') and 'zpdrycsq' in pypinyin_slug:
     dir_path = '../jh/zpdr_ycsq_jh/'
+  elif (not pypinyin_slug.endswith('JH')) and 'zpdrycsq' in pypinyin_slug:
+    dir_path = '../all/zpdr_ycsq_all/'
   elif pypinyin_slug.endswith('JH') and 'wawq' in pypinyin_slug:
     dir_path = '../jh/wawq_jh/'
   elif 'wawq' in pypinyin_slug:
@@ -131,7 +132,7 @@ def down_all_pic(category_name, file_list, ip_list):
         print('第 %i 行： -%s- ' % (num, line), end=' ;')
         # 获取所有图片连接
 
-        url_list = get_img_url_list(line,common.get_random_ip(ip_list))
+        url_list = get_img_url_list(line, common.get_random_ip(ip_list))
         img_urls = url_list[0]
         print(' 图片数量： %i ' % len(img_urls))
         new_title = url_list[1]
@@ -159,7 +160,7 @@ def down_all_pic(category_name, file_list, ip_list):
         os.chdir(cur_dir)
         write_to_done_log(dir_path, line, new_title)
     print('第 %i 个文件： %s 下载完毕，开始删除...' % (index, file_name))
-    # os.remove(file_name)
+    os.remove(file_name)
     print('第 %i 个文件： %s 删除成功，开始读取下一个文件' % (index, file_name), end=";")
   print("---------------- 所有文件下载完毕 -------------------")
   gLock.release()
@@ -178,18 +179,3 @@ if __name__ == '__main__':
     t.join()
 
   print("所有线程任务完成")
-  # t.join()
-  # print(pypinyin('中心'))
-  # print(pypinyin.slug('91自拍达人原创申请_JH-2020-05-02_1925_0.txt',separator='',style=Style.FIRST_LETTER))
-  # t = threading.Thread(target=down_all_pic, args=())
-  # t.setDaemon(True)
-  # t.start()
-  # t.join()
-
-  # ip_list = common.get_ip_list(common.ipUrl)
-  # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx]
-  # for index in range(0, len(down_url)):
-  #   t = threading.Thread(target=write_jh_thread, args=(down_url[index], 1, 5, ip_list,))
-  #   t.setDaemon(True)
-  #   t.start()
-  # t.join()
