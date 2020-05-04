@@ -28,9 +28,10 @@ def get_file_txt(file_type, cur_dir):
 
 
 # 下载图片方法
-def down_zhihu_pic(down_path, question_id, file_list):
+def down_zhihu_pic(down_path, question_id, file_list, ip_list):
   url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
-  soup = common.get_beauty_soup(url)
+  proxy_ip = common.get_random_ip(ip_list)
+  soup = common.get_beauty_soup2(url, proxy_ip)
   title = common.replace_sub(soup.title.string)
   print(title)
   down_path = down_path + os.sep + title
@@ -49,7 +50,7 @@ def down_zhihu_pic(down_path, question_id, file_list):
         os.chdir(down_path)
         if not os.path.exists(image_name):
           print('下载第%i个：%s' % (num, img_url), end=" ; ")
-          common.down_img(img_url)
+          common.down_img2(img_url, proxy_ip)
         else:
           print('第' + str(num + 1) + '个已存在:' + img_url)
       print(file_name + "-----down over----------------")
@@ -60,16 +61,18 @@ def down_zhihu_pic(down_path, question_id, file_list):
 
 if __name__ == '__main__':
   file_map = get_file_txt('txt', os.getcwd())
+  ip_list = common.get_ip_list(common.ipUrl)
   if file_map is None or len(file_map) == 0:
     print()
   else:
+    threads = []
     for key, value in file_map.items():
-      # print(key)
-      # print(value)
-      # p = Process(target=down_zhihu_pic, args=(down_path, key, value,))
-      # p.start()
-      # p.join()
-      t = threading.Thread(target=down_zhihu_pic, args=(down_path, key, value,))
+      t = threading.Thread(target=down_zhihu_pic, args=(down_path, key, value, ip_list))
       t.setDaemon(True)
+      threads.append(t)
       t.start()
-    t.join()
+    for t in threads:
+      t.join()
+
+    print("所有线程任务完成")
+    # t.join()
