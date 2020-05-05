@@ -33,6 +33,14 @@ class DoConfig:
   def setdata(self, section, option, value):
     return self.cf.set(section, option, value)
 
+  def get_items(self, section):
+    items = self.cf.items(section)
+    return items
+
+  def get_dict(self, section):
+    items = self.get_items(section)
+    return dict(items)
+
 
 if __name__ == '__main__':
   cf = DoConfig('demo.conf')

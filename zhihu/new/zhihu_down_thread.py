@@ -28,7 +28,7 @@ def get_file_txt(file_type, cur_dir):
 
 
 # 下载图片方法
-def down_zhihu_pic(down_path, question_id, file_list, ip_list):
+def down_zhihu_pic2(down_path, question_id, file_list, ip_list):
   url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
   proxy_ip = common.get_random_ip(ip_list)
   soup = common.get_beauty_soup2(url, proxy_ip)
@@ -67,7 +67,7 @@ if __name__ == '__main__':
   else:
     threads = []
     for key, value in file_map.items():
-      t = threading.Thread(target=down_zhihu_pic, args=(down_path, key, value, ip_list))
+      t = threading.Thread(target=down_zhihu_pic2, args=(down_path, key, value, ip_list))
       t.setDaemon(True)
       threads.append(t)
       t.start()
