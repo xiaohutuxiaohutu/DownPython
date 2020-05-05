@@ -24,17 +24,11 @@ class ProxyIp():
 
   def get_ip_list(self):
     print(sys.path[1])
-    # print(sys.path)
-    # config = DoConfig.DoConfig(sys.path[1] + os.sep + 'common' + os.sep + 'config.ini')
-    # common_dict = config.get_dict('common')
-    # self.proxy_url = common_dict.get('proxy_url')
-    # self.header = common_dict.get('header')
     request = Request(self.proxy_url, headers=self.header)
     response = urlopen(request)
     obj = BeautifulSoup(response, 'lxml')
     # ip_text = obj.findAll('tr', {'class': 'odd'})
     ip_text = obj.findAll('tr')
-
     if len(ip_text) > 0:
       for i in range(len(ip_text)):
         ip_tag = ip_text[i].findAll('td')
@@ -71,6 +65,3 @@ if __name__ == '__main__':
   header = proxy_ip.header
   print(header)
   print(type(header))
-  # loads = json.loads(header)
-  # print(type(loads))
-  # print(loads['User-Agent'])
