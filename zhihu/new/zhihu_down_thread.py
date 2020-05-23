@@ -27,8 +27,10 @@ def get_file_txt(file_type, cur_dir):
   return result_map
 
 
+gLock = threading.Lock()
 # 下载图片方法
 def down_zhihu_pic2(down_path, question_id, file_list, ip_list):
+  gLock.acquire()
   url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
   proxy_ip = common.get_random_ip(ip_list)
   soup = common.get_beauty_soup2(url, proxy_ip)
@@ -57,7 +59,7 @@ def down_zhihu_pic2(down_path, question_id, file_list, ip_list):
     print('删除文件：' + file_name)
     os.remove(file_name)
   print("-----***************down all over********************----------------")
-
+  gLock.release()
 
 if __name__ == '__main__':
   file_map = get_file_txt('txt', os.getcwd())

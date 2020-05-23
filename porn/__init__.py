@@ -53,9 +53,10 @@ cur_month = os.sep + common.get_datetime('%Y-%m') + os.sep
 header = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 
-pre_url = 'https://f.w24.rocks/'
-
+# pre_url = 'https://f.w24.rocks/'
+pre_url = 'http://f.wonderfulday25.live'
 # 自拍达人下载链接
+# http://f.wonderfulday25.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=2
 down_url_zpdr = 'forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i'
 down_url_zpdr_jh = 'forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=%i'
 # 兴趣分享下载链接

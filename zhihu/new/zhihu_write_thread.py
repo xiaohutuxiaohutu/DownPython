@@ -3,9 +3,7 @@ import zhihu
 from multiprocessing import Process
 import threading
 
-question_id = [337301907, 285072479, 384408291
-  , 340753799, 386250141, 267126925,
-               31159183, 379205559
+question_id = [386250141, 384408291
                ]
 
 if __name__ == '__main__':
