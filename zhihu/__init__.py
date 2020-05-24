@@ -31,8 +31,10 @@ def get_image_url(qid):
     page = session.post(tmp_url, headers=headers, data=postdata)
     ret = eval(page.text)
     answers = ret['msg']
-    print("答案数 : %d " % (len(answers)))
+    if len(answers) == 0:
+      return image_urls
     size += 10
+    print("答案数 : %d " % (len(answers)))
     if not answers:
       print("图片URL获取完毕, 页数: ", (size - 10) / 10)
       return image_urls
@@ -48,8 +50,6 @@ def get_image_url(qid):
       for item in tmp_list:
         pattern = re.compile(r'^https://.*.(jpg|png|gif|jpeg)$')
         if pattern.match(item):
-          # if item.endswith('r.jpg'):
-          # print(item)
           image_urls.append(item)
     print('size: %d, num : %d' % (size, len(image_urls)))
 
@@ -73,7 +73,9 @@ def write_txt(params):
   # url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
 
   img_list = get_image_url(question_id)  # 获取图片的地址列表
-  print(len(img_list))
+  if len(img_list) == 0:
+    return
+    # print(len(img_list))
   temp = 0
   done_down_path = done_down_file_path % question_id
   with open(done_down_path, 'w+') as file_obj:
