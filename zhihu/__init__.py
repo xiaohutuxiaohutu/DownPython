@@ -4,6 +4,7 @@ import re
 import requests
 
 import common
+import threading
 
 cur_dir = os.getcwd()
 parent_dir = os.path.dirname(os.getcwd())
@@ -61,7 +62,11 @@ def save_question_id(question_id_path, question_id):
       f.write(str(question_id) + '\n')
 
 
+gLock = threading.Lock()
+
+
 def write_txt(params):
+  gLock.acquire()
   os.chdir(cur_dir)
   question_id = params['question_id']
   save_question_id(question_id_path, question_id)
@@ -98,6 +103,8 @@ def write_txt(params):
       # 保存旧的连接，防止文件太大
       with open(done_down_path, 'a+') as f:
         f.write(img_name + '\n')
+
+  gLock.release()
 
 
 def get_file_txt(question_id, file_type, cur_dir):
