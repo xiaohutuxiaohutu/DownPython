@@ -170,6 +170,8 @@ if __name__ == '__main__':
   ip_list = common.get_ip_list(common.ipUrl)
   threads = []
   for key, value in file_map.items():
+    print(key)
+    print(value)
     t = threading.Thread(target=down_all_pic, args=(key, value, ip_list,))
     t.setDaemon(True)
     threads.append(t)
