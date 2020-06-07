@@ -3,7 +3,7 @@ import zhihu
 from multiprocessing import Process
 import threading
 
-question_id = [804513132,
+question_id = [388566095,
 
                ]
 # , 852276684, 1075898334, 1238282965, 1136933318, 1199481548, 1232722574
