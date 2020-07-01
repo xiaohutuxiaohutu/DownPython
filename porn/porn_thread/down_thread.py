@@ -160,7 +160,10 @@ def down_all_pic(category_name, file_list, ip_list):
         write_to_done_log(dir_path, line, new_title)
     print('第 %i 个文件： %s 下载完毕，开始删除...' % (index, file_name))
     os.remove(file_name)
-    print('第 %i 个文件： %s 删除成功，开始读取下一个文件' % (index, file_name), end=";")
+    if index == len(file_list):
+      print("------------删除成功，所有文件下载完毕------------------")
+    else:
+      print('第 %i 个文件： %s 删除成功，开始读取下一个文件' % (index, file_name))
   print("---------------- 所有文件下载完毕 -------------------")
   gLock.release()
 
@@ -170,8 +173,6 @@ if __name__ == '__main__':
   ip_list = common.get_ip_list(common.ipUrl)
   threads = []
   for key, value in file_map.items():
-    # print(key)
-    # print(value)
     t = threading.Thread(target=down_all_pic, args=(key, value, ip_list,))
     t.setDaemon(True)
     threads.append(t)
