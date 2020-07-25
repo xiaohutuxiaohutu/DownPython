@@ -24,6 +24,10 @@ ipUrl = 'https://www.kuaidaili.com/free/intr/'
 header = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
 
+# header = {
+#   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
+#   'cookie': '__cfduid=d841ee121770d55841a853130daffa1771595683181; CzG_fid33=1595671845; __utma=195573755.839445799.1595683183.1595683183.1595683183.1; __utmz=195573755.1595683183.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); CzG_fid19=1595683362; CzG_fid21=1595665662; __utmc=195573755; cf_chl_1=9815dcf8a760121; cf_clearance=6f63c2bdaebeef6f2c304182a1119b7c5d2c515a-1595684249-0-1z79fa549dz49af16edz49fae42c-150; CzG_sid=m7A33S; CzG_visitedfid=19D21D33; __utmt=1; CzG_oldtopics=D383109D383111D383103D382961D382965D382992D383018D383021D383045D383069D383078D383088D383089D383104D383119D383121D383132D383125D383137D383139D383143D383093D; __utmb=195573755.28.10.1595683183'
+# }
 default_time_format = '%Y-%m-%d %X'
 
 
@@ -239,6 +243,7 @@ def get_beauty_soup(url):
 
 def get_beauty_soup2(url, proxy_ip):
   html = requests.get(url, headers=header, proxies=proxy_ip)
+  # html = requests.get(url, headers=header, timeout=(3.05, 27))
   html.encoding = 'utf-8'
   return BeautifulSoup(html.text, 'lxml')
 
@@ -306,7 +311,7 @@ def get_cur_file_list(file_type, pattern):
 
 
 # 获取当前指定类型的文件
-def get_cur_file_list2(file_type, pattern,file_dir):
+def get_cur_file_list2(file_type, pattern, file_dir):
   file_name_list = []
   for root, dirs, files in os.walk(file_dir):
     # print(root)
