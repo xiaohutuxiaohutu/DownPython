@@ -21,13 +21,14 @@ else:
 # ipUrl = 'http://www.xicidaili.com/'
 ipUrl = 'https://www.kuaidaili.com/free/intr/'
 
-header = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
-
 # header = {
-#   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
-#   'cookie': '__cfduid=d841ee121770d55841a853130daffa1771595683181; CzG_fid33=1595671845; __utma=195573755.839445799.1595683183.1595683183.1595683183.1; __utmz=195573755.1595683183.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); CzG_fid19=1595683362; CzG_fid21=1595665662; __utmc=195573755; cf_chl_1=9815dcf8a760121; cf_clearance=6f63c2bdaebeef6f2c304182a1119b7c5d2c515a-1595684249-0-1z79fa549dz49af16edz49fae42c-150; CzG_sid=m7A33S; CzG_visitedfid=19D21D33; __utmt=1; CzG_oldtopics=D383109D383111D383103D382961D382965D382992D383018D383021D383045D383069D383078D383088D383089D383104D383119D383121D383132D383125D383137D383139D383143D383093D; __utmb=195573755.28.10.1595683183'
-# }
+#   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
+
+header = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
+
+  'cookie': '__cfduid=dd258a623447213e3ddb4f6e75ef300071596203860; __utmz=195573755.1596203862.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmc=195573755; cf_clearance=c1970678bb0d6d407efc03fe125804bd8c252544-1596335014-0-1z79fa549dz49af16edz49fae42c-150; CzG_sid=NuQXci; CzG_fid19=1596334125; __utma=195573755.856032112.1596203862.1596331933.1596335045.7; __utmt=1; CzG_oldtopics=D383959D383873D383858D; CzG_fid33=1596333799; CzG_visitedfid=33D19; __utmb=195573755.2.10.1596335045'
+}
 default_time_format = '%Y-%m-%d %X'
 
 
@@ -43,6 +44,7 @@ def replace_special_char(old_str):
 # 替换并截取名字-porn使用
 def replace_sub(old_str):
   title = replace_special_char(old_str)
+  print('title:' + title)
   ind = title.index('-')
   return title[0:ind]
 
@@ -242,7 +244,8 @@ def get_beauty_soup(url):
 
 
 def get_beauty_soup2(url, proxy_ip):
-  html = requests.get(url, headers=header, proxies=proxy_ip)
+  # html = requests.get(url, headers=header, proxies=proxy_ip)
+  html = requests.get(url, headers=header)
   # html = requests.get(url, headers=header, timeout=(3.05, 27))
   html.encoding = 'utf-8'
   return BeautifulSoup(html.text, 'lxml')

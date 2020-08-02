@@ -160,7 +160,7 @@ def down_all_pic(category_name, file_list, ip_list):
         os.chdir(cur_dir)
         write_to_done_log(dir_path, line, new_title)
     print('第 %i 个文件： %s 下载完毕，开始删除...' % (index, file_name))
-    # os.remove(file_name)
+    os.remove(file_name)
     if index == len(file_list):
       print("------------删除成功，所有文件下载完毕------------------")
     else:
