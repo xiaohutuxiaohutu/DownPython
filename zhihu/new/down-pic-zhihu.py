@@ -6,7 +6,7 @@ import zhihu
 userPath = os.path.expanduser('~') + os.sep
 downFilePath = userPath + 'Pictures/zhihu'
 down_param = {
-  'question_id': 278164241,
+  'question_id': 316954079,
 
   'down_path': downFilePath
 }

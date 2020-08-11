@@ -2,7 +2,7 @@
 import zhihu
 
 down_param = {
-  'question_id': 1191256779
+  'question_id': 316954079
 }
 
 if __name__ == '__main__':

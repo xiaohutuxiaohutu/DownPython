@@ -27,7 +27,8 @@ ipUrl = 'https://www.kuaidaili.com/free/intr/'
 header = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
 
-  'cookie': '__cfduid=dd258a623447213e3ddb4f6e75ef300071596203860; __utmz=195573755.1596203862.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmc=195573755; cf_clearance=c1970678bb0d6d407efc03fe125804bd8c252544-1596335014-0-1z79fa549dz49af16edz49fae42c-150; CzG_sid=NuQXci; CzG_fid19=1596334125; __utma=195573755.856032112.1596203862.1596331933.1596335045.7; __utmt=1; CzG_oldtopics=D383959D383873D383858D; CzG_fid33=1596333799; CzG_visitedfid=33D19; __utmb=195573755.2.10.1596335045'
+  'cookie': 'CzG_visitedfid=19; __utmc=195573755; __utmz=195573755.1596977260.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __cfduid=de4887a9c6013e7c9fecf5baabde13b091596977269; CzG_fid19=1596984199; __utma=195573755.759091361.1596977260.1596984209.1596986343.4; CzG_sid=k91cwW; __utmt=1; CzG_oldtopics=D384428D384829D384877D384643D; cf_clearance=dfc36ca478e1c646a7974330b756b95377620ba7-1596987507-0-1z79fa549dz49af16edz49fae42c-150; __utmb=195573755.4.10.1596986343'
+
 }
 default_time_format = '%Y-%m-%d %X'
 
