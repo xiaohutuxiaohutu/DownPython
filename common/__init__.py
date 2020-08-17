@@ -27,7 +27,7 @@ ipUrl = 'https://www.kuaidaili.com/free/intr/'
 header = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
 
-  'cookie': 'CzG_visitedfid=19; __utmc=195573755; __utmz=195573755.1596977260.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __cfduid=de4887a9c6013e7c9fecf5baabde13b091596977269; CzG_fid19=1596984199; __utma=195573755.759091361.1596977260.1596984209.1596986343.4; CzG_sid=k91cwW; __utmt=1; CzG_oldtopics=D384428D384829D384877D384643D; cf_clearance=dfc36ca478e1c646a7974330b756b95377620ba7-1596987507-0-1z79fa549dz49af16edz49fae42c-150; __utmb=195573755.4.10.1596986343'
+  'cookie': '__utmz=195573755.1597541171.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __cfduid=d315cceb3f0dfb6e1169003a060204f531597541175; CzG_fid33=1597557901; CzG_fid4=1597570556; __utma=195573755.313373389.1597541171.1597567719.1597570801.8; __utmt=1; CzG_oldtopics=D385747D385755D385741D; CzG_visitedfid=19D33; cf_clearance=4b48ccdbeafb9158ffc8952107e2221c06d3b890-1597571324-0-1zc7c2e97az50e6f226za8c9b18e-150; CzG_sid=zQKX8n; CzG_fid19=1597571442; __utmc=195573755; __utmb=195573755.6.10.1597570801'
 
 }
 default_time_format = '%Y-%m-%d %X'
@@ -182,6 +182,7 @@ def down_img(file_url):
 
 # 根据图片连接保存图片
 def down_img2(file_url, proxy_ip):
+  print(file_url)
   image_name = file_url.split("/")[-1]
   if not os.path.exists(image_name):
     # proxy_ip = get_ip()
