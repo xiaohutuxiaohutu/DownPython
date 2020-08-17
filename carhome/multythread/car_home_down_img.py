@@ -2,7 +2,7 @@
 import io
 import os
 from concurrent import futures
-
+import time
 import requests
 from bs4 import BeautifulSoup
 
@@ -22,13 +22,18 @@ def get_img_url(url):
     # html.encoding = 'utf-8'
     soup = BeautifulSoup(html.text, 'lxml')
     title = common.replace_special_char(soup.title.string)
-    print(title, end=';')
+    print('title: %60s' % title, end=';')
     results = soup.select("div[class='conmain'] div div div div[class='conttxt'] div div[class='tz-figure'] img")
-    print('   图片数量：%i ;' % len(results))
+    if len(results) == 0:
+        results = soup.select("div[class='topic_detail_main'] div[id='content'] div[class='conmain'] div[id='maxwrap-maintopic'] div div div[class='rconten'] div[class='conttxt'] div p span[class='x-loaded'] img")
+        print(len(results))
+
     if len(results) > 0:
         fs = []
         # print('正在调用多线程获取所有的图片,请稍后。。。。。。')
         path = down_path % title
+        print('   图片数量：%3i ' % len(results), end=";   ")
+        start = int(time.time() * 1000)
         for index in range(0, len(results)):
             img_url = 'https:'
             src = results[index].get('src')
@@ -41,6 +46,11 @@ def get_img_url(url):
             fs.append(f)
         # 等待这些任务全部完成
         futures.wait(fs)
+        end = int(time.time() * 1000)
+        print('用时：%.2f 秒' % ((end - start) / 1000))
+
+    else:
+        print('   图片数量：%i ;' % len(results))
 
 
 # 根据图片链接下载图片
@@ -72,6 +82,6 @@ if __name__ == '__main__':
                 if line == '':
                     print('当前行为空：%i line' % num)
                     continue
-                print('第 %i 行： %s  ' % (num, line), end=';  ')
+                print('第 %3i 行： %90s  ' % (num, line), end=';  ')
                 get_img_url(line)
         os.remove(file_name)

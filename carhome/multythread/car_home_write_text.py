@@ -48,7 +48,7 @@ if __name__ == '__main__':
     fs = []
     print('正在调用多线程获取当前页面的所有连接,请稍后。。。。。。')
     executor = futures.ThreadPoolExecutor(max_workers=5)
-    for i in range(10, 20):
+    for i in range(28, 31):
         cur_page = 'https://club.autohome.com.cn/JingXuan/104/%i' % i
         print(cur_page)
         # 提交任务到线程池
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         # 等待这些任务全部完成
     futures.wait(fs)
     # as_completed 接收一个future 列表，返回值是一个迭代器，在运行结束后产出future
-    for future in futures.as_completed(fs):
-        res = future.result()
-        msg = '{} result: {!r}'
-        print(msg.format(future, res))
+    # for future in futures.as_completed(fs):
+    #     res = future.result()
+    #     msg = '{} result: {!r}'
+    #     print(msg.format(future, res))

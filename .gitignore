@@ -26,3 +26,4 @@
 *.pyc
 /zhihu/new/*.txt
 /porn/porn_thread/*.txt
+/carhome/multythread/*.txt
