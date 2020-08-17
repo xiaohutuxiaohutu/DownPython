@@ -72,7 +72,7 @@ def down_img(img_url, path):
 if __name__ == '__main__':
     cur_dir = os.getcwd() + os.sep
     file_list = carhome.get_file_list(cur_dir, 'txt')
-    print(file_list)
+    # print(file_list)
     for index, file_name in enumerate(file_list, 1):
         print('读取第 %i 个文件： %s' % (index, file_name))
         # 打开文件
