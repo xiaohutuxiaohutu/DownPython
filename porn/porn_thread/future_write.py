@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 import os
-import threading
+# import threading
 import common
 import porn
-from furl import furl  # 去除url中的参数
+from furl import furl
 import re
+from concurrent import futures
 
 cur_dir = os.getcwd() + os.sep
-gLock = threading.Lock()
+# gLock = threading.Lock()
+
+executor = futures.ThreadPoolExecutor(max_workers=5)
 
 
 # 保存下载连接到txt文档
@@ -23,6 +26,7 @@ def save_url_down(done_down_text, file_down_url, pic_href, num, title):
 # current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
 def write_jh_thread(down_url, start_page, end_page, ip_list, readLines, done_file_name):
     temp = 0
+    fs = []
     for page_num in range(start_page, end_page):
         print('第 %i 页 ：' % page_num, end=' ')
         # 当前页数不重复的连接：》0读取下一页
@@ -54,15 +58,20 @@ def write_jh_thread(down_url, start_page, end_page, ip_list, readLines, done_fil
             if split_ not in readLines:
                 print('获取第 %i 个连接: %s ' % ((j + 1), file_url))
                 cur_page_num += 1
-                save_url_down(done_file_name, file_url, split_, temp, new_title)
+                # save_url_down(done_file_name, file_url, split_, temp, new_title)
+                f = executor.submit(save_url_down, done_file_name, file_url, split_, temp, new_title)
+                fs.append(f)
         if cur_page_num == 0:
             break
     print("print over ")
+    # 等待这些任务全部完成
+    futures.wait(fs)
 
 
 # 非精华连接
 def write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, done_file_name):
     temp = 0
+    fs = []
     for page_num in range(start_page, end_page):
         print('第 %i 页 ：' % page_num, end=' ')
         url = porn.pre_url + down_url % page_num
@@ -105,14 +114,18 @@ def write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, done_fi
                             if split_ not in readLines:
                                 print('down the %i ge: %s' % (temp, pic_href))
                                 cur_page_num += 1
-                                save_url_down(done_file_name, file_down_url, split_, temp, title)
+                                # save_url_down(done_file_name, file_down_url, split_, temp, title)
+                                f = executor.submit(save_url_down, done_file_name, file_down_url, split_, temp, title)
+                                fs.append(f)
         if cur_page_num == 0:
             break
     print("print over")
+    # 等待这些任务全部完成
+    futures.wait(fs)
 
 
 def write_common(down_url, start_page, end_page, ip_list):
-    gLock.acquire()
+    # gLock.acquire()
     f = furl(down_url)
     filter_ = f.args['filter']
     fid_ = f.args['fid']  # 分类
@@ -135,10 +148,13 @@ def write_common(down_url, start_page, end_page, ip_list):
     with open(file_name_list[0]) as fileObj:
         readLines = fileObj.read().splitlines()
     if isdigit:
+        print('feijh')
         write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, file_name_list[0])
     else:
+        print('jh')
+
         write_jh_thread(down_url, start_page, end_page, ip_list, readLines, file_name_list[0])
-    gLock.release()
+    # gLock.release()
 
 
 if __name__ == '__main__':
@@ -146,12 +162,4 @@ if __name__ == '__main__':
     down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx, porn.down_url_wawq_jh]
     threads = []
     for index in range(0, len(down_url)):
-        t = threading.Thread(target=write_common, args=(down_url[index], 1, 5, ip_list,))
-        t.setDaemon(True)
-        threads.append(t)
-        t.start()
-    for t in threads:
-        t.join()
-
-    print("所有线程任务完成")
-    # t.join()
+        write_common(down_url[index], 1, 5, ip_list)
