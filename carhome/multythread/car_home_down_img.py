@@ -22,8 +22,11 @@ def get_img_url(url):
     # html.encoding = 'utf-8'
     soup = BeautifulSoup(html.text, 'lxml')
     title = common.replace_special_char(soup.title.string)
-    print('title: %60s' % title, end=';')
-    results = soup.select("div[class='conmain'] div div div div[class='conttxt'] div div[class='tz-figure'] img")
+    print('title: %30s' % title)
+    results = soup.select("div[class='conttxt'] img")
+    # results1 = soup.select("div[class='conttxt'] div div[class='tz-figure'] div img")
+    # results2 = soup.select("div[class='conttxt'] div div[class='tz-picture'] div img")
+    # results=results1.extend(results2)
     if len(results) == 0:
         results = soup.select("div[class='topic_detail_main'] div[id='content'] div[class='conmain'] div[id='maxwrap-maintopic'] div div div[class='rconten'] div[class='conttxt'] div p span[class='x-loaded'] img")
         print(len(results))
@@ -32,7 +35,7 @@ def get_img_url(url):
         fs = []
         # print('正在调用多线程获取所有的图片,请稍后。。。。。。')
         path = down_path % title
-        print('   图片数量：%3i ' % len(results), end=";   ")
+        print(' 图片数量：%3i ' % len(results), end=";   ")
         start = int(time.time() * 1000)
         for index in range(0, len(results)):
             img_url = 'https:'

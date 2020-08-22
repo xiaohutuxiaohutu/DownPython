@@ -136,7 +136,7 @@ def down_all_pic(category_name, file_list, ip_list):
                 print(' 图片数量： %i ' % len(img_urls))
                 new_title = url_list[1]
                 print(new_title)
-                fs = []
+
                 if len(img_urls) < 2:
                     # os.chdir(cur_dir)
                     save_not_down_url(dir_path, line, new_title, num)
@@ -145,7 +145,7 @@ def down_all_pic(category_name, file_list, ip_list):
                     path = path_ + str(new_title.strip()) + os.sep
                     common.create_file(path)
                     os.chdir(path)
-
+                    fs = []
                     for i in range(0, len(img_urls)):
                         file_url = img_urls[i].get('file')
                         if not file_url.startswith('http'):
@@ -154,15 +154,16 @@ def down_all_pic(category_name, file_list, ip_list):
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
-                            print('第 %i 行：第 %i / %i 个 : %s' % (num, i + 1, len(img_urls), file_url), end=' ;')
+                            print('第 %i 行：第 %i / %i 个 : %s' % (num, i + 1, len(img_urls), file_url))
                             submit = executor.submit(common.down_img2, file_url, common.get_random_ip(ip_list))
                             fs.append(submit)
                             # common.down_img2(file_url, common.get_random_ip(ip_list))
+                    futures.wait(fs)
                 print('第 %i 行： %s 下载完毕 ' % (num, line))
                 # 保存所有的下载链接
                 os.chdir(cur_dir)
                 write_to_done_log(dir_path, line, new_title)
-                futures.wait(fs)
+
         print('第 %i 个文件： %s 下载完毕，开始删除...' % (index, file_name))
         os.remove(file_name)
         if index == len(file_list):
