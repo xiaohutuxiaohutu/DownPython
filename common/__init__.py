@@ -26,7 +26,9 @@ ipUrl = 'https://www.kuaidaili.com/free/intr/'
 
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
-    'cookie': '__utmz=195573755.1598020701.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __cfduid=d8c52749b7b590f68256938fffab648001598020706; CzG_visitedfid=33D19; __utma=195573755.1422174187.1598020701.1598063662.1598101414.3; cf_clearance=090001186286953b607708058b684c5e8ec3a725-1598141759-0-1z79fa549dz49af16edz49fae42c-150; CzG_sid=1y4Nlv'
+
+    'cookie': '__utmz=195573755.1598620045.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __cfduid=d24b36dcbef40c33632ea75ba4ce7a3e71598620060; CzG_fid19=1598788937; __utmc=195573755; cf_clearance=0ef2867122cd2e6d2be89b3f7747e5bc53b86281-1598791835-0-1z79fa549dz49af16edz49fae42c-150; CzG_sid=e9C94M; CzG_oldtopics=D387559D387527D; CzG_fid33=1598781265; CzG_visitedfid=33D19; __utma=195573755.98189959.1598620045.1598789118.1598791835.4; __utmt=1; __utmb=195573755.1.10.1598791835'
+
 }
 default_time_format = '%Y-%m-%d %X'
 
