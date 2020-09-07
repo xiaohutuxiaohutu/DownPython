@@ -19,8 +19,6 @@ if not os.name == 'nt':
 cur_month = os.sep + common.get_datetime('%Y-%m') + os.sep
 cur_dir = os.getcwd() + os.sep
 
-gLock = threading.Lock()
-
 
 def write_to_done_log(dir_path, line, new_title):
     done_file_list = common.get_cur_file_list2('log', 'done.log', dir_path)
@@ -171,7 +169,6 @@ def down_all_pic(category_name, file_list, ip_list):
         else:
             print('第 %i 个文件： %s 删除成功，开始读取下一个文件' % (index, file_name))
     print("---------------- 所有文件下载完毕 -------------------")
-    # gLock.release()
 
 
 if __name__ == '__main__':
