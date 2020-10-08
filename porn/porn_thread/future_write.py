@@ -159,7 +159,8 @@ def write_common(down_url, start_page, end_page, ip_list):
 
 if __name__ == '__main__':
     ip_list = common.get_ip_list(common.ipUrl)
-    down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx, porn.down_url_wawq_jh]
+    # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx, porn.down_url_wawq_jh]
+    down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh]
     threads = []
     for index in range(0, len(down_url)):
         write_common(down_url[index], 1, 5, ip_list)
