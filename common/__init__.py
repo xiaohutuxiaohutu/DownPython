@@ -182,7 +182,8 @@ def down_img(file_url):
 
 # 根据图片连接保存图片
 def down_img2(file_url, proxy_ip):
-    print(file_url)
+    print(file_url, end=';')
+
     image_name = file_url.split("/")[-1]
     if not os.path.exists(image_name):
         # proxy_ip = get_ip()
@@ -197,6 +198,13 @@ def down_img2(file_url, proxy_ip):
                 f.write(image)
     # else:
     #     print(image_name + "已存在")
+
+
+# 线程下载图片
+def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num):
+    print()
+    print('第 %i 行：第 %i / %i 个 : %s' % (line_num, img_num + 1, len(img_nums), img_url))
+    down_img2(img_url, proxy_ip)
 
 
 def down_img_2(img_url, down_path, index):

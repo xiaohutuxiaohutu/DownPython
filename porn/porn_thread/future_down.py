@@ -152,10 +152,10 @@ def down_all_pic(category_name, file_list, ip_list):
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
-                            print('第 %i 行：第 %i / %i 个 : %s' % (num, i + 1, len(img_urls), file_url))
-                            submit = executor.submit(common.down_img2, file_url, common.get_random_ip(ip_list))
+                            # print('第 %i 行：第 %i / %i 个 : %s' % (num, i + 1, len(img_urls), file_url))
+                            # submit = executor.submit(common.down_img2, file_url, common.get_random_ip(ip_list))
+                            submit = executor.submit(common.future_dowm_img, file_url, common.get_random_ip(ip_list), num, len(img_urls), i)
                             fs.append(submit)
-                            # common.down_img2(file_url, common.get_random_ip(ip_list))
                     futures.wait(fs)
                 print('第 %i 行： %s 下载完毕 ' % (num, line))
                 # 保存所有的下载链接
