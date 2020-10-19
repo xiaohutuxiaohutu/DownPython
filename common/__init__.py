@@ -45,7 +45,7 @@ def replace_special_char(old_str):
 # 替换并截取名字-porn使用
 def replace_sub(old_str):
     title = replace_special_char(old_str)
-    print('title:' + title)
+    # print('title:' + title)
     ind = title.index('-')
     return title[0:ind]
 

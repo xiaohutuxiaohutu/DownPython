@@ -133,7 +133,7 @@ def down_all_pic(category_name, file_list, ip_list):
                 img_urls = url_list[0]
                 print(' 图片数量： %i ' % len(img_urls))
                 new_title = url_list[1]
-                print(new_title)
+                # print(new_title)
 
                 if len(img_urls) < 2:
                     # os.chdir(cur_dir)
@@ -152,8 +152,6 @@ def down_all_pic(category_name, file_list, ip_list):
                         # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
                         image_name = file_url.split("/")[-1]
                         if not os.path.exists(image_name):
-                            # print('第 %i 行：第 %i / %i 个 : %s' % (num, i + 1, len(img_urls), file_url))
-                            # submit = executor.submit(common.down_img2, file_url, common.get_random_ip(ip_list))
                             submit = executor.submit(common.future_dowm_img, file_url, common.get_random_ip(ip_list), num, len(img_urls), i)
                             fs.append(submit)
                     futures.wait(fs)
