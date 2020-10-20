@@ -26,7 +26,7 @@ def write_to_done_log(dir_path, line, new_title):
         done_log = 'done.log'
     else:
         done_log = done_file_list[0]
-        print("done.log:" + done_log)
+        print("done.log:   " + done_log)
     # os.chdir(os.getcwd())
     with open(done_log, 'a+', encoding='utf-8') as f:
         f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
@@ -102,7 +102,7 @@ def down_all_pic(category_name, file_list, ip_list):
     path_ = down_path_c + category_name + os.sep + cur_month
     # 获取路径
     pypinyin_slug = pypinyin.slug(category_name, separator='', style=Style.FIRST_LETTER)
-    print(pypinyin_slug)
+    # print(pypinyin_slug)
     dir_path = ''
     if pypinyin_slug.endswith('JH') and 'zpdrycsq' in pypinyin_slug:
         dir_path = '../jh/zpdr_ycsq_jh/'

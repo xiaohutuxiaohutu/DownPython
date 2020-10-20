@@ -202,7 +202,6 @@ def down_img2(file_url, proxy_ip):
 
 # 线程下载图片
 def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num):
-    print()
     print('第 %i 行：第 %i / %i 个 : %s' % (line_num, img_num + 1, len(img_nums), img_url))
     down_img2(img_url, proxy_ip)
 
