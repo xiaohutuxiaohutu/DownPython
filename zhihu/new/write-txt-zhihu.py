@@ -6,4 +6,4 @@ down_param = {
 }
 
 if __name__ == '__main__':
-  zhihu.write_txt(down_param)
+    zhihu.write_txt(down_param)

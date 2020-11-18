@@ -196,8 +196,23 @@ def down_img2(file_url, proxy_ip):
         if len(image_b) > 0:
             with open(image_name, 'wb') as f:
                 f.write(image)
-    # else:
-    #     print(image_name + "已存在")
+    else:
+        print(image_name + "已存在")
+
+
+# 下载知乎图片
+def down_zhihu_img(file_url, proxy_ip):
+    image_name = os.path.basename(file_url).split('?')[0]
+    if not os.path.exists(image_name):
+        get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
+        image = get_request.content
+        image_b = io.BytesIO(image).read()
+        print(' 图片大小 : %i kb' % (len(image_b) / 1000))
+        if len(image_b) > 0:
+            with open(image_name, 'wb') as f:
+                f.write(image)
+    else:
+        print("%s 已存在" % image_name)
 
 
 # 线程下载图片
