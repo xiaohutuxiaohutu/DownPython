@@ -9,12 +9,3 @@ header = {
 }
 proxy_ip = common.get_ip()
 
-
-# 获取文件列表
-def get_file_list(file_dir, file_type):
-    file_list = []
-    for root, dirs, files in os.walk(file_dir):
-        for file in files:
-            if os.path.splitext(file)[1] == ('.' + file_type):
-                file_list.append(os.path.join(root, file))
-    return file_list

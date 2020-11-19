@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 import os
-import threading
+# import threading
 import common
 from concurrent import futures
-# import porn
+import porn
 # from furl import furl
 # from pypinyin import pinyin, lazy_pinyin, Style
 import pypinyin
 from pypinyin import Style
+import logging
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 user_dir = os.path.expanduser('~') + os.sep;
 
 down_path_c = user_dir + 'Pictures/Camera Roll/PORN/'
@@ -26,10 +29,11 @@ def write_to_done_log(dir_path, line, new_title):
         done_log = 'done.log'
     else:
         done_log = done_file_list[0]
-        print("done.log:   " + done_log)
+        print("保存已下载图片链接--->>>done.log:   " + done_log)
     # os.chdir(os.getcwd())
     with open(done_log, 'a+', encoding='utf-8') as f:
         f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
+    print()
 
 
 def get_file_name_list(file_dir, file_type):
@@ -98,9 +102,7 @@ def get_file_map(file_dir, file_type):
     return file_map
 
 
-def down_all_pic(category_name, file_list, ip_list):
-    path_ = down_path_c + category_name + os.sep + cur_month
-    # 获取路径
+def get_dir_path(category_name):
     pypinyin_slug = pypinyin.slug(category_name, separator='', style=Style.FIRST_LETTER)
     # print(pypinyin_slug)
     dir_path = ''
@@ -114,10 +116,23 @@ def down_all_pic(category_name, file_list, ip_list):
         dir_path = '../all/wawq_all/'
     elif 'xqxt' in pypinyin_slug:
         dir_path = '../all/xqfx/'
+    return dir_path
 
-    if not (os.path.exists(path_)):
-        os.makedirs(path_)
-    executor = futures.ThreadPoolExecutor(max_workers=5)
+
+# 创建下载目录
+def create_down_root_path(category_name, title):
+    root_path = down_path_c + category_name + os.sep + cur_month + os.sep + str(title.strip()) + os.sep
+    if not (os.path.exists(root_path)):
+        os.makedirs(root_path)
+    return root_path
+
+
+executor = futures.ThreadPoolExecutor(max_workers=10, thread_name_prefix='down-pic-')
+
+
+def down_all_pic(category_name, file_list, ip_list):
+    # 获取路径
+    dir_path = get_dir_path(category_name)
     for index, file_name in enumerate(file_list, 1):
         print('读取第 %i 个文件： %s' % (index, file_name))
         # 打开文件
@@ -127,40 +142,43 @@ def down_all_pic(category_name, file_list, ip_list):
                 if line == '':
                     print('当前行为空：%i line' % num)
                     continue
-                print('第 %i 行： -%s- ' % (num, line), end=' ;')
+
                 # 获取所有图片连接
                 url_list = get_img_url_list(line, common.get_random_ip(ip_list))
                 img_urls = url_list[0]
-                print(' 图片数量： %i ' % len(img_urls))
+                print('第 %i 行： -%s- ; 图片数量： %i ' % (num, line, len(img_urls)))
                 new_title = url_list[1]
-                # print(new_title)
-
                 if len(img_urls) < 2:
                     # os.chdir(cur_dir)
                     save_not_down_url(dir_path, line, new_title, num)
                     continue
-                else:
-                    path = path_ + str(new_title.strip()) + os.sep
-                    common.create_file(path)
-                    os.chdir(path)
-                    fs = []
-                    for i in range(0, len(img_urls)):
-                        file_url = img_urls[i].get('file')
-                        if not file_url.startswith('http'):
-                            print('in:' + file_url)
-                            file_url = common.pre_url + file_url
-                        # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
-                        image_name = file_url.split("/")[-1]
-                        if not os.path.exists(image_name):
-                            submit = executor.submit(common.future_dowm_img, file_url, common.get_random_ip(ip_list), num, len(img_urls), i)
-                            fs.append(submit)
-                    futures.wait(fs)
+                # else:
+                path = create_down_root_path(category_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
+                os.chdir(path)
+
+                # with futures.ThreadPoolExecutor(max_workers=5, thread_name_prefix="down-thread") as executor:
+                fs = []
+                for i in range(0, len(img_urls)):
+                    file_url = img_urls[i].get('file')
+                    if not file_url.startswith('http'):
+                        logger.info('in:' + file_url)
+                        file_url = porn.pre_url + file_url
+                    image_name = file_url.split("/")[-1]
+                    if not os.path.exists(image_name):
+                        submit = executor.submit(common.future_dowm_img, file_url, common.get_random_ip(ip_list), num, len(img_urls), i)
+                        # submit完成之后的回调函数
+                        submit.add_done_callback(common.executor_callback)
+
+                futures.wait(fs, timeout=15)
+                # print(futures_wait)
+                # else end
                 print('第 %i 行： %s 下载完毕 ' % (num, line))
                 # 保存所有的下载链接
                 os.chdir(cur_dir)
                 write_to_done_log(dir_path, line, new_title)
-
+        print()
         print('第 %i 个文件： %s 下载完毕，开始删除...' % (index, file_name))
+        print()
         os.remove(file_name)
         if index == len(file_list):
             print("------------删除成功，所有文件下载完毕------------------")
@@ -171,6 +189,21 @@ def down_all_pic(category_name, file_list, ip_list):
 
 if __name__ == '__main__':
     file_map = get_file_map(cur_dir, 'txt')
-    ip_list = common.get_ip_list(common.ipUrl)
-    for key, value in file_map.items():
-        down_all_pic(key, value, ip_list)
+    ips = common.get_ip_list(common.ipUrl)
+    # 循环分组后的文件列表
+    for key, item in file_map.items():
+        down_all_pic(key, item, ips)
+'''
+#future.result()会阻塞线程，相当于单线程了
+for future in futures.as_completed(fs):
+   try:
+       print(future.running())
+       # print(fs[future])
+       data = future.result()
+       # logger.info(file_url)
+       # logger.info(data)
+   except Exception as exc:
+       print('%r generated an exception: %s' % (file_url, exc))
+   else:
+       logger.info(data)
+'''

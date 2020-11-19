@@ -49,7 +49,7 @@ if __name__ == '__main__':
     print('正在调用多线程获取当前页面的所有连接,请稍后。。。。。。')
     executor = futures.ThreadPoolExecutor(max_workers=5)
     # for i in range(28, 31):
-    for i in range(31, 34):
+    for i in range(1, 10):
         cur_page = 'https://club.autohome.com.cn/JingXuan/104/%i' % i
         print(cur_page)
         # 提交任务到线程池

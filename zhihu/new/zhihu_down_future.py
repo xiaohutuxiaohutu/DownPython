@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 import os
-import threading
+# import threading
 import common
 from concurrent import futures
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 executor = futures.ThreadPoolExecutor(max_workers=5)
+
 userPath = os.path.expanduser('~') + os.sep
 down_img_path = userPath + 'Pictures/zhihu'
 
@@ -33,31 +38,32 @@ def down_zhihu_pic2(question_id, file_list, ip_list):
     proxy_ip = common.get_random_ip(ip_list)
     soup = common.get_beauty_soup2(url, proxy_ip)
     title = common.replace_sub(soup.title.string)
-    print(title)
+    logger.info(title)
     down_path = down_img_path + os.sep + title
     if not (os.path.exists(down_path)):
         os.makedirs(down_path)
     for num, file_name in enumerate(file_list, 1):
-        print('下载第' + str(num) + '个文件：' + file_name)
+        logger.info('下载第' + str(num) + '个文件：' + file_name)
         with open(file_name, 'r') as fileObject:
             fs = []
             for num, value in enumerate(fileObject, 1):
-                print('第%i行' % (num), end=' ; ')
+                logger.info('第%i行' % (num), end=' ; ')
                 img_url = value.strip('\n')
                 if img_url == '':
-                    print('当前行为空：%i line' % num)
+                    logger.info('当前行为空：%i line' % num)
                     continue
                 image_name = img_url.split("/")[-1]
                 os.chdir(down_path)
                 if not os.path.exists(image_name):
                     # print('下载第%i个：%s' % (num, img_url), end=" ; ")
-                    print('下载第%i个：%s' % (num, img_url))
+                    logger.info('下载第%i个：%s' % (num, img_url))
                     submit = executor.submit(common.down_zhihu_img, img_url, proxy_ip)
+                    submit.add_done_callback(common.executor_callback)
                     fs.append(submit)
                 else:
-                    print('第' + str(num + 1) + '个已存在:' + img_url)
-            print(file_name + "-----down over----------------")
+                    logger.info('第' + str(num + 1) + '个已存在:' + img_url)
             futures.wait(fs)
+            logger.info(file_name + "-----down over----------------")
         os.chdir(os.getcwd())
         print('删除文件：' + file_name)
         os.remove(file_name)

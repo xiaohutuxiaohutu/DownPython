@@ -6,7 +6,10 @@ import porn
 from furl import furl
 import re
 from concurrent import futures
+import logging
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 cur_dir = os.getcwd() + os.sep
 # gLock = threading.Lock()
 
@@ -38,10 +41,10 @@ def write_jh_thread(down_url, start_page, end_page, ip_list, readLines, done_fil
         if title.startswith('91'):
             title = title[2:]
         new_title = title + '_JH'
-        print(new_title)
+        logger.info(new_title)
         item_url = soup.select(
             "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
-        print('当前页获取到的连接数：%i' % len(item_url))
+        logger.info('当前页获取到的连接数：%i' % len(item_url))
         # 当前页不重复的数字
         cur_page_num = 0
         for j in range(0, len(item_url)):
@@ -54,16 +57,16 @@ def write_jh_thread(down_url, start_page, end_page, ip_list, readLines, done_fil
             split_ = name_split[1]
             temp += 1
             os.chdir(cur_dir)
-            # print(item_name)
             if split_ not in readLines:
-                print('获取第 %i 个连接: %s ' % ((j + 1), file_url))
+                logger.info('获取第 %i 个连接: %s ' % ((j + 1), file_url))
                 cur_page_num += 1
                 # save_url_down(done_file_name, file_url, split_, temp, new_title)
                 f = executor.submit(save_url_down, done_file_name, file_url, split_, temp, new_title)
+                f.add_done_callback(common.executor_callback)
                 fs.append(f)
         if cur_page_num == 0:
             break
-    print("print over ")
+    logger.info("print over ")
     # 等待这些任务全部完成
     futures.wait(fs)
 
@@ -148,10 +151,10 @@ def write_common(down_url, start_page, end_page, ip_list):
     with open(file_name_list[0]) as fileObj:
         readLines = fileObj.read().splitlines()
     if isdigit:
-        print('feijh')
+        logger.info('保存非jh 链接')
         write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, file_name_list[0])
     else:
-        print('jh')
+        logger.info('保存 jh 链接')
 
         write_jh_thread(down_url, start_page, end_page, ip_list, readLines, file_name_list[0])
     # gLock.release()
@@ -161,6 +164,7 @@ if __name__ == '__main__':
     ip_list = common.get_ip_list(common.ipUrl)
     # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx, porn.down_url_wawq_jh]
     down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh]
+    # down_url = [porn.down_url_zpdr]
     threads = []
     for index in range(0, len(down_url)):
         write_common(down_url[index], 1, 5, ip_list)

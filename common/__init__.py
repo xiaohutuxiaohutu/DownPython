@@ -12,6 +12,12 @@ from urllib.request import urlopen
 
 import requests
 from bs4 import BeautifulSoup
+import logging
+
+import threading
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 if os.name == 'nt':
     print(u'windows system')
@@ -180,24 +186,54 @@ def down_img(file_url):
     #     print(image_name + "已存在")
 
 
-# 根据图片连接保存图片
-def down_img2(file_url, proxy_ip):
-    print(file_url, end=';')
+# 获取线程异常
+def executor_callback(worker):
+    # logger.info("called worker callback function")
+    logger.info(worker.result())
+    # logger.info('')
+    worker_exception = worker.exception()
+    if worker_exception:
+        logger.exception("Worker return exception: {}".format(worker_exception))
+        # raise worker_exception
 
-    image_name = file_url.split("/")[-1]
+
+# 线程下载图片
+def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num):
+    # down_img2(img_url, proxy_ip)
+    image_name = img_url.split("/")[-1]
     if not os.path.exists(image_name):
-        # proxy_ip = get_ip()
-        # print(file_url)
-        get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
+        logger.debug('获取request.get')
+        get_request = requests.get(img_url, headers=header, proxies=proxy_ip)
+        logger.debug('获取到request.get')
         image = get_request.content
         image_b = io.BytesIO(image).read()
-        # print(' size : %i kb' % (len(image_b) / 1000))
-        print(' 图片大小 : %i kb' % (len(image_b) / 1000))
+        # logger.info('%s 图片大小 : %i kb' % (image_name, len(image_b) / 1000))
+        logger.info('%s  start down 第 %i 行：第 %i / %i 个 : %s ；size：%s kb' % (threading.current_thread().name, line_num, img_num + 1, img_nums, img_url, len(image_b) / 1000))
         if len(image_b) > 0:
             with open(image_name, 'wb') as f:
                 f.write(image)
+            # logger.info('%s 图片下载完成' % image_name)
     else:
-        print(image_name + "已存在")
+        logger.info(image_name + "已存在")
+    return '%s done 第 %i 行：第 %i / %i 个 : %s ' % (threading.current_thread().name, line_num, img_num + 1, img_nums, img_url)
+
+
+# 根据图片连接保存图片
+def down_img2(file_url, proxy_ip):
+    image_name = file_url.split("/")[-1]
+    if not os.path.exists(image_name):
+        logger.debug('获取request.get')
+        get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
+        logger.debug('获取到request.get')
+        image = get_request.content
+        image_b = io.BytesIO(image).read()
+        logger.debug('%s 图片大小 : %i kb' % (image_name, len(image_b) / 1000))
+        if len(image_b) > 0:
+            with open(image_name, 'wb') as f:
+                f.write(image)
+            logger.info('%s 图片下载完成' % image_name)
+    else:
+        logger.info(image_name + "已存在")
 
 
 # 下载知乎图片
@@ -207,18 +243,12 @@ def down_zhihu_img(file_url, proxy_ip):
         get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
         image = get_request.content
         image_b = io.BytesIO(image).read()
-        print(' 图片大小 : %i kb' % (len(image_b) / 1000))
+        logger.info(' 图片大小 : %i kb' % (len(image_b) / 1000))
         if len(image_b) > 0:
             with open(image_name, 'wb') as f:
                 f.write(image)
     else:
-        print("%s 已存在" % image_name)
-
-
-# 线程下载图片
-def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num):
-    print('第 %i 行：第 %i / %i 个 : %s' % (line_num, img_num + 1, len(img_nums), img_url))
-    down_img2(img_url, proxy_ip)
+        logger.error("%s 已存在" % image_name)
 
 
 def down_img_2(img_url, down_path, index):
@@ -233,14 +263,14 @@ def down_img_2(img_url, down_path, index):
 
             with open(down_path + os.sep + '%d.jpg' % index, "wb") as picture:
                 picture.write(image)
-                print("下载 {} 完成!".format(picture))
+            logger.info("下载 {} 完成!".format(picture))
         except IOError:
-            print("IO Error\n")
+            logger.error("IO Error\n")
             # continue
         finally:
             picture.close
     else:
-        print()
+        logger.error(response.status_code)
         # continue
 
 
