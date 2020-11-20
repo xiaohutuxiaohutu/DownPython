@@ -127,7 +127,7 @@ def create_down_root_path(category_name, title):
     return root_path
 
 
-executor = futures.ThreadPoolExecutor(max_workers=10, thread_name_prefix='down-pic-')
+# executor = futures.ThreadPoolExecutor(max_workers=10, thread_name_prefix='down-pic-')
 
 
 def down_all_pic(category_name, file_list, ip_list):
@@ -146,33 +146,33 @@ def down_all_pic(category_name, file_list, ip_list):
                 # 获取所有图片连接
                 url_list = get_img_url_list(line, common.get_random_ip(ip_list))
                 img_urls = url_list[0]
-                print('第 %i 行： -%s- ; 图片数量： %i ' % (num, line, len(img_urls)))
+                logger.info('第 %i 行： -%s- ; 图片数量： %i ' % (num, line, len(img_urls)))
                 new_title = url_list[1]
                 if len(img_urls) < 2:
                     # os.chdir(cur_dir)
                     save_not_down_url(dir_path, line, new_title, num)
                     continue
-                # else:
-                path = create_down_root_path(category_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
-                os.chdir(path)
+                else:
+                    path = create_down_root_path(category_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
+                    os.chdir(path)
+                    fs = []
+                    with futures.ThreadPoolExecutor(max_workers=5, thread_name_prefix="down-thread") as executor:
 
-                # with futures.ThreadPoolExecutor(max_workers=5, thread_name_prefix="down-thread") as executor:
-                fs = []
-                for i in range(0, len(img_urls)):
-                    file_url = img_urls[i].get('file')
-                    if not file_url.startswith('http'):
-                        logger.info('in:' + file_url)
-                        file_url = porn.pre_url + file_url
-                    image_name = file_url.split("/")[-1]
-                    if not os.path.exists(image_name):
-                        submit = executor.submit(common.future_dowm_img, file_url, common.get_random_ip(ip_list), num, len(img_urls), i)
-                        # submit完成之后的回调函数
-                        submit.add_done_callback(common.executor_callback)
+                        for i in range(0, len(img_urls)):
+                            file_url = img_urls[i].get('file')
+                            if not file_url.startswith('http'):
+                                logger.info('in:' + file_url)
+                                file_url = porn.pre_url + file_url
+                            image_name = file_url.split("/")[-1]
+                            if not os.path.exists(image_name):
+                                submit = executor.submit(common.future_dowm_img, file_url, common.get_random_ip(ip_list), num, len(img_urls), i, path)
+                                # submit完成之后的回调函数
+                                submit.add_done_callback(common.executor_callback)
 
-                futures.wait(fs, timeout=15)
+                    futures.wait(fs, timeout=15)
                 # print(futures_wait)
                 # else end
-                print('第 %i 行： %s 下载完毕 ' % (num, line))
+                logger.info('第 %i 行： %s 下载完毕 ' % (num, line))
                 # 保存所有的下载链接
                 os.chdir(cur_dir)
                 write_to_done_log(dir_path, line, new_title)

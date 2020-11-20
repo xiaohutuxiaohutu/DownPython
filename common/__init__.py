@@ -198,8 +198,9 @@ def executor_callback(worker):
 
 
 # 线程下载图片
-def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num):
+def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num, down_path):
     # down_img2(img_url, proxy_ip)
+    os.chdir(down_path)
     image_name = img_url.split("/")[-1]
     if not os.path.exists(image_name):
         logger.debug('获取request.get')
@@ -210,6 +211,7 @@ def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num):
         # logger.info('%s 图片大小 : %i kb' % (image_name, len(image_b) / 1000))
         logger.info('%s  start down 第 %i 行：第 %i / %i 个 : %s ；size：%s kb' % (threading.current_thread().name, line_num, img_num + 1, img_nums, img_url, len(image_b) / 1000))
         if len(image_b) > 0:
+            os.chdir(down_path)
             with open(image_name, 'wb') as f:
                 f.write(image)
             # logger.info('%s 图片下载完成' % image_name)

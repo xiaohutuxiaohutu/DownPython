@@ -94,4 +94,4 @@ if __name__ == '__main__':
                     continue
                 print('第 %3i 行： %90s  ' % (num, line), end=';  ')
                 get_img_url(line)
-        # os.remove(file_name)
+        os.remove(file_name)
