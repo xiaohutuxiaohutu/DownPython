@@ -47,7 +47,7 @@ def down_zhihu_pic2(question_id, file_list, ip_list):
         with open(file_name, 'r') as fileObject:
             fs = []
             for num, value in enumerate(fileObject, 1):
-                logger.info('第%i行' % (num), end=' ; ')
+                print('第%i行' % (num), end=' ; ')
                 img_url = value.strip('\n')
                 if img_url == '':
                     logger.info('当前行为空：%i line' % num)
