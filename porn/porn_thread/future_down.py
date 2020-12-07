@@ -127,7 +127,7 @@ def create_down_root_path(category_name, title):
     return root_path
 
 
-# executor = futures.ThreadPoolExecutor(max_workers=10, thread_name_prefix='down-pic-')
+# executor = futures.ThreadPoolExecutor(max_workers=10, thread_name_prefix='down-pic-'
 
 
 def down_all_pic(category_name, file_list, ip_list):
