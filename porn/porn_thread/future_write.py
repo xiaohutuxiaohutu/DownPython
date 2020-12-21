@@ -144,6 +144,10 @@ def write_common(down_url, start_page, end_page, ip_list):
         file_dir = '../all/wawq_all'
     elif fid_ == '33':
         file_dir = '../all/xqfx'
+    elif fid_ == '4' and not isdigit:
+        file_dir = '..\jh\yczp_jh'
+    elif fid_ == '4' and isdigit:
+        file_dir = '../all/yczp_all'
     file_name_list = common.get_file_name_list(file_dir, 'text')
     if file_name_list is None and len(file_name_list) == 0:
         return
@@ -163,8 +167,8 @@ def write_common(down_url, start_page, end_page, ip_list):
 if __name__ == '__main__':
     ip_list = common.get_ip_list(common.ipUrl)
     # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx, porn.down_url_wawq_jh]
-    down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh]
-    # down_url = [porn.down_url_zpdr]
+    # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh,porn.down_url_yczp_jh,porn.down_url_yczp]
+    down_url = [porn.down_url_yczp_jh, porn.down_url_yczp]
     threads = []
     for index in range(0, len(down_url)):
-        write_common(down_url[index], 1, 5, ip_list)
+        write_common(down_url[index], 7, 28, ip_list)

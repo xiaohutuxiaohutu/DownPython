@@ -58,12 +58,17 @@ pre_url = 'https://f.w24.rocks/'
 # 自拍达人下载链接
 # http://f.wonderfulday25.live/forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=2
 down_url_zpdr = 'forumdisplay.php?fid=19&orderby=dateline&filter=2592000&page=%i'
+
 down_url_zpdr_jh = 'forumdisplay.php?fid=19&orderby=dateline&filter=digest&page=%i'
 # 兴趣分享下载链接
 down_url_xqfx = 'forumdisplay.php?fid=33&orderby=dateline&filter=2592000&page=%i'
 # 我爱我妻下载链接
 down_url_wawq = 'forumdisplay.php?fid=21&orderby=dateline&filter=2592000&page=%i'
 down_url_wawq_jh = 'forumdisplay.php?fid=21&orderby=dateline&filter=digest&page=%i'
+# 原创自拍
+down_url_yczp_jh = 'forumdisplay.php?fid=4&orderby=dateline&filter=digest&page=%i'
+
+down_url_yczp = 'forumdisplay.php?fid=4&orderby=dateline&filter=2592000&page=%i'
 
 
 def save_not_down_url(line, new_title, num):

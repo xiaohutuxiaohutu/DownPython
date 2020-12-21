@@ -48,9 +48,9 @@ def get_file_name_list(file_dir, file_type):
 
 
 def save_not_down_url(dir_path, line, new_title, num):
-    name_list = get_file_name_list(dir_path, "un_down.log")
+    name_list = get_file_name_list(dir_path, "../all/yczp_all/un_down.log")
     if len(name_list) == 0:
-        file_name = 'un_down.log'
+        file_name = '../all/yczp_all/un_down.log'
     else:
         file_name = name_list[0]
         print('un_down_file:' + file_name)
