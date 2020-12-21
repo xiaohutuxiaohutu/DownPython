@@ -25,6 +25,7 @@ cur_dir = os.getcwd() + os.sep
 
 def write_to_done_log(dir_path, line, new_title):
     done_file_list = common.get_cur_file_list2('log', 'done.log', dir_path)
+    print(dir_path)
     if len(done_file_list) == 0:
         done_log = 'done.log'
     else:
@@ -48,9 +49,10 @@ def get_file_name_list(file_dir, file_type):
 
 
 def save_not_down_url(dir_path, line, new_title, num):
-    name_list = get_file_name_list(dir_path, "../all/yczp_all/un_down.log")
+    name_list = get_file_name_list(dir_path, "un_down.log")
+    print(dir_path)
     if len(name_list) == 0:
-        file_name = '../all/yczp_all/un_down.log'
+        file_name = 'un_down.log'
     else:
         file_name = name_list[0]
         print('un_down_file:' + file_name)
@@ -104,7 +106,7 @@ def get_file_map(file_dir, file_type):
 
 def get_dir_path(category_name):
     pypinyin_slug = pypinyin.slug(category_name, separator='', style=Style.FIRST_LETTER)
-    # print(pypinyin_slug)
+    print(pypinyin_slug)
     dir_path = ''
     if pypinyin_slug.endswith('JH') and 'zpdrycsq' in pypinyin_slug:
         dir_path = '../jh/zpdr_ycsq_jh/'
@@ -116,6 +118,10 @@ def get_dir_path(category_name):
         dir_path = '../all/wawq_all/'
     elif 'xqxt' in pypinyin_slug:
         dir_path = '../all/xqfx/'
+    elif pypinyin_slug.endswith('JH') and 'yczp' in pypinyin_slug:
+        dir_path = '../jh/yczp_jh/'
+    elif (not pypinyin_slug.endswith('JH')) and 'yczp' in pypinyin_slug:
+        dir_path = '../all/yczp_all/'
     return dir_path
 
 
@@ -192,6 +198,7 @@ if __name__ == '__main__':
     ips = common.get_ip_list(common.ipUrl)
     # 循环分组后的文件列表
     for key, item in file_map.items():
+        print(key)
         down_all_pic(key, item, ips)
 '''
 #future.result()会阻塞线程，相当于单线程了
