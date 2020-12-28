@@ -12,7 +12,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-user_dir = os.path.expanduser('~') + os.sep;
+user_dir = os.path.expanduser('~') + os.sep
 
 down_path_c = user_dir + 'Pictures/Camera Roll/PORN/'
 if not os.name == 'nt':
