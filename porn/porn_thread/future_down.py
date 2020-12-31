@@ -171,10 +171,13 @@ def down_all_pic(category_name, file_list, ip_list):
                                 file_url = porn.pre_url + file_url
                             image_name = file_url.split("/")[-1]
                             if not os.path.exists(image_name):
+                                # common.future_dowm_img(file_url, common.get_random_ip(ip_list), num, len(img_urls), i, path)
                                 submit = executor.submit(common.future_dowm_img, file_url, common.get_random_ip(ip_list), num, len(img_urls), i, path)
                                 # submit完成之后的回调函数
                                 submit.add_done_callback(common.executor_callback)
-
+                            else:
+                                logger.info('第 %i 行： -%s- ;url:%s;文件 %s已存在 ' % (num, line, file_url, image_name))
+                                # print(image_name + "已存在")
                     futures.wait(fs, timeout=15)
                 # print(futures_wait)
                 # else end
