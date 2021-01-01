@@ -31,7 +31,7 @@ def modify_name(file_list):
             # 判断文件是否存在
             i = 1
             while os.path.exists(new_name):
-                print(new_name)
+                logger.info(old_name + "已存在！处理中。。。")
                 new_name = new_file + '_' + str(i) + '.ts'
                 i += 1
             else:
