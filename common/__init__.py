@@ -39,6 +39,11 @@ header = {
 default_time_format = '%Y-%m-%d %X'
 
 
+# 获取用户目录
+def get_user_dir():
+    return os.path.expanduser('~') + os.sep
+
+
 # 替换特殊字符
 def replace_special_char(old_str):
     if old_str is not None:
