@@ -222,7 +222,7 @@ def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num, down_path):
             # logger.info('%s 图片下载完成' % image_name)
     else:
         logger.info(image_name + "已存在")
-    return '%s done 第 %i 行：第 %i / %i 个 : %s ' % (threading.current_thread().name, line_num, img_num + 1, img_nums, img_url)
+    # return '%s done 第 %i 行：第 %i / %i 个 : %s 下载完成！' % (threading.current_thread().name, line_num, img_num + 1, img_nums, img_url)
 
 
 # 根据图片连接保存图片
