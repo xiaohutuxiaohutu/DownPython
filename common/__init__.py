@@ -194,7 +194,7 @@ def down_img(file_url):
 # 获取线程异常
 def executor_callback(worker):
     # logger.info("called worker callback function")
-    logger.info(worker.result())
+    # logger.info(worker.result())
     # logger.info('')
     worker_exception = worker.exception()
     if worker_exception:

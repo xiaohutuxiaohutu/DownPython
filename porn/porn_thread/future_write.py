@@ -174,4 +174,4 @@ if __name__ == '__main__':
     # down_url = [porn.down_url_yczp]
     # threads = []
     for index in range(0, len(down_url)):
-        write_common(down_url[index], 1, 5, ip_list)
+        write_common(down_url[index], 1, 15, ip_list)

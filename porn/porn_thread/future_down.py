@@ -154,6 +154,7 @@ def down_all_pic(category_name, file_list, ip_list):
                 img_urls = url_list[0]
                 logger.info('第 %i 行： -%s- ; 图片数量： %i ' % (num, line, len(img_urls)))
                 new_title = url_list[1]
+                logger.info(new_title)
                 if len(img_urls) < 2:
                     # os.chdir(cur_dir)
                     save_not_down_url(dir_path, line, new_title, num)
