@@ -4,6 +4,7 @@ import os
 import common
 from concurrent import futures
 import porn
+import time
 # from furl import furl
 # from pypinyin import pinyin, lazy_pinyin, Style
 import pypinyin
@@ -163,7 +164,8 @@ def down_all_pic(category_name, file_list, ip_list):
                     path = create_down_root_path(category_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
                     os.chdir(path)
                     fs = []
-                    with futures.ThreadPoolExecutor(max_workers=5, thread_name_prefix="down-thread") as executor:
+                    start = time.time()
+                    with futures.ThreadPoolExecutor(max_workers=len(img_urls), thread_name_prefix="down-thread") as executor:
 
                         for i in range(0, len(img_urls)):
                             file_url = img_urls[i].get('file')
@@ -182,7 +184,7 @@ def down_all_pic(category_name, file_list, ip_list):
                     futures.wait(fs, timeout=15)
                 # print(futures_wait)
                 # else end
-                logger.info('第 %i 行： %s 下载完毕 ' % (num, line))
+                logger.info('第 %i 行： %s 下载完毕；用时：%i ' % (num, line, time.time() - start))
                 # 保存所有的下载链接
                 os.chdir(cur_dir)
                 write_to_done_log(dir_path, line, new_title)
