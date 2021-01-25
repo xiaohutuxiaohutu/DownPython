@@ -128,30 +128,31 @@ def write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, done_fi
 
 
 def write_common(down_url, start_page, end_page, ip_list):
-    # gLock.acquire()
-    f = furl(down_url)
-    filter_ = f.args['filter']
-    fid_ = f.args['fid']  # 分类
-    isdigit = str(filter_).isdigit()  # False  精华 True 普通
-    file_dir = ''
-    if fid_ == '19' and not isdigit:
-        file_dir = '..\jh\zpdr_ycsq_jh'
-    elif fid_ == '19' and isdigit:
-        file_dir = '../all/zpdr_ycsq_all'
-    elif fid_ == '21' and not isdigit:
-        file_dir = '..\jh\wawq_jh'
-    elif fid_ == '21' and isdigit:
-        file_dir = '../all/wawq_all'
-    elif fid_ == '33':
-        file_dir = '../all/xqfx'
-    elif fid_ == '4' and not isdigit:
-        file_dir = '..\jh\yczp_jh'
-    elif fid_ == '4' and isdigit:
-        file_dir = '../all/yczp_all'
-    file_name_list = common.get_file_name_list(file_dir, 'text')
+    furl_tool = porn.FurlTool(down_url)
+    file_name_list = furl_tool.get_down_file()
+    # f = furl(down_url)
+    # filter_ = f.args['filter']
+    # fid_ = f.args['fid']  # 分类
+    # isdigit = str(filter_).isdigit()  # False  精华 True 普通
+    # file_dir = ''
+    # if fid_ == '19' and not isdigit:
+    #     file_dir = '..\jh\zpdr_ycsq_jh'
+    # elif fid_ == '19' and isdigit:
+    #     file_dir = '../all/zpdr_ycsq_all'
+    # elif fid_ == '21' and not isdigit:
+    #     file_dir = '..\jh\wawq_jh'
+    # elif fid_ == '21' and isdigit:
+    #     file_dir = '../all/wawq_all'
+    # elif fid_ == '33':
+    #     file_dir = '../all/xqfx'
+    # elif fid_ == '4' and not isdigit:
+    #     file_dir = '..\jh\yczp_jh'
+    # elif fid_ == '4' and isdigit:
+    #     file_dir = '../all/yczp_all'
+    # file_name_list = common.get_file_name_list(file_dir, 'text')
     if file_name_list is None and len(file_name_list) == 0:
         return
-
+    isdigit = furl_tool.is_digital('filter')
     with open(file_name_list[0]) as fileObj:
         readLines = fileObj.read().splitlines()
     if isdigit:

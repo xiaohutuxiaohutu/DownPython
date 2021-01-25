@@ -3,7 +3,7 @@
 # encoding: utf-8
 import os
 import re
-
+from furl import furl
 import common
 
 from configparser import ConfigParser
@@ -554,3 +554,43 @@ class DoConfig:
     # 获取指定section对象
     def get_section(self, section):
         return self.cf[section]
+
+
+class FurlTool:
+    def __init__(self, down_url, encoding='utf-8'):
+        self.cf = furl(down_url)
+
+    def get_furl(self):
+        return self.cf
+
+    def get_args(self, arg):
+        return self.cf.args[arg]
+
+    def get_fid(self):
+        return self.cf.args['fid']  # 分类
+
+    def get_filter(self):
+        return self.cf.args['filter']  # 分类
+
+    def is_digital(self, arg):
+        return str(self.cf.args[arg]).isdigit()
+
+    def get_down_file(self, arg='filter'):
+        isdigit = self.cf.args[arg]
+        fid_ = self.get_fid()
+        file_dir = ''
+        if fid_ == '19' and not isdigit:
+            file_dir = '..\jh\zpdr_ycsq_jh'
+        elif fid_ == '19' and isdigit:
+            file_dir = '../all/zpdr_ycsq_all'
+        elif fid_ == '21' and not isdigit:
+            file_dir = '..\jh\wawq_jh'
+        elif fid_ == '21' and isdigit:
+            file_dir = '../all/wawq_all'
+        elif fid_ == '33':
+            file_dir = '../all/xqfx'
+        elif fid_ == '4' and not isdigit:
+            file_dir = '..\jh\yczp_jh'
+        elif fid_ == '4' and isdigit:
+            file_dir = '../all/yczp_all'
+        return common.get_file_name_list(file_dir, 'text')

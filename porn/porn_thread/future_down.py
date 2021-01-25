@@ -161,13 +161,11 @@ def down_all_pic(category_name, file_list, ip_list):
                     save_not_down_url(dir_path, line, new_title, num)
                     continue
                 else:
-                    path = create_down_root_path(category_name,
-                                                 str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
+                    path = create_down_root_path(category_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
                     os.chdir(path)
                     fs = []
                     start = time.time()
-                    with futures.ThreadPoolExecutor(max_workers=len(img_urls),
-                                                    thread_name_prefix="down-thread") as executor:
+                    with futures.ThreadPoolExecutor(max_workers=len(img_urls), thread_name_prefix="down-thread") as executor:
 
                         for i in range(0, len(img_urls)):
                             file_url = img_urls[i].get('file')
@@ -177,15 +175,14 @@ def down_all_pic(category_name, file_list, ip_list):
                             image_name = file_url.split("/")[-1]
                             if not os.path.exists(image_name):
                                 # common.future_dowm_img(file_url, common.get_random_ip(ip_list), num, len(img_urls), i, path)
-                                submit = executor.submit(common.future_dowm_img, file_url,
-                                                         common.get_random_ip(ip_list), num, len(img_urls), i, path)
-                                fs.append(submit)
+                                submit = executor.submit(common.future_dowm_img, file_url, common.get_random_ip(ip_list), num, len(img_urls), i, path)
                                 # submit完成之后的回调函数
                                 submit.add_done_callback(common.executor_callback)
+                                fs.append(submit)
                             else:
                                 logger.info('第 %i 行： -%s- ;url:%s;文件 %s已存在 ' % (num, line, file_url, image_name))
                                 # print(image_name + "已存在")
-                    futures.wait(fs, timeout=15)
+                        futures.wait(fs, timeout=15)
                 # print(futures_wait)
                 # else end
                 logger.info('第 %i 行： %s 下载完毕；用时：%i ' % (num, line, time.time() - start))
