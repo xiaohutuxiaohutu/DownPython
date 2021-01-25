@@ -54,6 +54,7 @@ if __name__ == '__main__':
         print(cur_page)
         # 提交任务到线程池
         f = executor.submit(get_page_list, cur_page)
+        f.add_done_callback(common.executor_callback)
         fs.append(f)
         # 等待这些任务全部完成
     futures.wait(fs)

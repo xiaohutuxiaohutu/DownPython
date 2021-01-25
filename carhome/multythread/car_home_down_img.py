@@ -53,6 +53,7 @@ def get_img_url(url):
                 continue
             # 提交任务到线程池
             f = executor.submit(down_img, img_url + src, path)
+            f.add_done_callback(common.executor_callback)
             fs.append(f)
         # 等待这些任务全部完成
         futures.wait(fs)
