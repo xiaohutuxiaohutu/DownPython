@@ -165,7 +165,7 @@ def down_all_pic(category_name, file_list, ip_list):
                     os.chdir(path)
                     fs = []
                     start = time.time()
-                    with futures.ThreadPoolExecutor(max_workers=len(img_urls), thread_name_prefix="down-thread") as executor:
+                    with futures.ThreadPoolExecutor(max_workers=5, thread_name_prefix="down-thread") as executor:
 
                         for i in range(0, len(img_urls)):
                             file_url = img_urls[i].get('file')
