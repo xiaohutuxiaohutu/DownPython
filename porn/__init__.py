@@ -576,7 +576,11 @@ class FurlTool:
         return str(self.cf.args[arg]).isdigit()
 
     def get_down_file(self, arg='filter'):
-        isdigit = self.cf.args[arg]
+        file_dir = self.get_file_dir(arg)
+        return common.get_file_name_list(file_dir, 'text')
+
+    def get_file_dir(self, arg='filter'):
+        isdigit = self.is_digital(arg)
         fid_ = self.get_fid()
         file_dir = ''
         if fid_ == '19' and not isdigit:
@@ -593,4 +597,8 @@ class FurlTool:
             file_dir = '..\jh\yczp_jh'
         elif fid_ == '4' and isdigit:
             file_dir = '../all/yczp_all'
-        return common.get_file_name_list(file_dir, 'text')
+        return file_dir
+
+    def get_down_map(self, arg='filter', file_type='text'):
+        file_dir = self.get_file_dir(arg)
+        return common.get_file_map(file_dir, file_type)

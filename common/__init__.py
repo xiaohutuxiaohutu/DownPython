@@ -19,10 +19,10 @@ import threading
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-if os.name == 'nt':
-    print(u'windows system')
-else:
-    print(u'linux')
+# if os.name == 'nt':
+#     print(u'windows system')
+# else:
+#     print(u'linux')
 
 # ipUrl = 'http://www.xicidaili.com/'
 ipUrl = 'https://www.kuaidaili.com/free/intr/'
@@ -141,9 +141,28 @@ def get_file_name_list(file_dir, file_type):
     file_name_list = []
     for root, dirs, files in os.walk(file_dir):
         for file in files:
+
             if os.path.splitext(file)[1] == ('.' + file_type):
+                logger.info(file)
                 file_name_list.append(os.path.join(root, file))
     return file_name_list
+
+
+# 获取指定目录下 指定类型的文件,key为文件名
+def get_file_map(file_dir, file_type):
+    file_map = {}
+    for root, dirs, files in os.walk(file_dir):
+        for file in files:
+            splitext = os.path.splitext(file)
+            if splitext[1] == ('.' + file_type):
+                key = splitext[0]
+                value = file_map.get(key)
+                if value is None or value == 'None':
+                    file_map[key] = [os.path.join(root, file)]
+                else:
+                    value.append(os.path.join(root, file))
+                    file_map[key] = value
+    return file_map
 
 
 def image_size(image_url):
@@ -202,15 +221,25 @@ def executor_callback(worker):
         # raise worker_exception
 
 
+import time
+import common
+
+
 # 线程下载图片
 def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num, down_path):
     # down_img2(img_url, proxy_ip)
     os.chdir(down_path)
     image_name = img_url.split("/")[-1]
     if not os.path.exists(image_name):
-        logger.debug('获取request.get')
-        get_request = requests.get(img_url, headers=header, proxies=proxy_ip)
-        logger.debug('获取到request.get')
+        # logger.debug('start get request.get')
+        try:
+            get_request = requests.get(img_url, headers=header, proxies=proxy_ip, timeout=10)
+        except Exception as e:
+            logger.info("请求失败，请求时间是：{}".format(common.get_datetime('%Y/%m/%d %H:%M')))
+            logger.info('失败原因：%s' % e)
+            time.sleep(1)
+            get_request = requests.get(img_url, headers=header, proxies=proxy_ip, timeout=14)
+        # logger.debug('end request.get')
         image = get_request.content
         image_b = io.BytesIO(image).read()
         # logger.info('%s 图片大小 : %i kb' % (image_name, len(image_b) / 1000))
@@ -230,7 +259,7 @@ def down_img2(file_url, proxy_ip):
     image_name = file_url.split("/")[-1]
     if not os.path.exists(image_name):
         logger.debug('获取request.get')
-        get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
+        get_request = requests.get(file_url, headers=header, proxies=proxy_ip, timeout=10)
         logger.debug('获取到request.get')
         image = get_request.content
         image_b = io.BytesIO(image).read()
@@ -305,8 +334,8 @@ def get_beauty_soup(url):
 
 
 def get_beauty_soup2(url, proxy_ip):
-    # html = requests.get(url, headers=header, proxies=proxy_ip)
-    html = requests.get(url, headers=header)
+    html = requests.get(url, headers=header, proxies=proxy_ip, timeout=4)
+    # html = requests.get(url, headers=header, timeout=4)
     # html = requests.get(url, headers=header, timeout=(3.05, 27))
     html.encoding = 'utf-8'
     return BeautifulSoup(html.text, 'lxml')

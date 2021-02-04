@@ -7,6 +7,7 @@ from furl import furl
 import re
 from concurrent import futures
 import logging
+import datetime
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -27,14 +28,13 @@ def save_url_down(done_down_text, file_down_url, pic_href, num, title):
 
 
 # current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
-def write_jh_thread(down_url, start_page, end_page, ip_list, readLines, done_file_name):
+def write_jh_thread(start_page, end_page, read_lines, done_file_name):
     temp = 0
     fs = []
     for page_num in range(start_page, end_page):
-        print('第 %i 页 ：' % page_num, end=' ')
         # 当前页数不重复的连接：》0读取下一页
         url = porn.pre_url + down_url % page_num
-        print(url)
+        logger.info('第 %i 页 ：%s' % (page_num, url))
         proxy_ip = common.get_random_ip(ip_list)
         soup = common.get_beauty_soup2(url, proxy_ip)
         title = common.replace_sub(soup.title.string).strip()
@@ -57,7 +57,7 @@ def write_jh_thread(down_url, start_page, end_page, ip_list, readLines, done_fil
             split_ = name_split[1]
             temp += 1
             os.chdir(cur_dir)
-            if split_ not in readLines:
+            if split_ not in read_lines:
                 logger.info('获取第 %i 个连接: %s ' % ((j + 1), file_url))
                 cur_page_num += 1
                 # save_url_down(done_file_name, file_url, split_, temp, new_title)
@@ -72,16 +72,15 @@ def write_jh_thread(down_url, start_page, end_page, ip_list, readLines, done_fil
 
 
 # 非精华连接
-def write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, done_file_name):
+def write_exclude_jh(start_page, end_page, read_lines, done_file_name):
     temp = 0
     fs = []
     for page_num in range(start_page, end_page):
-        print('第 %i 页 ：' % page_num, end=' ')
         url = porn.pre_url + down_url % page_num
-        print(url)
+        logger.info('第 %i 页 ：%s' % (page_num, url))
         soup = common.get_beauty_soup2(url, common.get_random_ip(ip_list))
         title = common.replace_sub(soup.title.string).strip()
-        if (title.startswith('91')):
+        if title.startswith('91'):
             title = title[2:]
         # 查找所有 id 包含normalthread 的tags
         # 当前页不重复的数字
@@ -114,7 +113,7 @@ def write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, done_fi
                             split_ = name_split[1]
                             os.chdir(cur_dir)
                             temp += 1
-                            if split_ not in readLines:
+                            if split_ not in read_lines:
                                 print('down the %i ge: %s' % (temp, pic_href))
                                 cur_page_num += 1
                                 # save_url_down(done_file_name, file_down_url, split_, temp, title)
@@ -127,52 +126,74 @@ def write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, done_fi
     futures.wait(fs)
 
 
-def write_common(down_url, start_page, end_page, ip_list):
+def write_common(start_page, end_page):
     furl_tool = porn.FurlTool(down_url)
-    file_name_list = furl_tool.get_down_file()
-    # f = furl(down_url)
-    # filter_ = f.args['filter']
-    # fid_ = f.args['fid']  # 分类
-    # isdigit = str(filter_).isdigit()  # False  精华 True 普通
-    # file_dir = ''
-    # if fid_ == '19' and not isdigit:
-    #     file_dir = '..\jh\zpdr_ycsq_jh'
-    # elif fid_ == '19' and isdigit:
-    #     file_dir = '../all/zpdr_ycsq_all'
-    # elif fid_ == '21' and not isdigit:
-    #     file_dir = '..\jh\wawq_jh'
-    # elif fid_ == '21' and isdigit:
-    #     file_dir = '../all/wawq_all'
-    # elif fid_ == '33':
-    #     file_dir = '../all/xqfx'
-    # elif fid_ == '4' and not isdigit:
-    #     file_dir = '..\jh\yczp_jh'
-    # elif fid_ == '4' and isdigit:
-    #     file_dir = '../all/yczp_all'
-    # file_name_list = common.get_file_name_list(file_dir, 'text')
+    # file_name_list = furl_tool.get_down_file()
+    file_name_list = furl_tool.get_down_map()
     if file_name_list is None and len(file_name_list) == 0:
+        logger.info('找不到已下载文件，无法读取数据。。。。。。')
         return
     isdigit = furl_tool.is_digital('filter')
-    with open(file_name_list[0]) as fileObj:
-        readLines = fileObj.read().splitlines()
+    read_lines = []
+    cur_month_done_file = ''
+    pre_month_done_file = ''
+    orgin_done_file_path = ''
+
+    # 只读取上个月和这个月的连接
+    file_name_list.items()
+    for item, values in file_name_list.items():
+        if not bool(re.search(r'\d', item)):
+            orgin_done_file_path = values[0]
+        if item.find(cur_month) > 0:
+            cur_month_done_file = values[0]
+            with open(cur_month_done_file) as fileObj:
+                read_lines.extend(fileObj.read().splitlines())
+        if item.find(pre_month) > 0:
+            pre_month_done_file = values[0]
+            with open(pre_month_done_file) as fileObj:
+                read_lines.extend(fileObj.read().splitlines())
+    # 判断当前月文件是否存在，如果不存在，用上个月文件生成
+    if not cur_month_done_file.strip() and not pre_month_done_file.strip():
+        logger.info('cur_month_done_file and pre_month_done_file 不能同时为空 ')
+    # 如果上个月文件为空，则是首次下载，读取原始文件
+    if not pre_month_done_file.strip():
+        logger.info('pre_month_done_file  is null')
+        with open(orgin_done_file_path) as fileObj:
+            read_lines.extend(fileObj.read().splitlines())
+    if not cur_month_done_file.strip():
+        logger.info('cur_month_done_file  is null')
+        cur_month_done_file = orgin_done_file_path.split('.text')[0] + '-' + cur_month + '.text'
+        # with open(cur_month_done_file, 'a+') as fileObj:
+        #     logger.info('create file')
+        #     fileObj.close()
+        # read_lines.append(fileObj.read().splitlines())
     if isdigit:
         logger.info('保存非jh 链接')
-        write_exclude_jh(down_url, start_page, end_page, ip_list, readLines, file_name_list[0])
+        write_exclude_jh(start_page, end_page, read_lines, cur_month_done_file)
     else:
         logger.info('保存 jh 链接')
-
-        write_jh_thread(down_url, start_page, end_page, ip_list, readLines, file_name_list[0])
+        write_jh_thread(start_page, end_page, read_lines, cur_month_done_file)
     # gLock.release()
 
 
 if __name__ == '__main__':
+    cur_month = common.get_datetime('%Y-%m')
+
+    today = datetime.date.today()
+    first = today.replace(day=1)
+
+    last_month = first - datetime.timedelta(days=1)
+    pre_month = last_month.strftime("%Y-%m")
+
     ip_list = common.get_ip_list(common.ipUrl)
     # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx, porn.down_url_wawq_jh]
-    down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh, porn.down_url_yczp_jh, porn.down_url_yczp]
+    down_urls = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh, porn.down_url_yczp_jh, porn.down_url_yczp]
     # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh]
     # down_url = [porn.down_url_yczp_jh, porn.down_url_yczp]
     # down_url = [porn.down_url_yczp_jh]
     # down_url = [porn.down_url_yczp]
     # threads = []
-    for index in range(0, len(down_url)):
-        write_common(down_url[index], 1, 15, ip_list)
+    # down_urls = [porn.down_url_zpdr_jh, porn.down_url_wawq_jh, porn.down_url_yczp_jh]
+    for index in range(0, len(down_urls)):
+        down_url = down_urls[index]
+        write_common(1, 15)
