@@ -33,7 +33,7 @@ def get_file_txt(file_type, cur_dir):
 
 
 # 下载图片方法
-def down_zhihu_pic2(question_id, file_list, ip_list):
+def down_zhihu_pic2(question_id, file_list):
     url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
     proxy_ip = common.get_random_ip(ip_list)
     soup = common.get_beauty_soup2(url, proxy_ip)
@@ -47,7 +47,7 @@ def down_zhihu_pic2(question_id, file_list, ip_list):
         with open(file_name, 'r') as fileObject:
             fs = []
             for num, value in enumerate(fileObject, 1):
-                print('第%i行' % (num), end=' ; ')
+                logger.info('第%i行' % (num), end=' ; ')
                 img_url = value.strip('\n')
                 if img_url == '':
                     logger.info('当前行为空：%i line' % num)
@@ -83,6 +83,5 @@ if __name__ == '__main__':
     if file_map is None or len(file_map) == 0:
         print()
     else:
-        threads = []
         for key, value in file_map.items():
-            down_zhihu_pic2(key, value, ip_list)
+            down_zhihu_pic2(key, value)
