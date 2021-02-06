@@ -52,7 +52,8 @@ if __name__ == '__main__':
     # 用户路径
     user_dir = os.path.expanduser('~') + os.sep
     # print(user_dir)
-    filePath = user_dir + "Videos"
+    # filePath = user_dir + "Videos"
+    filePath = user_dir + "Downloads"
     name_list = get_file_name_list(filePath, 'ts')
     # print(name_list)
     modify_name(name_list)
