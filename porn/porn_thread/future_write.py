@@ -8,6 +8,7 @@ import re
 from concurrent import futures
 import logging
 import datetime
+from common import BeautySoupTool
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -35,14 +36,13 @@ def write_jh_thread(start_page, end_page, read_lines, done_file_name):
         # 当前页数不重复的连接：》0读取下一页
         url = porn.pre_url + down_url % page_num
         logger.info('第 %i 页 ：%s' % (page_num, url))
-        proxy_ip = common.get_random_ip(ip_list)
-        soup = common.get_beauty_soup2(url, proxy_ip)
-        title = common.replace_sub(soup.title.string).strip()
+        soup = BeautySoupTool.BeautySoupTool(url)
+        title = soup.get_title()
         if title.startswith('91'):
             title = title[2:]
         new_title = title + '_JH'
         logger.info(new_title)
-        item_url = soup.select(
+        item_url = soup.beautySoup.select(
             "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
         logger.info('当前页获取到的连接数：%i' % len(item_url))
         # 当前页不重复的数字
@@ -78,14 +78,14 @@ def write_exclude_jh(start_page, end_page, read_lines, done_file_name):
     for page_num in range(start_page, end_page):
         url = porn.pre_url + down_url % page_num
         logger.info('第 %i 页 ：%s' % (page_num, url))
-        soup = common.get_beauty_soup2(url, common.get_random_ip(ip_list))
-        title = common.replace_sub(soup.title.string).strip()
+        soup = BeautySoupTool.BeautySoupTool(url)
+        title = soup.get_title()
         if title.startswith('91'):
             title = title[2:]
         # 查找所有 id 包含normalthread 的tags
         # 当前页不重复的数字
         cur_page_num = 0
-        result_tags = soup.find_all(id=re.compile('normalthread'))
+        result_tags = soup.beautySoup.find_all(id=re.compile('normalthread'))
         for tag in result_tags:
             for child in tag.children:
                 if len(child) > 1:
@@ -185,7 +185,6 @@ if __name__ == '__main__':
     last_month = first - datetime.timedelta(days=1)
     pre_month = last_month.strftime("%Y-%m")
 
-    ip_list = common.get_ip_list(common.ipUrl)
     # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx, porn.down_url_wawq_jh]
     down_urls = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh, porn.down_url_yczp_jh, porn.down_url_yczp]
     # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh]

@@ -5,9 +5,17 @@ import os
 import re
 from furl import furl
 import common
-
+from common import BeautySoupTool
 from configparser import ConfigParser
+import logging
+from common import FileTool
+import time
+from concurrent import futures
+from common import DownTool
+from common import FileTool
+from common import ProxyIp
 
+logger = logging.getLogger(__name__)
 # 用户目录
 user_dir = os.path.expanduser('~') + os.sep
 
@@ -71,14 +79,15 @@ down_url_yczp_jh = 'forumdisplay.php?fid=4&orderby=dateline&filter=digest&page=%
 down_url_yczp = 'forumdisplay.php?fid=4&orderby=dateline&filter=2592000&page=%i'
 
 
-def save_not_down_url(line, new_title, num):
-    # name_list = common.get_file_name_list(cur_dir, "log")
-    name_list = common.get_file_name_list('log', "un_down.log")
+def save_not_down_url(dir_path, line, new_title, num):
+    name_list = FileTool.get_file_name_list(dir_path, 'un_done-' + common.get_datetime('%Y-%m') + '.log')
+    # print(dir_path)
     if len(name_list) == 0:
-        file_name = 'un_down.log'
+        file_name = dir_path + 'un_done-' + common.get_datetime('%Y-%m') + '.log'
     else:
         file_name = name_list[0]
-        print('un_down_file:' + file_name)
+        logger.info('un_down_file:' + file_name)
+    # os.chdir(dir_path)
     with open(file_name, 'a+', encoding='utf-8') as f:
         # f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
         f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
@@ -233,7 +242,7 @@ def get_jh_img_url_list(line):
 
 
 def get_img_child_url(url, pre_url):
-    soup = common.get_beauty_soup(url)
+    soup = BeautySoupTool.BeautySoupTool(url)
     # 获取当前页面的分页连接
     child_page_url = soup.select(
         "body div[id='wrap']  div[class='forumcontrol s_clear'] table tr td div[class='pages'] a[href]")
@@ -248,19 +257,20 @@ def get_img_child_url(url, pre_url):
 
 def get_img_url_list(url):
     try:
-        soup = common.get_beauty_soup(url)
-        title = soup.title.string
+        soup = BeautySoupTool.BeautySoupTool(url)
+        title = soup.get_title()
+        logger.info('porn-title= ' + title)
     except:
         return [[], 'none']
 
-    new_title = common.replace_sub(title)
-    img_url_list = soup.select(
+    # new_title = common.replace_sub(title)
+    img_url_list = soup.beautySoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
-    img_url_list_2 = soup.select(
+    img_url_list_2 = soup.beautySoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tr td img[file]")
-    img_url_list_3 = soup.select(
+    img_url_list_3 = soup.beautySoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div div[class='postattachlist'] dl dd p img[file]")
-    img_url_list_1 = soup.select(
+    img_url_list_1 = soup.beautySoup.select(
         "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tbody tr td a[href]")
     img_url_list.extend(img_url_list_2)
     img_url_list.extend(img_url_list_3)
@@ -268,7 +278,7 @@ def get_img_url_list(url):
     # print('----------- 去重 ------------------')
     new_list = common.list_distinct(img_url_list)
     # print('去重后图片数量：' + str(len(new_list)))
-    return [new_list, new_title]
+    return [new_list, title]
 
 
 def get_child_img_url(url):
@@ -288,15 +298,18 @@ def get_child_img_url(url):
     return new_list
 
 
-def write_to_done_log(line, new_title):
-    done_file_list = common.get_cur_file_list('log', 'done.log')
+def write_to_done_log(line, new_title, dir_path=os.getcwd()):
+    done_file_list = FileTool.get_cur_file_list('log', 'done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
+    # print(dir_path)
     if len(done_file_list) == 0:
-        done_log = 'done.log'
+        done_log = dir_path + 'done-' + common.get_datetime('%Y-%m') + '.log'
     else:
         done_log = done_file_list[0]
-        print("done.log:" + done_log)
+        logger.info("保存已下载图片链接--->>>done.log:   " + done_log)
+    # os.chdir(os.getcwd())
     with open(done_log, 'a+', encoding='utf-8') as f:
         f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
+    # print()
 
 
 def down_all_pic(down_param):
@@ -415,147 +428,6 @@ def down_pic_include_child(down_path):
     # common.del_old_Undown_Text(cur_dir)
 
 
-def get_cur_dir():
-    # 当前文件路径
-    curDir = os.path.abspath(os.curdir) + os.sep
-    return curDir
-
-
-# 下载指定连接的指定位置的图片 down_url 下载链接 ；start_index 开始位置；end_index 结束位置
-def down_appoint_url(down_url, down_file_path, start_index, end_index):
-    path_ = down_file_path + cur_month
-    # 获取所有图片连接
-    url_list = get_img_url_list(down_url)
-    img_urls = url_list[0]
-    len1 = len(img_urls)
-    # print(' image num： %i ' % l)
-    print(' 图片数量： %i ' % len1)
-    new_title = url_list[1]
-    if end_index > len1:
-        end_index = len1
-    if len(img_urls) == 0:
-        os.chdir(cur_dir)
-        save_not_down_url(down_url, new_title, 0)
-    else:
-        path = path_ + str(new_title.strip()) + os.sep
-        common.create_file(path)
-        os.chdir(path)
-        for i in range(0, len(img_urls)):
-            if i < start_index:
-                continue
-            if i > end_index:
-                break
-            file_url = img_urls[i].get('file')
-            # if not ('http://' in file_url or 'https://' in file_url):
-            if not file_url.startswith('http'):
-                print('in:' + file_url)
-                file_url = pre_url + file_url
-            # fileUrl = file_url.replace('http://pic.w26.rocks/', pre_url)
-            image_name = file_url.split("/")[-1]
-            if not os.path.exists(image_name):
-                # print('the %i line：the %i  / %i ge : %s' % (num, i + 1, l, file_url), end=' ;')
-                print('第 %i / %i 个 : %s' % (i + 1, len1, file_url), end=' ;')
-                common.down_img(file_url)
-    # print("-----down over----------------")
-    print(' %s 下载完毕 ' % down_url, end=' ;')
-    # 保存所有的下载链接
-    os.chdir(cur_dir)
-    write_to_done_log(down_url, new_title)
-
-
-# 非精华连接-线程使用
-def write_to_text_exclude_jh_thread(down_url, start_page, end_page):
-    print('当前线程连接： %s,开始页数： %i,结束页数：%i')
-    # down_url = pre_url + down_param['down_url']
-    # start_page = down_param['start_page']
-    # end_page = down_param['end_page']
-    # done_down_text = cur_dir + down_param['done_down_text']
-    file_name_list = common.get_file_name_list(cur_dir, 'text')
-    done_down_text = file_name_list[0]
-    # print(done_down_text)
-    temp = 0
-    with open(done_down_text) as fileObj:
-        readLines = fileObj.read().splitlines()
-    for i in range(start_page, end_page):
-        print('Page %i :' % i)
-        url = down_url % i
-        print(url)
-        soup = common.get_beauty_soup(url)
-        # 查找所有 id 包含normalthread 的tags
-        result_tags = soup.find_all(id=re.compile('normalthread'))
-        for tag in result_tags:
-            for child in tag.children:
-                if len(child) > 1:
-                    contents1 = child.contents[5]
-                    contents2 = contents1.contents
-                    if len(contents2) >= 0:
-                        flag = True  # 默认不是精华
-                        for item in range(0, len(contents2)):
-                            tag_name = contents2[item]
-                            if tag_name.name in listTagName:
-                                tag_name_src = tag_name['src']
-                                rfind = tag_name_src.find('digest_1.gif') >= 0
-                                if rfind:
-                                    flag = False
-                                    break
-                        contents3 = contents2[3].contents
-                        if len(contents3) > 0 and flag:
-                            contents4 = contents3[0]
-                            pic_href = contents4['href']
-                            file_down_url = pre_url + pic_href
-                            split = pic_href.split("&")
-                            item_name = split[0]
-                            # contents__string = contents4.string
-                            name_split = item_name.split("=")
-                            split_ = name_split[1]
-                            os.chdir(cur_dir)
-                            temp += 1
-                            if split_ not in readLines:
-                                print('down the %i ge: %s' % (temp, pic_href))
-                                save_url_down(done_down_text, file_down_url, split_, temp)
-                            # else:
-                            #     print('the %i   is exist : %s ' % (temp, file_down_url))
-    print("print over")
-
-
-# 获取配置文件
-class DoConfig:
-    def __init__(self, filepath, encoding='utf-8'):
-        self.cf = ConfigParser()
-        self.cf.read(filepath, encoding)
-
-    # 获取所有的section
-    def get_sections(self):
-        return self.cf.sections()
-
-    # 获取某一section下的所有option
-    def get_option(self, section):
-        return self.cf.options(section)
-
-    # 获取section、option下的某一项值-str值
-    def get_strValue(self, section, option):
-        return self.cf.get(section, option)
-
-    # 获取section、option下的某一项值-int值
-    def get_intValue(self, section, option):
-        return self.cf.getint(section, option)
-
-    # 获取section、option下的某一项值-float值
-    def get_floatValue(self, section, option):
-        return self.cf.getfloat(section, option)
-
-    # 获取section、option下的某一项值-bool值
-    def get_boolValue(self, section, option):
-        return self.cf.getboolean(section, option)
-
-    def setdata(self, section, option, value):
-        return self.cf.set(section, option, value)
-
-    # 获取指定section对象
-    def get_section(self, section):
-        return self.cf[section]
-
-
 class FurlTool:
     def __init__(self, down_url, encoding='utf-8'):
         self.cf = furl(down_url)
@@ -601,4 +473,77 @@ class FurlTool:
 
     def get_down_map(self, arg='filter', file_type='text'):
         file_dir = self.get_file_dir(arg)
-        return common.get_file_map(file_dir, file_type)
+        return FileTool.get_file_map(file_dir, file_type)
+
+
+# 获取当前月份
+down_path_c = user_dir + 'Pictures/Camera Roll/PORN/'
+
+
+# 创建下载目录
+def create_down_root_path(category_name, title):
+    # root_path = down_path_c + category_name + os.sep + common.get_datetime('%Y-%m') + os.sep + str(title.strip()) + os.sep
+    root_path = '%s%s%s%s%s' % (user_dir, 'Pictures' + os.sep + 'Camera Roll' + os.sep + 'PORN', os.sep + category_name + os.sep, common.get_datetime('%Y-%m'), os.sep + str(title.strip()) + os.sep)
+    if not (os.path.exists(root_path)):
+        os.makedirs(root_path)
+    return root_path
+
+
+# 读取单个文本文件下载-futures
+def dow_img_from_file(file_name, category_name):
+    # 获取路径
+    dir_path = FileTool.get_classify_dir_path(category_name)
+    un_down = []
+    with open(file_name) as file_obj:
+        # logger.info('open file........')
+        for num, value in enumerate(file_obj, 1):
+            # logger.info('read file........')
+            line = value.strip('\n')
+            if line == '':
+                logger.info('当前行为空：%i line' % num)
+                continue
+            logger.info(line)
+            # 获取所有图片连接
+            url_list = get_img_url_list(line)
+            img_urls = url_list[0]
+            logger.info('第 %i 行： -%s- ; 图片数量： %i ' % (num, line, len(img_urls)))
+            new_title = url_list[1]
+            logger.info(new_title)
+
+            if len(img_urls) < 2:
+                save_not_down_url(dir_path, line, new_title, num)
+                continue
+            else:
+                path = create_down_root_path(category_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
+                os.chdir(path)
+                fs = []
+                start = time.time()
+                need_down = []
+                for i in range(0, len(img_urls)):
+                    file_url = img_urls[i].get('file')
+                    if not file_url.startswith('http'):
+                        logger.info('in:' + file_url)
+                        file_url = pre_url + file_url
+                    image_name = file_url.split("/")[-1]
+                    if not os.path.exists(image_name):
+                        temp_map = {'file_url': file_url, 'path': path}
+                        need_down.append(temp_map)
+                    else:
+                        logger.info('第 %i 行： -%s- ;url:%s;文件 %s已存在 ' % (num, line, file_url, image_name))
+                if len(need_down) > 0:
+                    with futures.ThreadPoolExecutor(max_workers=5 if len(need_down) > 5 else len(need_down), thread_name_prefix="down-thread") as executor:
+                        for index1, value1 in enumerate(need_down, 1):
+                            submit = executor.submit(DownTool.future_dowm_img, value1['file_url'], ProxyIp.ProxyIp().get_random_proxy_ip(), num, len(need_down), index1, value1['path'])
+                            # submit完成之后的回调函数
+                            submit.add_done_callback(common.executor_callback)
+                            fs.append(submit)
+                    futures.wait(fs, timeout=15)
+            logger.info('第 %i 行： %s 下载完毕；用时：%i ' % (num, line, time.time() - start))
+            # 保存所有的下载链接
+            os.chdir(cur_dir)
+            write_to_done_log(line, new_title, dir_path)
+            time.sleep(1)
+
+# if __name__ == '__main__':
+#     root_path = '%s%s%s%s%s' % (user_dir, 'Pictures' + os.sep + 'Camera Roll' + os.sep + 'PORN', os.sep + 'category_name' + os.sep, common.get_datetime('%Y-%m'), os.sep + 'str(title.strip())' + os.sep)
+#     print(root_path)

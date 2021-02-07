@@ -1,31 +1,18 @@
 import datetime
 import io
+import logging
 import os
-import random
 import re
-import urllib.parse
-import urllib.request
 # from urlparse import urlsplit
-from os.path import basename
 from urllib.request import Request
 from urllib.request import urlopen
 
 import requests
-from bs4 import BeautifulSoup
-import logging
 
-import threading
+import common
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-# if os.name == 'nt':
-#     print(u'windows system')
-# else:
-#     print(u'linux')
-
-# ipUrl = 'http://www.xicidaili.com/'
-ipUrl = 'https://www.kuaidaili.com/free/intr/'
 
 # header = {
 #   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.1.2107.204 Safari/537.36'}
@@ -56,73 +43,9 @@ def replace_special_char(old_str):
 # 替换并截取名字-porn使用
 def replace_sub(old_str):
     title = replace_special_char(old_str)
-    # print('title:' + title)
+    logger.info('common-title:' + title)
     ind = title.index('-')
     return title[0:ind]
-
-
-# 代理地址集合-全局变量
-ipList = []
-
-
-# 获取代理IP
-def get_ip_list(proxy_url):
-    ip_list = []
-    # print(proxy_url)
-    request = Request(proxy_url, headers=header)
-    response = urlopen(request)
-    obj = BeautifulSoup(response, 'lxml')
-    # ip_text = obj.findAll('tr', {'class': 'odd'})
-    ip_text = obj.findAll('tr')
-
-    if len(ip_text) > 0:
-        for i in range(len(ip_text)):
-            ip_tag = ip_text[i].findAll('td')
-            if len(ip_tag) > 0:
-                ip_port = ip_tag[0].get_text() + ':' + ip_tag[1].get_text()
-                ip_list.append(ip_port)
-    # 检测IP是否可用
-    # print(ip_list)
-    if len(ip_list) > 0:
-        for ip in ip_list:
-            try:
-                proxy_host = 'https://' + ip
-                proxy_temp = {"https:": proxy_host}
-                # res = urllib.urlopen(proxy_host, proxies=proxy_temp).read()
-                request = Request(proxy_temp, headers=header)
-                response = urlopen(request).read()
-            except Exception as e:
-                ip_list.remove(ip)
-                continue
-    # print(ip_list)
-    return ip_list
-
-
-# get_ip_list(ipUrl)
-
-
-# 从IPlist中获取随机地址
-def get_random_ip(ip_list):
-    # ip_list = get_ip_list(bsObj)
-    random_ip = 'http://' + random.choice(ip_list)
-    proxy_ip = {'http:': random_ip}
-    return proxy_ip
-
-
-# 从代理地址列表中获取一个随机IP
-def get_ip():
-    global ipList
-    if len(ipList) == 0:
-        print("get proxy_ip list ：" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M'))
-        ipList = get_ip_list(ipUrl)
-    random_ip = get_random_ip(ipList)
-    return random_ip
-
-
-test_image_url = [
-    'http://pic.w26.rocks/attachments//1908131105d9a99e769a3ff3d4.jpg',
-    'http://pic.w26.rocks/attachments//1908131059de4602941152bcd6.jpg'
-]
 
 
 def get_cur_dir():
@@ -134,35 +57,6 @@ def get_cur_dir():
 
 def get_datetime(template):
     return datetime.datetime.now().strftime(template)
-
-
-# 获取指定目录下 指定类型的文件
-def get_file_name_list(file_dir, file_type):
-    file_name_list = []
-    for root, dirs, files in os.walk(file_dir):
-        for file in files:
-
-            if os.path.splitext(file)[1] == ('.' + file_type):
-                logger.info(file)
-                file_name_list.append(os.path.join(root, file))
-    return file_name_list
-
-
-# 获取指定目录下 指定类型的文件,key为文件名
-def get_file_map(file_dir, file_type):
-    file_map = {}
-    for root, dirs, files in os.walk(file_dir):
-        for file in files:
-            splitext = os.path.splitext(file)
-            if splitext[1] == ('.' + file_type):
-                key = splitext[0]
-                value = file_map.get(key)
-                if value is None or value == 'None':
-                    file_map[key] = [os.path.join(root, file)]
-                else:
-                    value.append(os.path.join(root, file))
-                    file_map[key] = value
-    return file_map
 
 
 def image_size(image_url):
@@ -177,37 +71,8 @@ def file_size(url):
     request = Request(url, headers=header)
     response = urlopen(request).read()
     size = len(response) / 1000
-    print(size)
+    logger.info(size)
     return size
-
-
-# 判断文件或文件夹是否存在
-def file_exist(file_path):
-    return os.path.exists(file_path)
-
-
-# 判断文件夹是否存在，不存在则创建
-def create_file(file_path):
-    if not (os.path.exists(file_path)):
-        os.makedirs(file_path)
-
-
-# 根据图片连接保存图片
-def down_img(file_url):
-    image_name = file_url.split("/")[-1]
-    if not os.path.exists(image_name):
-        proxy_ip = get_ip()
-        # print(file_url)
-        get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
-        image = get_request.content
-        image_b = io.BytesIO(image).read()
-        # print(' size : %i kb' % (len(image_b) / 1000))
-        print(' 图片大小 : %i kb' % (len(image_b) / 1000))
-        if len(image_b) > 0:
-            with open(image_name, 'wb') as f:
-                f.write(image)
-    # else:
-    #     print(image_name + "已存在")
 
 
 # 获取线程异常
@@ -221,145 +86,12 @@ def executor_callback(worker):
         # raise worker_exception
 
 
-import time
-import common
-
-
-# 线程下载图片
-def future_dowm_img(img_url, proxy_ip, line_num, img_nums, img_num, down_path):
-    # down_img2(img_url, proxy_ip)
-    os.chdir(down_path)
-    image_name = img_url.split("/")[-1]
-    if not os.path.exists(image_name):
-        # logger.debug('start get request.get')
-        try:
-            get_request = requests.get(img_url, headers=header, proxies=proxy_ip, timeout=10)
-        except Exception as e:
-            logger.info("请求失败，请求时间是：{}".format(common.get_datetime('%Y/%m/%d %H:%M')))
-            logger.info('失败原因：%s' % e)
-            time.sleep(1)
-            get_request = requests.get(img_url, headers=header, proxies=proxy_ip, timeout=14)
-        # logger.debug('end request.get')
-        image = get_request.content
-        image_b = io.BytesIO(image).read()
-        # logger.info('%s 图片大小 : %i kb' % (image_name, len(image_b) / 1000))
-        logger.info('%s  start down 第 %i 行：第 %i / %i 个 : %s ；size：%s kb' % (threading.current_thread().name, line_num, img_num + 1, img_nums, img_url, len(image_b) / 1000))
-        if len(image_b) > 0:
-            os.chdir(down_path)
-            with open(image_name, 'wb') as f:
-                f.write(image)
-            # logger.info('%s 图片下载完成' % image_name)
-    # else:
-    #     logger.info(image_name + "已存在")
-    # return '%s done 第 %i 行：第 %i / %i 个 : %s 下载完成！' % (threading.current_thread().name, line_num, img_num + 1, img_nums, img_url)
-
-
-# 根据图片连接保存图片
-def down_img2(file_url, proxy_ip):
-    image_name = file_url.split("/")[-1]
-    if not os.path.exists(image_name):
-        logger.debug('获取request.get')
-        get_request = requests.get(file_url, headers=header, proxies=proxy_ip, timeout=10)
-        logger.debug('获取到request.get')
-        image = get_request.content
-        image_b = io.BytesIO(image).read()
-        logger.debug('%s 图片大小 : %i kb' % (image_name, len(image_b) / 1000))
-        if len(image_b) > 0:
-            with open(image_name, 'wb') as f:
-                f.write(image)
-            logger.info('%s 图片下载完成' % image_name)
-    else:
-        logger.info(image_name + "已存在")
-
-
-# 下载知乎图片
-def down_zhihu_img(file_url, proxy_ip):
-    image_name = os.path.basename(file_url).split('?')[0]
-    if not os.path.exists(image_name):
-        get_request = requests.get(file_url, headers=header, proxies=proxy_ip)
-        image = get_request.content
-        image_b = io.BytesIO(image).read()
-        logger.info(' 图片大小 : %i kb' % (len(image_b) / 1000))
-        if len(image_b) > 0:
-            with open(image_name, 'wb') as f:
-                f.write(image)
-    else:
-        logger.error("%s 已存在" % image_name)
-
-
-def down_img_2(img_url, down_path, index):
-    response = requests.get(img_url)  # , stream=True
-    if response.status_code == 200:
-        image = urllib.request.urlopen(img_url).read()
-        # response = requests.get(image_url, stream=True) #
-        # image = response.content
-        try:
-            # file_name = dir_name + os.sep + basename(urlsplit(image_url)[2])
-            file_name = basename(urllib.parse.urlsplit(img_url)[2])
-
-            with open(down_path + os.sep + '%d.jpg' % index, "wb") as picture:
-                picture.write(image)
-            logger.info("下载 {} 完成!".format(picture))
-        except IOError:
-            logger.error("IO Error\n")
-            # continue
-        finally:
-            picture.close
-    else:
-        logger.error(response.status_code)
-        # continue
-
-
-def mkdir(path):
-    if not os.path.exists(path):
-        print('新建文件夹:', path)
-        os.makedirs(path)
-        return True
-    else:
-        # print("图片存放于:", os.getcwd() + os.sep + path)
-        print("图片存放于:", path)
-        return False
-
-
-# 判断文件是否存在
-def is_file(file_name):
-    return os.path.isfile(file_name)
-
-
-def get_beauty_soup(url):
-    proxy_ip = get_ip()
-    html = requests.get(url, headers=header, proxies=proxy_ip)
-    html.encoding = 'utf-8'
-    return BeautifulSoup(html.text, 'lxml')
-
-
-def get_beauty_soup2(url, proxy_ip):
-    html = requests.get(url, headers=header, proxies=proxy_ip, timeout=4)
-    # html = requests.get(url, headers=header, timeout=4)
-    # html = requests.get(url, headers=header, timeout=(3.05, 27))
-    html.encoding = 'utf-8'
-    return BeautifulSoup(html.text, 'lxml')
-
-
-def get_beauty_soup_encoding(url, encoding):
-    proxy_ip = get_ip()
-    html = requests.get(url, headers=header, proxies=proxy_ip)
-    html.encoding = encoding
-    return BeautifulSoup(html.text, 'lxml')
-
-
 # 排序
 def list_distinct(old_list):
     new_list = list(set(old_list))
     # 按照原来顺序去重
     new_list.sort(key=old_list.index)
     return new_list
-
-
-def get_title(url):
-    soup = get_beauty_soup(url)
-    new_title = replace_sub(soup.title.string)
-    return new_title
 
 
 def del_old_Undown_Text(file_dir):
@@ -389,29 +121,9 @@ def del_old_Undown_Text(file_dir):
         '''
 
 
-# 获取当前指定类型的文件
-def get_cur_file_list(file_type, pattern):
-    file_name_list = []
-    for root, dirs, files in os.walk(os.getcwd()):
-        # print(root)
-        # print(dirs)
-        # print(files)
-        for file in files:
-            # print(file)
-            if os.path.splitext(file)[1] == ('.' + file_type) and pattern in file:
-                file_name_list.append(os.path.join(root, file))
-    return file_name_list
-
-
-# 获取当前指定类型的文件
-def get_cur_file_list2(file_type, pattern, file_dir):
-    file_name_list = []
-    for root, dirs, files in os.walk(file_dir):
-        # print(root)
-        # print(dirs)
-        # print(files)
-        for file in files:
-            # print(file)
-            if os.path.splitext(file)[1] == ('.' + file_type) and pattern in file:
-                file_name_list.append(os.path.join(root, file))
-    return file_name_list
+# 获取项目路径
+def get_project_dir():
+    cur_dir = os.getcwd() + os.sep
+    # 获取myProject，也就是项目的根路径
+    rootDir = cur_dir[:cur_dir.find("DownPython\\") + len("DownPython\\")]
+    return rootDir
