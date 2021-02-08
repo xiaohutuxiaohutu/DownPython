@@ -80,7 +80,7 @@ down_url_yczp = 'forumdisplay.php?fid=4&orderby=dateline&filter=2592000&page=%i'
 
 
 def save_not_down_url(dir_path, line, new_title, num):
-    name_list = FileTool.get_file_name_list(dir_path, 'un_done-' + common.get_datetime('%Y-%m') + '.log')
+    name_list = FileTool.get_appoint_file('un_done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
     # print(dir_path)
     if len(name_list) == 0:
         file_name = dir_path + 'un_done-' + common.get_datetime('%Y-%m') + '.log'
@@ -299,7 +299,7 @@ def get_child_img_url(url):
 
 
 def write_to_done_log(line, new_title, dir_path=os.getcwd()):
-    done_file_list = FileTool.get_cur_file_list('log', 'done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
+    done_file_list = FileTool.get_appoint_file('done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
     # print(dir_path)
     if len(done_file_list) == 0:
         done_log = dir_path + 'done-' + common.get_datetime('%Y-%m') + '.log'

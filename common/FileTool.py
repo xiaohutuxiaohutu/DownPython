@@ -10,19 +10,21 @@ rootDir = cur_dir[:cur_dir.find("DownPython\\") + len("DownPython\\")]  # 获取
 
 
 # 获取指定目录下 指定类型的文件
-def get_file_name_list(file_dir, file_type):
+def get_file_list(file_type, file_dir=os.getcwd(), pattern=None):
     file_name_list = []
     for root, dirs, files in os.walk(file_dir):
         for file in files:
 
-            if os.path.splitext(file)[1] == ('.' + file_type):
+            if pattern is None and os.path.splitext(file)[1] == ('.' + file_type):
                 logger.info(file)
+                file_name_list.append(os.path.join(root, file))
+            elif pattern is not None and os.path.splitext(file)[1] == ('.' + file_type) and pattern in file:
                 file_name_list.append(os.path.join(root, file))
     return file_name_list
 
 
 # 获取目录下指定的文件
-def get_appoint_file(file_dir, file_type):
+def get_appoint_file(file_type, file_dir=os.getcwd()):
     file_name_list = []
     for root, dirs, files in os.walk(file_dir):
         for file in files:
@@ -52,14 +54,14 @@ def get_file_map(file_dir, file_type='txt', key_type=1, pattern=None, index=0):
 
 
 # 获取当前目录下指定类型的文件
-def get_cur_file_list(file_type, pattern, file_dir=os.getcwd()):
-    file_name_list = []
-    for root, dirs, files in os.walk(file_dir):
-        for file in files:
-            # print(file)
-            if os.path.splitext(file)[1] == ('.' + file_type) and pattern in file:
-                file_name_list.append(os.path.join(root, file))
-    return file_name_list
+# def get_cur_file_list(file_type, pattern, file_dir=os.getcwd()):
+#     file_name_list = []
+#     for root, dirs, files in os.walk(file_dir):
+#         for file in files:
+#             # print(file)
+#             if os.path.splitext(file)[1] == ('.' + file_type) and pattern in file:
+#                 file_name_list.append(os.path.join(root, file))
+#     return file_name_list
 
 
 def get_classify_dir_path(category_name):
