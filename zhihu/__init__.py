@@ -109,52 +109,6 @@ def write_txt(params):
     gLock.release()
 
 
-def get_file_txt(question_id, file_type, cur_dir):
-    for root, dirs, files in os.walk(cur_dir):
-        file_name_list = []
-        for file in files:
-            # print(file)
-            if file.startswith(str(question_id)) and os.path.splitext(file)[1] == ('.' + file_type):
-                file_name_list.append(os.path.join(root, file))
-    return file_name_list
-
-
-def down_zhihu_pic(param):
-    down_path = param['down_path']
-    question_id = param['question_id']
-    url = "https://www.zhihu.com/question/{qid}".format(qid=question_id)
-    soup = common.get_beauty_soup(url)
-    title = common.replace_sub(soup.title.string)
-    print(title)
-    down_path = down_path + os.sep + title
-    if not (os.path.exists(down_path)):
-        os.makedirs(down_path)
-    # 获取当前目录下所有的待下载txt
-    file_name_list = get_file_txt(question_id, 'txt', cur_dir)
-    # file_name_list = common.get_file_name_list(cur_dir, 'txt')
-    # print(name_list)
-    for num, file_name in enumerate(file_name_list, 1):
-        print('下载第' + str(num) + '个文件：' + file_name)
-        with open(file_name, 'r') as fileObject:
-            for num, value in enumerate(fileObject, 1):
-                print('第%i行' % (num), end=' ; ')
-                img_url = value.strip('\n')
-                if img_url == '':
-                    print('当前行为空：%i line' % num)
-                    continue
-                image_name = img_url.split("/")[-1]
-                os.chdir(down_path)
-                if not os.path.exists(image_name):
-                    print('下载第%i个：%s' % (num, img_url), end=" ; ")
-                    common.down_img(img_url)
-                else:
-                    print('第' + str(num + 1) + '个已存在:' + img_url)
-            print(file_name + "-----down over----------------")
-        print('删除文件：' + file_name)
-        os.remove(file_name)
-    print("-----***************down all over********************----------------")
-
-
 def compare_down():
     old_file = parent_dir + os.sep + 'doneDown.text'
     print(old_file)

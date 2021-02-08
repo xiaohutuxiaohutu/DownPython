@@ -64,13 +64,9 @@ def write_common(start_page, end_page):
 
 
 if __name__ == '__main__':
-    cur_month = common.get_datetime('%Y-%m')
-
-    today = datetime.date.today()
-    first = today.replace(day=1)
-
-    last_month = first - datetime.timedelta(days=1)
-    pre_month = last_month.strftime("%Y-%m")
+    date_tool = porn.DateTool()
+    cur_month = date_tool.cur_month
+    pre_month = date_tool.pre_month
 
     # down_url = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq, porn.down_url_xqfx, porn.down_url_wawq_jh]
     down_urls = [porn.down_url_zpdr, porn.down_url_zpdr_jh, porn.down_url_wawq_jh, porn.down_url_yczp_jh, porn.down_url_yczp]

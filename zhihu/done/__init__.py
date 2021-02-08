@@ -1,3 +1,3 @@
-import zhihu
+# import zhihu
 
-zhihu.compare_down()
+# zhihu.compare_down()

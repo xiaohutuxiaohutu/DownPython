@@ -15,6 +15,8 @@ from common import DownTool
 from common import FileTool
 from common import ProxyIp
 
+import datetime
+
 logger = logging.getLogger(__name__)
 # 用户目录
 user_dir = os.path.expanduser('~') + os.sep
@@ -175,20 +177,6 @@ def get_child_img_url(url):
     img_url_list.extend(img_url_list_1)
     new_list = common.list_distinct(img_url_list)
     return new_list
-
-
-def write_to_done_log(line, new_title, dir_path=os.getcwd()):
-    done_file_list = FileTool.get_appoint_file('done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
-    # print(dir_path)
-    if len(done_file_list) == 0:
-        done_log = dir_path + 'done-' + common.get_datetime('%Y-%m') + '.log'
-    else:
-        done_log = done_file_list[0]
-        logger.info("保存已下载图片链接--->>>done.log:   " + done_log)
-    # os.chdir(os.getcwd())
-    with open(done_log, 'a+', encoding='utf-8') as f:
-        f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line.strip('\n'), new_title))
-    # print()
 
 
 def down_all_pic(down_param):
@@ -357,6 +345,42 @@ class FurlTool:
         return FileTool.get_file_map(file_dir, file_type)
 
 
+class DateTool:
+    __instance = None
+    __init_flag = False
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = object.__new__(cls)
+            return cls.__instance
+        else:
+            # logger.info(' proxyip has init')
+            return cls.__instance
+
+    def __init__(self):
+        if not DateTool.__init_flag:
+            self.cur_month = common.get_datetime('%Y-%m')
+            today = datetime.date.today()
+            first = today.replace(day=1)
+            last_month = first - datetime.timedelta(days=1)
+            self.pre_month = last_month.strftime("%Y-%m")
+            DateTool.__init_flag = True
+
+
+def write_to_done_log(line, new_title, dir_path=os.getcwd()):
+    done_file_list = FileTool.get_appoint_file('done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
+    # print(dir_path)
+    if len(done_file_list) == 0:
+        done_log = dir_path + 'done-' + common.get_datetime('%Y-%m') + '.log'
+    else:
+        done_log = done_file_list[0]
+        logger.info("保存已下载图片链接--->>>done.log:   " + done_log)
+    # os.chdir(os.getcwd())
+    with open(done_log, 'a+', encoding='utf-8') as f:
+        f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line.strip('\n'), new_title))
+    # print()
+
+
 def save_not_down_url(dir_path, line, new_title, num):
     name_list = FileTool.get_appoint_file('un_done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
     # print(dir_path)
@@ -453,7 +477,7 @@ def dow_img_from_file(file_name, category_name):
             # time.sleep(1)
 
 
-executor = futures.ThreadPoolExecutor(max_workers=5)
+executor = futures.ThreadPoolExecutor(max_workers=5, thread_name_prefix="write-")
 
 
 # 获取非精华连接并写入文本
