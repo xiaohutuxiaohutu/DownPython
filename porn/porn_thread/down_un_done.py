@@ -41,7 +41,8 @@ def down_file(url_list):
         url_list = porn.get_img_url_list(url)
         img_urls = url_list[0]
         new_title = url_list[1]
-        logger.info('第 %i 行： -%s- ; 图片数量： %i ;%s' % (index, url, len(img_urls), new_title))
+        # logger.info('第 %i 行： -%s- ; 图片数量： %i ;%s' % (index, url, len(img_urls), new_title))
+        logger.info('第 {}行： - {} - ; 图片数量： {} ;{}'.format(index, url, len(img_urls), new_title))
         if len(img_urls) < 2:
             if '删' not in str(new_title):
                 temp_un_down = {'url': url, 'title': str(new_title)}
@@ -122,10 +123,12 @@ def filter_delete():
             file_obj.write(line)
 
 
+# 把过滤和去重后的数据写入临时数据
 def write_distinct():
-    with open(file_path, 'r+', encoding='utf-8') as f:
+    with open(os.getcwd() + os.sep + 'temp_un_down.log', 'w+', encoding='utf-8') as f:
         for value in all_urls:
-            f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), value['url'].strip('\n'), value['title']))
+            logger.info(value)
+            f.write('%s\n' % value)
 
 
 # 重新下载 下载失败的的log文件
