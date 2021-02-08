@@ -1,19 +1,16 @@
-import common
-import porn
-import os
-from concurrent import futures
-import porn
-import time
 # from furl import furl
 # from pypinyin import pinyin, lazy_pinyin, Style
-import pypinyin
-from pypinyin import Style
 import logging
-from common import DoConfig
-from common import ProxyIp
-from common import FileTool
-from common import DownTool
+import os
+import time
+from concurrent import futures
+
+import common
 import porn
+from common import DownTool
+from common import FileTool
+from common import ProxyIp
+from common import BeautySoupTool
 
 # 重新下载未完成
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -27,14 +24,14 @@ def save_fail_url(urls):
             lines = f.readlines()
             logger.info('写入前文本数量：%i, 写入数量：%i；写入后总量%i' % (len(lines), len(urls), len(lines) + len(urls)))
     except IOError:
-        logger.error('rror: 没有找到文件或读取文件失败')
+        logger.error('error: 没有找到文件或读取文件失败,待写入数量：%i' % len(urls))
 
     with open(file_dir + 'un_down_' + common.get_datetime('%Y-%m-%d') + '.log', 'a+', encoding='utf-8') as f:
         for value in urls:
             f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), value['url'], value['title']))
 
 
-def down_file(url_list, dir_path):
+def down_file(url_list):
     un_done = []
     for index, url in enumerate(url_list, 1):
         if url.strip() == '':
@@ -45,10 +42,13 @@ def down_file(url_list, dir_path):
         logger.info('第 %i 行： -%s- ; 图片数量： %i ' % (index, url, len(img_urls)))
         new_title = url_list[1]
         logger.info(new_title)
-        if len(img_urls) < 2 and '删' not in new_title:
-            temp_un_down = {'url': url, 'title': new_title}
-            un_done.append(temp_un_down)
-            continue
+        if len(img_urls) < 2:
+            if '删' not in new_title:
+                temp_un_down = {'url': url, 'title': new_title}
+                un_done.append(temp_un_down)
+                continue
+            elif '删' in new_title:
+                continue
         else:
             path = porn.create_down_root_path(classify_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
             os.chdir(path)
@@ -74,11 +74,11 @@ def down_file(url_list, dir_path):
                         submit.add_done_callback(common.executor_callback)
                         fs.append(submit)
                 futures.wait(fs, timeout=15)
-        logger.info('第 %i 行： %s 下载完毕；用时：%i ' % (index, url, time.time() - start))
+            logger.info('第 %i 行： %s 下载完毕；用时：%i ' % (index, url, time.time() - start))
         # 保存所有的下载链接
         os.chdir(cur_dir)
-        porn.write_to_done_log(url, new_title, dir_path)
-        time.sleep(1)
+        porn.write_to_done_log(url, new_title, file_dir)
+        # time.sleep(1)
     return un_done
 
 
@@ -124,18 +124,31 @@ def filter_delete():
 
 # 重新下载 下载失败的的log文件
 if __name__ == '__main__':
-    classify_name = '自拍达人原创申请'
-    # 文件所在的目录
-    file_dir = common.get_project_dir() + 'porn' + os.sep + 'all' + os.sep + 'zpdr_ycsq_all' + os.sep
-    # 文件路径
+    # classify_name = '自拍达人原创申请'
+    # file_dir = common.get_project_dir() + 'porn' + os.sep + 'all' + os.sep + 'zpdr_ycsq_all' + os.sep
+    # file_path = file_dir + 'un_done.log'
+
+    classify_name = '兴趣分享'
+    file_dir = common.get_project_dir() + 'porn' + os.sep + 'all' + os.sep + 'xqfx' + os.sep
     file_path = file_dir + 'un_down.log'
+
+    # classify_name = '原创自拍区'
+    # file_dir = common.get_project_dir() + 'porn' + os.sep + 'all' + os.sep + 'yczp_all' + os.sep
+    # file_path = file_dir + 'un_down.log'
+
+    # classify_name = '自拍达人原创申请_JH'
+    # file_dir = common.get_project_dir() + 'porn' + os.sep + 'jh' + os.sep + 'zpdr_ycsq_jh' + os.sep
+    # file_path = file_dir + 'un_done.log'
+
+    # classify_name = '我爱我妻_JH'
+    # file_dir = common.get_project_dir() + 'porn' + os.sep + 'jh' + os.sep + 'wawq_jh' + os.sep
+    # file_path = file_dir + 'un_down.log'
+
     filter_delete()
 
-    # 保存 已下载 未下载文件的路径
-    # dir_path = FileTool.get_classify_dir_path(classify_name)
     # 去重后的数据
-    # all_urls = distinct_url(file_path)
+    all_urls = distinct_url()
     # 未下载的数据
-    # fail_urls = down_file(classify_name, all_urls)
+    fail_urls = down_file(all_urls)
     # 保存未下载的数据
-    # save_fail_url(fail_urls, file_dir)
+    save_fail_url(fail_urls)

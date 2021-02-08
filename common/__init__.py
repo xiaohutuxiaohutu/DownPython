@@ -43,7 +43,6 @@ def replace_special_char(old_str):
 # 替换并截取名字-porn使用
 def replace_sub(old_str):
     title = replace_special_char(old_str)
-    logger.info('common-title:' + title)
     ind = title.index('-')
     return title[0:ind]
 
@@ -77,9 +76,6 @@ def file_size(url):
 
 # 获取线程异常
 def executor_callback(worker):
-    # logger.info("called worker callback function")
-    # logger.info(worker.result())
-    # logger.info('')
     worker_exception = worker.exception()
     if worker_exception:
         logger.exception("Worker return exception: {}".format(worker_exception))

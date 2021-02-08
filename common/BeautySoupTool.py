@@ -19,6 +19,9 @@ class BeautySoupTool:
         html.encoding = encoding
         self.beautySoup = BeautifulSoup(html.text, 'lxml')
         self.title = self.beautySoup.title.string
+        # if self.title is None:
+        #     self.title = self.beautySoup.text
+        #
         # logger.info('soup init success')
 
     def get_title(self):

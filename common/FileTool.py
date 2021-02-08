@@ -80,7 +80,7 @@ def get_classify_dir_path(category_name):
     elif 'wawq' in pypinyin_slug:
         # dir_path = '../all/wawq_all/'
         dir_path = dir_path + 'all/wawq_all/'
-    elif 'xqxt' in pypinyin_slug:
+    elif 'xqfx' in pypinyin_slug:
         # dir_path = '../all/xqfx/'
         dir_path = dir_path + 'all/xqfx/'
     elif pypinyin_slug.endswith('JH') and 'yczp' in pypinyin_slug:

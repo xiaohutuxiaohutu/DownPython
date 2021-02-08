@@ -259,7 +259,7 @@ def get_img_url_list(url):
     try:
         soup = BeautySoupTool.BeautySoupTool(url)
         title = soup.get_title()
-        logger.info('porn-title= ' + title)
+        # logger.info('porn-title= ' + title)
     except:
         return [[], 'none']
 
@@ -509,10 +509,13 @@ def dow_img_from_file(file_name, category_name):
             logger.info('第 %i 行： -%s- ; 图片数量： %i ' % (num, line, len(img_urls)))
             new_title = url_list[1]
             logger.info(new_title)
-
+            # 图片数量小于2，且 不包含删 字段，才保存
             if len(img_urls) < 2:
-                save_not_down_url(dir_path, line, new_title, num)
-                continue
+                if '删' not in new_title:
+                    save_not_down_url(dir_path, line, new_title, num)
+                    continue
+                elif '删' in new_title:
+                    continue
             else:
                 path = create_down_root_path(category_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
                 os.chdir(path)
@@ -542,7 +545,7 @@ def dow_img_from_file(file_name, category_name):
             # 保存所有的下载链接
             os.chdir(cur_dir)
             write_to_done_log(line, new_title, dir_path)
-            time.sleep(1)
+            # time.sleep(1)
 
 # if __name__ == '__main__':
 #     root_path = '%s%s%s%s%s' % (user_dir, 'Pictures' + os.sep + 'Camera Roll' + os.sep + 'PORN', os.sep + 'category_name' + os.sep, common.get_datetime('%Y-%m'), os.sep + 'str(title.strip())' + os.sep)
