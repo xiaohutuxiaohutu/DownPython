@@ -12,21 +12,21 @@ logger = logging.getLogger(__name__)
 
 # url 一样只初始化一次
 class BeautySoupTool:
-
-    def __init__(self, url, proxy_ip=ProxyIp.ProxyIp().get_random_proxy_ip(), encoding='utf-8'):
-        # logger.info('BeautySoupTool init')
-        html = requests.get(url, headers=common.header, proxies=proxy_ip)
-        html.encoding = encoding
-        self.beautySoup = BeautifulSoup(html.text, 'lxml')
-        self.title = self.beautySoup.title.string
-        # if self.title is None:
-        #     self.title = self.beautySoup.text
-        #
-        # logger.info('soup init success')
-
-    def get_title(self):
-        strip = common.replace_sub(self.title).strip()
-        return strip
+    def __init__(self, url, proxy_ip=ProxyIp.ProxyIp().get_random_proxy_ip(), encoding='utf-8', timeout=10):
+        try:
+            html = requests.get(url, headers=common.header, proxies=proxy_ip, timeout=timeout)
+            self.status_code = html.status_code
+            html.encoding = encoding
+            self.beautySoup = BeautifulSoup(html.text, 'lxml')
+            self.title = common.replace_sub(self.beautySoup.title.string).strip()
+            # if html.status_code == 200:
+            #     self.title = common.replace_sub(self.beautySoup.title.string).strip()
+            # else:
+            #     self.title = None
+            #     logger.info('状态码错误：%i' % html.status_code)
+        except Exception as e:
+            self.title = self.status_code
+            logger.info("BeautySoupTool 请求失败，{},{}".format(common.get_datetime('%Y/%m/%d %H:%M'), e))
 
 # if __name__ == '__main__':
 # proxy = ProxyIp.ProxyIp()

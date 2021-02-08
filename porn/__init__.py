@@ -258,27 +258,25 @@ def get_img_child_url(url, pre_url):
 def get_img_url_list(url):
     try:
         soup = BeautySoupTool.BeautySoupTool(url)
-        title = soup.get_title()
-        # logger.info('porn-title= ' + title)
-    except:
-        return [[], 'none']
-
-    # new_title = common.replace_sub(title)
-    img_url_list = soup.beautySoup.select(
-        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
-    img_url_list_2 = soup.beautySoup.select(
-        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tr td img[file]")
-    img_url_list_3 = soup.beautySoup.select(
-        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div div[class='postattachlist'] dl dd p img[file]")
-    img_url_list_1 = soup.beautySoup.select(
-        "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tbody tr td a[href]")
-    img_url_list.extend(img_url_list_2)
-    img_url_list.extend(img_url_list_3)
-    img_url_list.extend(img_url_list_1)
-    # print('----------- 去重 ------------------')
-    new_list = common.list_distinct(img_url_list)
-    # print('去重后图片数量：' + str(len(new_list)))
-    return [new_list, title]
+        # new_title = common.replace_sub(title)
+        img_url_list = soup.beautySoup.select(
+            "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] table tr td img[file]")
+        img_url_list_2 = soup.beautySoup.select(
+            "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tr td img[file]")
+        img_url_list_3 = soup.beautySoup.select(
+            "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div div[class='postattachlist'] dl dd p img[file]")
+        img_url_list_1 = soup.beautySoup.select(
+            "body div[id='wrap'] div[id='postlist'] div[id] table tr td[class='postcontent'] div[class='defaultpost'] div div table tbody tr td a[href]")
+        img_url_list.extend(img_url_list_2)
+        img_url_list.extend(img_url_list_3)
+        img_url_list.extend(img_url_list_1)
+        # print('----------- 去重 ------------------')
+        new_list = common.list_distinct(img_url_list)
+        # print('去重后图片数量：' + str(len(new_list)))
+        return [new_list, soup.title]
+    except Exception as e:
+        logger.info("get_img_url_list 请求失败，{},{}".format(common.get_datetime('%Y/%m/%d %H:%M'), e))
+        return [[url], e]
 
 
 def get_child_img_url(url):
@@ -308,7 +306,7 @@ def write_to_done_log(line, new_title, dir_path=os.getcwd()):
         logger.info("保存已下载图片链接--->>>done.log:   " + done_log)
     # os.chdir(os.getcwd())
     with open(done_log, 'a+', encoding='utf-8') as f:
-        f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
+        f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line.strip('\n'), new_title))
     # print()
 
 

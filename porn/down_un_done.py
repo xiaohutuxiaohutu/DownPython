@@ -28,7 +28,7 @@ def save_fail_url(urls):
 
     with open(file_dir + 'un_down_' + common.get_datetime('%Y-%m-%d') + '.log', 'a+', encoding='utf-8') as f:
         for value in urls:
-            f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), value['url'], value['title']))
+            f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), value['url'].strip('\n'), value['title']))
 
 
 def down_file(url_list):
@@ -37,17 +37,17 @@ def down_file(url_list):
         if url.strip() == '':
             continue
         # 获取所有图片连接
+        logger.info('获取当前链接下的所有图片链接。。。。。。。')
         url_list = porn.get_img_url_list(url)
         img_urls = url_list[0]
-        logger.info('第 %i 行： -%s- ; 图片数量： %i ' % (index, url, len(img_urls)))
         new_title = url_list[1]
-        logger.info(new_title)
+        logger.info('第 %i 行： -%s- ; 图片数量： %i ;%s' % (index, url, len(img_urls), new_title))
         if len(img_urls) < 2:
-            if '删' not in new_title:
-                temp_un_down = {'url': url, 'title': new_title}
+            if '删' not in str(new_title):
+                temp_un_down = {'url': url, 'title': str(new_title)}
                 un_done.append(temp_un_down)
                 continue
-            elif '删' in new_title:
+            elif '删' in str(new_title):
                 continue
         else:
             path = porn.create_down_root_path(classify_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
@@ -144,11 +144,20 @@ if __name__ == '__main__':
     # file_dir = common.get_project_dir() + 'porn' + os.sep + 'jh' + os.sep + 'wawq_jh' + os.sep
     # file_path = file_dir + 'un_down.log'
 
-    filter_delete()
+    # filter_delete()
 
     # 去重后的数据
-    all_urls = distinct_url()
+    # all_urls = distinct_url()
+    # 先写入临时文件
+    # with open('temp_un_done' + common.get_datetime('%Y-%m-%d') + '.log', 'a+', encoding='utf-8') as f:
+    #     for line in all_urls:
+    #         f.write(line + '\n')
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        all_urls = f.readlines()
+
     # 未下载的数据
     fail_urls = down_file(all_urls)
+
     # 保存未下载的数据
     save_fail_url(fail_urls)

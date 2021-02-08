@@ -23,7 +23,7 @@ def down_img(file_url):
     if not os.path.exists(image_name):
         proxy_ip = ProxyIp.ProxyIp().get_random_proxy_ip()
         # print(file_url)
-        get_request = requests.get(file_url, headers=common.header, proxies=proxy_ip)
+        get_request = requests.get(file_url, headers=common.header, proxies=proxy_ip, timeout=10)
         image = get_request.content
         image_b = io.BytesIO(image).read()
         # print(' size : %i kb' % (len(image_b) / 1000))

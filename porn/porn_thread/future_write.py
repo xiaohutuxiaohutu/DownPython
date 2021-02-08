@@ -37,7 +37,7 @@ def write_jh_thread(start_page, end_page, read_lines, done_file_name):
         url = porn.pre_url + down_url % page_num
         logger.info('第 %i 页 ：%s' % (page_num, url))
         soup = BeautySoupTool.BeautySoupTool(url)
-        title = soup.get_title()
+        title = soup.title
         if title.startswith('91'):
             title = title[2:]
         new_title = title + '_JH'
@@ -79,7 +79,7 @@ def write_exclude_jh(start_page, end_page, read_lines, done_file_name):
         url = porn.pre_url + down_url % page_num
         logger.info('第 %i 页 ：%s' % (page_num, url))
         soup = BeautySoupTool.BeautySoupTool(url)
-        title = soup.get_title()
+        title = soup.title
         if title.startswith('91'):
             title = title[2:]
         # 查找所有 id 包含normalthread 的tags
