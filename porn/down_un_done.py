@@ -122,14 +122,24 @@ def filter_delete():
             file_obj.write(line)
 
 
+def write_distinct():
+    with open(file_path, 'r+', encoding='utf-8') as f:
+        for value in all_urls:
+            f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), value['url'].strip('\n'), value['title']))
+
+
 # 重新下载 下载失败的的log文件
 if __name__ == '__main__':
     # classify_name = '自拍达人原创申请'
     # file_dir = common.get_project_dir() + 'porn' + os.sep + 'all' + os.sep + 'zpdr_ycsq_all' + os.sep
     # file_path = file_dir + 'un_done.log'
 
-    classify_name = '兴趣分享'
-    file_dir = common.get_project_dir() + 'porn' + os.sep + 'all' + os.sep + 'xqfx' + os.sep
+    # classify_name = '兴趣分享'
+    # file_dir = common.get_project_dir() + 'porn' + os.sep + 'all' + os.sep + 'xqfx' + os.sep
+    # file_path = file_dir + 'un_down.log'
+
+    classify_name = '我爱我妻'
+    file_dir = common.get_project_dir() + 'porn' + os.sep + 'all' + os.sep + 'wawq_all' + os.sep
     file_path = file_dir + 'un_down.log'
 
     # classify_name = '原创自拍区'
@@ -144,17 +154,13 @@ if __name__ == '__main__':
     # file_dir = common.get_project_dir() + 'porn' + os.sep + 'jh' + os.sep + 'wawq_jh' + os.sep
     # file_path = file_dir + 'un_down.log'
 
-    # filter_delete()
+    filter_delete()
 
     # 去重后的数据
-    # all_urls = distinct_url()
-    # 先写入临时文件
-    # with open('temp_un_done' + common.get_datetime('%Y-%m-%d') + '.log', 'a+', encoding='utf-8') as f:
-    #     for line in all_urls:
-    #         f.write(line + '\n')
+    all_urls = distinct_url()
 
-    with open(file_path, 'r', encoding='utf-8') as f:
-        all_urls = f.readlines()
+    # 将去重后的数据写入原来的文件
+    write_distinct()
 
     # 未下载的数据
     fail_urls = down_file(all_urls)

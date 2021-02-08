@@ -78,126 +78,7 @@ down_url_yczp_jh = 'forumdisplay.php?fid=4&orderby=dateline&filter=digest&page=%
 
 down_url_yczp = 'forumdisplay.php?fid=4&orderby=dateline&filter=2592000&page=%i'
 
-
-def save_not_down_url(dir_path, line, new_title, num):
-    name_list = FileTool.get_appoint_file('un_done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
-    # print(dir_path)
-    if len(name_list) == 0:
-        file_name = dir_path + 'un_done-' + common.get_datetime('%Y-%m') + '.log'
-    else:
-        file_name = name_list[0]
-        logger.info('un_down_file:' + file_name)
-    # os.chdir(dir_path)
-    with open(file_name, 'a+', encoding='utf-8') as f:
-        # f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
-        f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
-
-
-# 保存下载连接到txt文档
-def save_url_down(done_down_text, file_down_url, pic_href, num):
-    file_name = '%s_%i.txt' % (common.get_datetime('%Y-%m-%d_%H%M'), num // 500)
-    with open(file_name, 'a+') as f:
-        f.write(file_down_url + '\n')
-    # 保存已下载的连接，防止重复下载
-    with open(done_down_text, 'a+') as f:
-        f.write(pic_href + '\n')
-
-
 listTagName = ['img']
-
-
-# 非精华连接
-def write_to_text_exclude_jh(down_param):
-    down_url = pre_url + down_param['down_url']
-    start_page = down_param['start_page']
-    end_page = down_param['end_page']
-    # done_down_text = cur_dir + down_param['done_down_text']
-    file_name_list = common.get_file_name_list(cur_dir, 'text')
-    done_down_text = file_name_list[0]
-    # print(done_down_text)
-    temp = 0
-    with open(done_down_text) as fileObj:
-        readLines = fileObj.read().splitlines()
-    for i in range(start_page, end_page):
-        print('Page %i :' % i)
-        url = down_url % i
-        print(url)
-        soup = common.get_beauty_soup(url)
-        # 查找所有 id 包含normalthread 的tags
-        result_tags = soup.find_all(id=re.compile('normalthread'))
-        for tag in result_tags:
-            for child in tag.children:
-                if len(child) > 1:
-                    contents1 = child.contents[5]
-                    contents2 = contents1.contents
-                    if len(contents2) >= 0:
-                        flag = True  # 默认不是精华
-                        for item in range(0, len(contents2)):
-                            tag_name = contents2[item]
-                            if tag_name.name in listTagName:
-                                tag_name_src = tag_name['src']
-                                rfind = tag_name_src.find('digest_1.gif') >= 0
-                                if rfind:
-                                    flag = False
-                                    break
-                        contents3 = contents2[3].contents
-                        if len(contents3) > 0 and flag:
-                            contents4 = contents3[0]
-                            pic_href = contents4['href']
-                            file_down_url = pre_url + pic_href
-                            split = pic_href.split("&")
-                            item_name = split[0]
-                            # contents__string = contents4.string
-                            name_split = item_name.split("=")
-                            split_ = name_split[1]
-                            os.chdir(cur_dir)
-                            temp += 1
-                            if split_ not in readLines:
-                                print('down the %i ge: %s' % (temp, pic_href))
-                                save_url_down(done_down_text, file_down_url, split_, temp)
-                            # else:
-                            #     print('the %i   is exist : %s ' % (temp, file_down_url))
-    print("print over")
-
-
-# current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
-def write_to_text_include_jh(down_param):
-    down_url = pre_url + down_param['down_url']
-    start_page = down_param['start_page']
-    end_page = down_param['end_page']
-    # done_down_text = cur_dir + down_param['done_down_text']
-    file_name_list = common.get_file_name_list(cur_dir, 'text')
-    done_down_text = file_name_list[0]
-    # print(done_down_text)
-    temp = 0
-    with open(done_down_text) as fileObj:
-        # readLines = fileObj.readlines()
-        readLines = fileObj.read().splitlines()
-    for i in range(start_page, end_page):
-        print('Page' + str(i) + ':')
-        url = down_url % i
-        print(url)
-        soup = common.get_beauty_soup(url)
-        item_url = soup.select(
-            "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
-
-        for j in range(0, len(item_url)):
-            sort_href = item_url[j].get('href')
-            # print(sort_href)
-            file_url = pre_url + sort_href
-            split = sort_href.split("&")
-            item_name = split[0]
-            name_split = item_name.split("=")
-            split_ = name_split[1]
-            # print(split_)
-            temp += 1
-            os.chdir(cur_dir)
-            if split_ not in readLines:
-                print('down the %i : %s ' % ((j + 1), file_url))
-                save_url_down(done_down_text, file_url, split_, temp)
-            else:
-                print('the ' + str(j + 1) + ' is exist:' + file_url)
-    print("print over ")
 
 
 # # 获取除了JH图片外链接集合
@@ -314,7 +195,7 @@ def down_all_pic(down_param):
     path_ = down_param + cur_month
     if not (os.path.exists(path_)):
         os.makedirs(path_)
-    file_name_list = common.get_file_name_list(cur_dir, 'txt')
+    file_name_list = FileTool.get_file_list('txt')
     for index, file_name in enumerate(file_name_list, 1):
         # print('down the %i file： %s' % (index, file_name))
         print('读取第 %i 个文件： %s' % (index, file_name))
@@ -367,7 +248,7 @@ def down_all_pic(down_param):
 
 
 def down_pic_include_child(down_path):
-    file_name_list = common.get_file_name_list(cur_dir, 'txt')
+    file_name_list = FileTool.get_file_list('txt')
     # down_path = down_param['down_file_path']
     for index, file_name in enumerate(file_name_list, 1):
         # print('down the %i file ： %s' % (index, file_name))
@@ -426,6 +307,8 @@ def down_pic_include_child(down_path):
     # common.del_old_Undown_Text(cur_dir)
 
 
+# --------------------- 20210208 -----------------
+
 class FurlTool:
     def __init__(self, down_url, encoding='utf-8'):
         self.cf = furl(down_url)
@@ -447,7 +330,7 @@ class FurlTool:
 
     def get_down_file(self, arg='filter'):
         file_dir = self.get_file_dir(arg)
-        return common.get_file_name_list(file_dir, 'text')
+        return FileTool.get_file_list('text', file_dir)
 
     def get_file_dir(self, arg='filter'):
         isdigit = self.is_digital(arg)
@@ -472,6 +355,30 @@ class FurlTool:
     def get_down_map(self, arg='filter', file_type='text'):
         file_dir = self.get_file_dir(arg)
         return FileTool.get_file_map(file_dir, file_type)
+
+
+def save_not_down_url(dir_path, line, new_title, num):
+    name_list = FileTool.get_appoint_file('un_done-' + common.get_datetime('%Y-%m') + '.log', dir_path)
+    # print(dir_path)
+    if len(name_list) == 0:
+        file_name = dir_path + 'un_done-' + common.get_datetime('%Y-%m') + '.log'
+    else:
+        file_name = name_list[0]
+        logger.info('un_down_file:' + file_name)
+    # os.chdir(dir_path)
+    with open(file_name, 'a+', encoding='utf-8') as f:
+        # f.write('第' + str(num) + '行：' + line + ',' + new_title + '\n')
+        f.write('%s:[%s,%s]\n' % (common.get_datetime('%Y/%m/%d %H:%M'), line, new_title))
+
+
+# 保存下载连接到txt文档
+def save_url_down(done_down_text, file_down_url, pic_href, num, title):
+    file_name = '%s-%s_%i.txt' % (title, common.get_datetime('%Y-%m-%d_%H%M'), num // 500)
+    with open(file_name, 'a+') as f:
+        f.write(file_down_url + '\n')
+    # 保存已下载的连接，防止重复下载
+    with open(done_down_text, 'a+') as f:
+        f.write(pic_href + '\n')
 
 
 # 获取当前月份
@@ -545,6 +452,106 @@ def dow_img_from_file(file_name, category_name):
             write_to_done_log(line, new_title, dir_path)
             # time.sleep(1)
 
+
+executor = futures.ThreadPoolExecutor(max_workers=5)
+
+
+# 获取非精华连接并写入文本
+def write_exclude_jh(down_url, start_page, end_page, read_lines, done_file_name):
+    temp = 0
+    fs = []
+    for page_num in range(start_page, end_page):
+        url = pre_url + down_url % page_num
+        logger.info('第 %i 页 ：%s' % (page_num, url))
+        soup = BeautySoupTool.BeautySoupTool(url)
+        title = soup.title
+        if title.startswith('91'):
+            title = title[2:]
+        # 查找所有 id 包含normalthread 的tags
+        # 当前页不重复的数字
+        cur_page_num = 0
+        result_tags = soup.beautySoup.find_all(id=re.compile('normalthread'))
+        for tag in result_tags:
+            for child in tag.children:
+                if len(child) > 1:
+                    contents1 = child.contents[5]
+                    contents2 = contents1.contents
+                    if len(contents2) >= 0:
+                        flag = True  # 默认不是精华
+                        for item in range(0, len(contents2)):
+                            tag_name = contents2[item]
+                            if tag_name.name in listTagName:
+                                tag_name_src = tag_name['src']
+                                rfind = tag_name_src.find('digest_1.gif') >= 0
+                                if rfind:
+                                    flag = False
+                                    break
+                        contents3 = contents2[3].contents
+                        if len(contents3) > 0 and flag:
+                            contents4 = contents3[0]
+                            pic_href = contents4['href']
+                            file_down_url = pre_url + pic_href
+                            split = pic_href.split("&")
+                            item_name = split[0]
+                            # contents__string = contents4.string
+                            name_split = item_name.split("=")
+                            split_ = name_split[1]
+                            os.chdir(cur_dir)
+                            temp += 1
+                            if split_ not in read_lines:
+                                print('down the %i ge: %s' % (temp, pic_href))
+                                cur_page_num += 1
+                                # save_url_down(done_file_name, file_down_url, split_, temp, title)
+                                f = executor.submit(save_url_down, done_file_name, file_down_url, split_, temp, title)
+                                fs.append(f)
+        if cur_page_num == 0:
+            break
+    print("print over")
+    # 等待这些任务全部完成
+    futures.wait(fs)
+
+
+# current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
+def write_jh_thread(down_url, start_page, end_page, read_lines, done_file_name):
+    temp = 0
+    fs = []
+    for page_num in range(start_page, end_page):
+        # 当前页数不重复的连接：》0读取下一页
+        url = pre_url + down_url % page_num
+        logger.info('第 %i 页 ：%s' % (page_num, url))
+        soup = BeautySoupTool.BeautySoupTool(url)
+        title = soup.title
+        if title.startswith('91'):
+            title = title[2:]
+        new_title = title + '_JH'
+        logger.info(new_title)
+        item_url = soup.beautySoup.select(
+            "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
+        logger.info('当前页获取到的连接数：%i' % len(item_url))
+        # 当前页不重复的数字
+        cur_page_num = 0
+        for j in range(0, len(item_url)):
+            sort_href = item_url[j].get('href')
+            # print(sort_href)
+            file_url = pre_url + sort_href
+            split = sort_href.split("&")
+            item_name = split[0]
+            name_split = item_name.split("=")
+            split_ = name_split[1]
+            temp += 1
+            os.chdir(cur_dir)
+            if split_ not in read_lines:
+                logger.info('获取第 %i 个连接: %s ' % ((j + 1), file_url))
+                cur_page_num += 1
+                # save_url_down(done_file_name, file_url, split_, temp, new_title)
+                f = executor.submit(save_url_down, done_file_name, file_url, split_, temp, new_title)
+                f.add_done_callback(common.executor_callback)
+                fs.append(f)
+        if cur_page_num == 0:
+            break
+    logger.info("print over ")
+    # 等待这些任务全部完成
+    futures.wait(fs)
 # if __name__ == '__main__':
 #     root_path = '%s%s%s%s%s' % (user_dir, 'Pictures' + os.sep + 'Camera Roll' + os.sep + 'PORN', os.sep + 'category_name' + os.sep, common.get_datetime('%Y-%m'), os.sep + 'str(title.strip())' + os.sep)
 #     print(root_path)

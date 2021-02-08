@@ -13,122 +13,10 @@ from common import BeautySoupTool
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 cur_dir = os.getcwd() + os.sep
-# gLock = threading.Lock()
-
-executor = futures.ThreadPoolExecutor(max_workers=5)
-
-
-# 保存下载连接到txt文档
-def save_url_down(done_down_text, file_down_url, pic_href, num, title):
-    file_name = '%s-%s_%i.txt' % (title, common.get_datetime('%Y-%m-%d_%H%M'), num // 500)
-    with open(file_name, 'a+') as f:
-        f.write(file_down_url + '\n')
-    # 保存已下载的连接，防止重复下载
-    with open(done_down_text, 'a+') as f:
-        f.write(pic_href + '\n')
-
-
-# current_dir 当前路径，done_down_path 保存已下载连接的text文档路径；pre_url url;down_url 下载页面连接
-def write_jh_thread(start_page, end_page, read_lines, done_file_name):
-    temp = 0
-    fs = []
-    for page_num in range(start_page, end_page):
-        # 当前页数不重复的连接：》0读取下一页
-        url = porn.pre_url + down_url % page_num
-        logger.info('第 %i 页 ：%s' % (page_num, url))
-        soup = BeautySoupTool.BeautySoupTool(url)
-        title = soup.title
-        if title.startswith('91'):
-            title = title[2:]
-        new_title = title + '_JH'
-        logger.info(new_title)
-        item_url = soup.beautySoup.select(
-            "body div[id='wrap'] div[class='main'] div[class='content'] div[id='threadlist'] form table tbody[id] th span[id] a")
-        logger.info('当前页获取到的连接数：%i' % len(item_url))
-        # 当前页不重复的数字
-        cur_page_num = 0
-        for j in range(0, len(item_url)):
-            sort_href = item_url[j].get('href')
-            # print(sort_href)
-            file_url = porn.pre_url + sort_href
-            split = sort_href.split("&")
-            item_name = split[0]
-            name_split = item_name.split("=")
-            split_ = name_split[1]
-            temp += 1
-            os.chdir(cur_dir)
-            if split_ not in read_lines:
-                logger.info('获取第 %i 个连接: %s ' % ((j + 1), file_url))
-                cur_page_num += 1
-                # save_url_down(done_file_name, file_url, split_, temp, new_title)
-                f = executor.submit(save_url_down, done_file_name, file_url, split_, temp, new_title)
-                f.add_done_callback(common.executor_callback)
-                fs.append(f)
-        if cur_page_num == 0:
-            break
-    logger.info("print over ")
-    # 等待这些任务全部完成
-    futures.wait(fs)
-
-
-# 非精华连接
-def write_exclude_jh(start_page, end_page, read_lines, done_file_name):
-    temp = 0
-    fs = []
-    for page_num in range(start_page, end_page):
-        url = porn.pre_url + down_url % page_num
-        logger.info('第 %i 页 ：%s' % (page_num, url))
-        soup = BeautySoupTool.BeautySoupTool(url)
-        title = soup.title
-        if title.startswith('91'):
-            title = title[2:]
-        # 查找所有 id 包含normalthread 的tags
-        # 当前页不重复的数字
-        cur_page_num = 0
-        result_tags = soup.beautySoup.find_all(id=re.compile('normalthread'))
-        for tag in result_tags:
-            for child in tag.children:
-                if len(child) > 1:
-                    contents1 = child.contents[5]
-                    contents2 = contents1.contents
-                    if len(contents2) >= 0:
-                        flag = True  # 默认不是精华
-                        for item in range(0, len(contents2)):
-                            tag_name = contents2[item]
-                            if tag_name.name in porn.listTagName:
-                                tag_name_src = tag_name['src']
-                                rfind = tag_name_src.find('digest_1.gif') >= 0
-                                if rfind:
-                                    flag = False
-                                    break
-                        contents3 = contents2[3].contents
-                        if len(contents3) > 0 and flag:
-                            contents4 = contents3[0]
-                            pic_href = contents4['href']
-                            file_down_url = porn.pre_url + pic_href
-                            split = pic_href.split("&")
-                            item_name = split[0]
-                            # contents__string = contents4.string
-                            name_split = item_name.split("=")
-                            split_ = name_split[1]
-                            os.chdir(cur_dir)
-                            temp += 1
-                            if split_ not in read_lines:
-                                print('down the %i ge: %s' % (temp, pic_href))
-                                cur_page_num += 1
-                                # save_url_down(done_file_name, file_down_url, split_, temp, title)
-                                f = executor.submit(save_url_down, done_file_name, file_down_url, split_, temp, title)
-                                fs.append(f)
-        if cur_page_num == 0:
-            break
-    print("print over")
-    # 等待这些任务全部完成
-    futures.wait(fs)
 
 
 def write_common(start_page, end_page):
     furl_tool = porn.FurlTool(down_url)
-    # file_name_list = furl_tool.get_down_file()
     file_name_list = furl_tool.get_down_map()
     if file_name_list is None and len(file_name_list) == 0:
         logger.info('找不到已下载文件，无法读取数据。。。。。。')
@@ -169,11 +57,10 @@ def write_common(start_page, end_page):
         # read_lines.append(fileObj.read().splitlines())
     if isdigit:
         logger.info('保存非jh 链接')
-        write_exclude_jh(start_page, end_page, read_lines, cur_month_done_file)
+        porn.write_exclude_jh(down_url, start_page, end_page, read_lines, cur_month_done_file)
     else:
         logger.info('保存 jh 链接')
-        write_jh_thread(start_page, end_page, read_lines, cur_month_done_file)
-    # gLock.release()
+        porn.write_jh_thread(down_url, start_page, end_page, read_lines, cur_month_done_file)
 
 
 if __name__ == '__main__':
