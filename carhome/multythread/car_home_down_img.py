@@ -10,10 +10,14 @@ import logging
 import carhome
 import common
 
+from common import FileTool
+
+from common import FileTool
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-executor = futures.ThreadPoolExecutor(max_workers=5)
+# executor = futures.ThreadPoolExecutor(max_workers=5)
 
 user_dir = os.path.expanduser('~') + os.sep
 
@@ -52,9 +56,11 @@ def get_img_url(url):
             if 'smiles' in src:
                 continue
             # 提交任务到线程池
-            f = executor.submit(down_img, img_url + src, path)
-            f.add_done_callback(common.executor_callback)
-            fs.append(f)
+            with futures.ThreadPoolExecutor(max_workers=5, thread_name_prefix="car-home-") as executor:
+
+                f = executor.submit(down_img, img_url + src, path)
+                f.add_done_callback(common.executor_callback)
+                fs.append(f)
         # 等待这些任务全部完成
         futures.wait(fs)
         end = int(time.time() * 1000)
@@ -67,7 +73,7 @@ def get_img_url(url):
 # 根据图片链接下载图片
 def down_img(img_url, path):
     # print(path)
-    common.create_file(path)
+    FileTool.create_file(path)
     os.chdir(path)
     image_name = img_url.split("/")[-1]
     if not os.path.exists(image_name):
@@ -81,9 +87,7 @@ def down_img(img_url, path):
 
 
 if __name__ == '__main__':
-    cur_dir = os.getcwd() + os.sep
-    file_list = common.get_file_name_list(cur_dir, 'txt')
-    print(file_list)
+    file_list = FileTool.get_file_list('txt')
     for index, file_name in enumerate(file_list, 1):
         print('读取第 %i 个文件： %s' % (index, file_name))
         # 打开文件
