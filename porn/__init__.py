@@ -412,7 +412,9 @@ down_path_c = user_dir + 'Pictures/Camera Roll/PORN/'
 # 创建下载目录
 def create_down_root_path(category_name, title):
     # root_path = down_path_c + category_name + os.sep + common.get_datetime('%Y-%m') + os.sep + str(title.strip()) + os.sep
-    root_path = '%s%s%s%s%s' % (user_dir, 'Pictures' + os.sep + 'Camera Roll' + os.sep + 'PORN', os.sep + category_name + os.sep, common.get_datetime('%Y-%m'), os.sep + str(title.strip()) + os.sep)
+    root_path = '%s%s%s%s%s' % (
+    user_dir, 'Pictures' + os.sep + 'Camera Roll' + os.sep + 'PORN', os.sep + category_name + os.sep,
+    common.get_datetime('%Y-%m'), os.sep + str(title.strip()) + os.sep)
     if not (os.path.exists(root_path)):
         os.makedirs(root_path)
     return root_path
@@ -436,7 +438,7 @@ def dow_img_from_file(file_name, category_name):
             url_list = get_img_url_list(line)
             img_urls = url_list[0]
             logger.info('第 %i 行： -%s- ; 图片数量： %i ' % (num, line, len(img_urls)))
-            new_title = url_list[1]
+            new_title = str(url_list[1])
             logger.info(new_title)
             # 图片数量小于2，且 不包含删 字段，才保存
             if len(img_urls) < 2:
@@ -446,7 +448,8 @@ def dow_img_from_file(file_name, category_name):
                 elif '删' in new_title:
                     continue
             else:
-                path = create_down_root_path(category_name, str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
+                path = create_down_root_path(category_name,
+                                             str(new_title.strip()))  # path_ + str(new_title.strip()) + os.sep
                 os.chdir(path)
                 fs = []
                 start = time.time()
@@ -463,9 +466,12 @@ def dow_img_from_file(file_name, category_name):
                     else:
                         logger.info('第 %i 行： -%s- ;url:%s;文件 %s已存在 ' % (num, line, file_url, image_name))
                 if len(need_down) > 0:
-                    with futures.ThreadPoolExecutor(max_workers=5 if len(need_down) > 5 else len(need_down), thread_name_prefix="down-thread") as executor:
+                    with futures.ThreadPoolExecutor(max_workers=5 if len(need_down) > 5 else len(need_down),
+                                                    thread_name_prefix="down-thread") as executor:
                         for index1, value1 in enumerate(need_down, 1):
-                            submit = executor.submit(DownTool.future_dowm_img, value1['file_url'], ProxyIp.ProxyIp().get_random_proxy_ip(), num, len(need_down), index1, value1['path'])
+                            submit = executor.submit(DownTool.future_dowm_img, value1['file_url'],
+                                                     ProxyIp.ProxyIp().get_random_proxy_ip(), num, len(need_down),
+                                                     index1, value1['path'])
                             # submit完成之后的回调函数
                             submit.add_done_callback(common.executor_callback)
                             fs.append(submit)

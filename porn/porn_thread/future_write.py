@@ -78,4 +78,4 @@ if __name__ == '__main__':
     # down_urls = [porn.down_url_zpdr_jh, porn.down_url_wawq_jh, porn.down_url_yczp_jh]
     for index in range(0, len(down_urls)):
         down_url = down_urls[index]
-        write_common(1, 10)
+        write_common(1, 15)
