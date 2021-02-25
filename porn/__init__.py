@@ -397,7 +397,7 @@ def save_not_down_url(dir_path, line, new_title, num):
 
 # 保存下载连接到txt文档
 def save_url_down(done_down_text, file_down_url, pic_href, num, title):
-    file_name = '%s-%s_%i.txt' % (title, common.get_datetime('%Y-%m-%d_%H%M'), num // 500)
+    file_name = '%s-%s_%i.txt' % (title, common.get_datetime('%Y-%m-%d'), num // 500)
     with open(file_name, 'a+') as f:
         f.write(file_down_url + '\n')
     # 保存已下载的连接，防止重复下载
